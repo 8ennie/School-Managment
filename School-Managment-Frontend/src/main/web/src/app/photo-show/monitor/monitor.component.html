@@ -1,0 +1,231 @@
+<div style="text-align: center;">
+    <h1>{{'monitors' | translate }}</h1>
+    <p-table [columns]="cols" [value]="monitors" selectionMode="single" [(selection)]="selectedMonitor"
+        (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header | translate }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    {{rowData['name']}}
+                </td>
+                <td>
+                    {{rowData['showType'] | translate }}
+                </td>
+                <td>
+                    {{rowData['location']}}
+                </td>
+                <td>
+                    {{rowData['status'] != null ? rowData['status'] === true ? "An": "Aus" : "Offline"}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary" let-rowData>
+            <div style="text-align:left">
+                <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()"
+                    label="{{ 'add' | translate }}"></button>
+            </div>
+        </ng-template>
+    </p-table>
+
+
+    <p-dialog header="{{'monitor-details' | translate }}" [(visible)]="displayDialog" [focusOnShow]="false"
+        showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
+        <p-tabView>
+            <p-tabPanel header="{{'settings' | translate }}">
+                <div class="ui-g ui-fluid" *ngIf="monitor">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="name">{{'monitor-name' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="name" [(ngModel)]="monitor.name" style="width: 100%;" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="type">{{'image-show' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <p-dropdown id="type" [options]="showTypes" [(ngModel)]="monitor.showType" required="true"
+                                placeholder="Select a Type" appendTo="body">
+                                <ng-template pTemplate="item" let-item>
+                                    {{item.value | translate}}
+                                </ng-template>
+                                <ng-template pTemplate="selectedItem" let-item>
+                                    {{item.value | translate}}
+                                </ng-template>
+                            </p-dropdown>
+                            <ng-container *ngIf="monitor.showType != 'ADVERTISEMENT'">
+                                <button *ngIf="monitor.imageShow" type="button" pButton
+                                    (click)="showCurrentSubstitutionsPlan()"
+                                    label="{{'show-current-plan' | translate }}" style="margin-top: 5px;"></button>
+                            </ng-container>
+                            <ng-container *ngIf="monitor.showType == 'ADVERTISEMENT'">
+                                <div style="margin-top: 5px;">
+                                    <p-dropdown *ngIf="monitor" [options]="imageShowes"
+                                        placeholder="Select an Image View" [(ngModel)]="monitor.imageShowUrl"
+                                        appendTo="body"></p-dropdown>
+
+                                    <button *ngIf="monitor.imageShow" type="button" pButton
+                                        (click)="loginAndStartShow()" label="{{'start-show' | translate }}"
+                                        style="margin-top: 5px;"></button>
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-12" *ngIf="monitor.status != null">
+                        <div class="ui-g-4">
+                            <label for="status">{{'monitor-status' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <label *ngIf="monitor.status == null"
+                                    style="width: 100%;">{{'offline' | translate }}</label>
+                                <label *ngIf="monitor.status == true" style="width: 50%;">{{'on' | translate }}</label>
+                                <label *ngIf="monitor.status == false"
+                                    style="width: 50%;">{{'off' | translate }}</label>
+                                <button *ngIf="monitor.status == false" type="button" pButton (click)="monitorOn()"
+                                    label="{{'turn-on' | translate }}" style="width: 50%;"></button>
+                                <button *ngIf="monitor.status == true" type="button" pButton (click)="monitorOff()"
+                                    label="{{'turn-off' | translate }}" style="width: 50%;"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12" *ngIf="monitor.status == null">
+                        <div class="ui-g-4">
+                            <label for="status">{{'raspberry-status' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <label style="width: 100%;">{{'offline' | translate }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="{{'advanced-settings' | translate }}">
+                <div class="ui-g ui-fluid" *ngIf="monitor">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="ipAddress">{{'ip-address' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="ipAddress" [(ngModel)]="monitor.ipAddress" style="width: 100%;" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="location">{{'monitor-location' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="location" [(ngModel)]="monitor.location" style="width: 100%;" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status == true">
+                        <div class="ui-g-4">
+                            <label for="serverIp">{{'server-ip-address' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <input pInputText id="serverIp" [(ngModel)]="monitor.serverIp" style="width: 80%;" />
+                                <button type="button" pButton (click)="setServerIP()"
+                                    label="{{'change-ip' | translate }}" style="width: 20%;"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
+
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button *ngIf="!newMonitor" type="button" pButton icon="pi pi-times" (click)="delete()"
+                    label="{{'delete' | translate }}"></button>
+                <button type="button" pButton icon="pi pi-check" (click)="save()"
+                    label="{{'save' | translate }}"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+
+
+    <p-dialog header="{{'monitor-details' | translate }}" [(visible)]="addDisplayDialog" [focusOnShow]="false"
+        showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
+
+        <div class="ui-g ui-fluid" *ngIf="monitor">
+
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="ipAddress">{{'ip-address' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="ipAddress" [(ngModel)]="monitor.ipAddress" style="width: 100%;" />
+                </div>
+            </div>
+            
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="name">{{'monitor-name' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="name" [(ngModel)]="monitor.name" style="width: 100%;" />
+                </div>
+            </div>
+
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="location">{{'monitor-location' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="location" [(ngModel)]="monitor.location" style="width: 100%;" />
+                </div>
+            </div>
+
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="type">{{'image-show' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <p-dropdown id="type" [options]="showTypes" [(ngModel)]="monitor.showType" required="true"
+                        placeholder="Select a Type" appendTo="body">
+                        <ng-template pTemplate="item" let-item>
+                            {{item.value | translate}}
+                        </ng-template>
+                        <ng-template pTemplate="selectedItem" let-item>
+                            {{item.value | translate}}
+                        </ng-template>
+                    </p-dropdown>
+                    <ng-container *ngIf="monitor.showType != 'ADVERTISEMENT'">
+                        <button *ngIf="monitor.imageShow" type="button" pButton (click)="showCurrentSubstitutionsPlan()"
+                            label="{{'show-current-plan' | translate }}" style="margin-top: 5px;"></button>
+                    </ng-container>
+                    <ng-container *ngIf="monitor.showType == 'ADVERTISEMENT'">
+                        <div style="margin-top: 5px;">
+                            <p-dropdown *ngIf="monitor" [options]="imageShowes" placeholder="Select an Image View"
+                                [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
+                        </div>
+                    </ng-container>
+
+                </div>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="pi pi-check" (click)="save()"
+                    label="{{'save' | translate }}"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+
+
+</div>

@@ -1,0 +1,9 @@
+
+<p-carousel [value]="showParts" [autoplayInterval]="12000" [circular]="true">
+    <ng-template let-showPart pTemplate="item">
+        <div style="text-align: center;">
+            <img [src] = "getImage(showPart)" [height]="getHeight()">
+        </div>
+    </ng-template>
+</p-carousel> 
+<router-outlet></router-outlet>

@@ -1,0 +1,118 @@
+
+<div style="text-align: center;">
+    <h1>{{'photoshow' | translate }}</h1>
+    <h3>Substituition</h3>
+    <p-table [columns]="cols" [value]="imageShows" selectionMode="single" [(selection)]="selectedImageShow"
+    (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+    <ng-template pTemplate="caption">
+        List of ImageShowes
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+        <tr [pSelectableRow]="rowData">
+            <td>
+                {{rowData['name']}}
+            </td>
+            <td>
+                {{rowData['showType']}}
+            </td>
+            <td>
+                {{rowData['document']? rowData['document'].fileName: "File Name Not Found"}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+        <div style="text-align:left">
+            <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add"></button>
+        </div>
+    </ng-template>
+</p-table>
+
+
+
+<p-dialog header="Show Details" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade"
+    [modal]="true" [style]="{width: '50vw'}">
+    <div class="p-grid ui-fluid" *ngIf="imageShow">
+        <div class="p-col-4">
+            <label for="type">Show Type</label>
+        </div>
+        <div class="p-col-8">
+            <p-dropdown [options]="showTypes" [(ngModel)]="imageShow.showType" required="true"
+                placeholder="Select a Type" appendTo="body" [disabled]="!newImageShow"></p-dropdown>
+        </div>
+        <ng-container *ngIf="imageShow.showType">
+            <div class="p-col-4">
+                <label for="name">Show Name</label>
+            </div>
+            <div class="p-col-8">
+                <input pInputText id="name" [(ngModel)]="imageShow.name" required="true" style="width: 100%;"
+                    [disabled]="!newImageShow" />
+            </div>
+            <ng-container *ngIf="imageShow.showType == 'SUBSTITUTION' ">
+                <div class="p-col-4">
+                    <label for="date">Date</label>
+                </div>
+                <div class="p-col-8">
+                    <p-calendar [(ngModel)]="imageShow.date" required="true" appendTo="body" [disabled]="!newImageShow">
+                    </p-calendar>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="newImageShow">
+                <div class="p-col-4">
+                    <label for="name">Upload File</label>
+                </div>
+                <div class="p-col-8">
+                    <p-fileUpload required="true" #fileUpload name="file" [url]="uploadUrl"
+                        (onBeforeUpload)="onBeforeUpload($event)" accept=".pdf" [showCancelButton]="false"
+                        [showUploadButton]="false"></p-fileUpload>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!newImageShow">
+                <div class="p-col-4">
+                    <label for="name">Image Show</label>
+                </div>
+                <div class="p-col-8">
+                    <button pButton type="button" (click)="showImages()"
+                        [label]="displayImages? 'Hide Images': 'Show Images'"></button>
+                </div>
+            </ng-container>
+        </ng-container>
+
+
+
+        <div class="alert alert-danger" style="width: 100%; text-align: center; margin-top: 5px;" role="alert"
+            *ngIf="errorMessage">
+            <div>{{ errorMessage }}</div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button *ngIf="!newImageShow" type="button" pButton icon="pi pi-times" (click)="delete()"
+                label="Delete"></button>
+            <button *ngIf="!newImageShow" type="button" pButton icon="pi pi-check" (click)="close()"
+                label="Close"></button>
+            <button *ngIf="newImageShow" type="button" pButton icon="pi pi-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+
+
+</p-dialog>
+
+<p-dialog header="Images" [(visible)]="displayImages">
+    <p-carousel [value]="imageShowParts" [numVisible]="imageShowParts.length<4?imageShowParts.length:4" appendTo="body">
+        <ng-template let-showPart pTemplate="item">
+            <div style="text-align: center;">
+                <img [src]="getImage(showPart)" [height]="250">
+            </div>
+        </ng-template>
+    </p-carousel>
+</p-dialog>
+</div>
+
