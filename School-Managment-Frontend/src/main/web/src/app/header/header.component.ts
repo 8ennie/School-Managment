@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
-import { User } from '../auth/user.model';
-import { Role } from '../auth/role.model';
+import { AuthUser } from '../auth/auth-user.model';
+import { Privilege } from '../auth/privilege.model';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from './header.service';
 
@@ -13,13 +13,15 @@ import { HeaderService } from './header.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  showHeader: boolean = true;
+  showHeader = true;
 
-  user: User;
+  user: AuthUser;
   isAuthenticated = false;
-  roles: Role[];
+  privilege = [];
   userSub: Subscription;
-  headerSubscription : Subscription;
+  headerSubscription: Subscription;
+
+  
   constructor(
     private authService: AuthService,
     private translate: TranslateService,
@@ -31,13 +33,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isAuthenticated = this.authService.isAthenticated();
     this.user = this.authService.getUser();
     if (this.authService.getUser()) {
-      this.roles = this.authService.getUser().roles;
+      this.privilege = this.authService.getUser().roles;
     }
-    this.userSub = this.authService.userChanges.subscribe((user: User) => {
+    this.userSub = this.authService.userChanges.subscribe((user: AuthUser) => {
       this.isAuthenticated = this.authService.isAthenticated();
       if (user !== null) {
         this.user = user;
-        this.roles = this.authService.getUser().roles;
+        this.privilege = this.authService.getUser().roles;
       }
     });
     this.headerSubscription = this.headerService.showHeader.subscribe(hide => this.showHeader = hide);
@@ -52,25 +54,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.headerSubscription.unsubscribe();
   }
 
-  isAdmin() {
-    return this.roles.includes(Role.ROLE_ADMIN);
-  }
-  isTeacher() {
-    return this.roles.includes(Role.ROLE_TEACHER);
-  }
-  isStudent() {
-    return this.roles.includes(Role.ROLE_STUDENT);
-  }
-
   switchLang(lang: string) {
     this.translate.use(lang);
   }
 
-  getCurrentLang(){
+  getCurrentLang() {
     return this.translate.currentLang;
   }
 
-  getLangs(){
+  getLangs() {
     return this.translate.getLangs();
+  }
+
+  hasPrivilege(privileges: string[]): boolean {
+    for (let p of privileges) {
+      if (this.privilege.includes(p)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

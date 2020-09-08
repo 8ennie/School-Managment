@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.school.managment.Backend.model.photoshow.Document;
-import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.model.photoshow.ShowPart;
 import com.school.managment.Backend.repository.ShowPartRepository;
 
@@ -38,11 +37,10 @@ public class PDFConverterService {
 			baos.close();
 			ShowPart showPart = new ShowPart();
 			showPart.setImage(imageInByte);
-			showPart.setOrigin(doc.getFileName().toString() + "( " + page + " )");
+			showPart.setParentDocument(doc);
 			showParts.add(showPartRepository.save(showPart));
 		}
 		document.close();
 		return showParts;
-
 	}
 }

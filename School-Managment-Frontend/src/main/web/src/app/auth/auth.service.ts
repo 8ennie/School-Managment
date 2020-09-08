@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { User } from './user.model';
+import { AuthUser } from './auth-user.model';
 import { environment } from 'src/environments/environment';
 import { Monitor } from '../photo-show/monitor/monitor.model';
 
@@ -16,13 +16,11 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  userChanges = new Subject<User>();
+  userChanges = new Subject<AuthUser>();
 
   constructor(private http: HttpClient, private router: Router, private tokenStorage: TokenStorageService) { }
 
   login(credentials): Observable<any> {
-    console.log(AUTH_API+ 'signin');
-    
     return this.http.post(AUTH_API + 'signin', {
       username: credentials.username,
       password: credentials.password

@@ -1,7 +1,9 @@
+import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
 import { Monitor } from './monitor.model'
 import { MonitorService } from './monitor.service'
-import { AdvertismentService } from '../advertisment/advertisment.service';
+import { AreaService } from '../area.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-monitor',
@@ -26,24 +28,28 @@ export class MonitorComponent implements OnInit {
 
     imageShowes: { label: any; value: any; }[];
 
-    showTypes;
+    areas;
 
     constructor(
         private monitorService: MonitorService,
-        private advertismentService: AdvertismentService
+        private areaService: AreaService,
+        private imageShowStore: ImageShowStore,
+        private messageService: MessageService,
     ) {
-        this.showTypes = [
-            { label: 'Advertisment', value: 'ADVERTISEMENT' },
-            { label: 'Substitution', value: 'SUBSTITUTION' },
-        ];
+
     }
 
     ngOnInit() {
-        this.loadData()
-        this.advertismentService.getAdvertisments().then(showes => {
-            this.imageShowes = showes.map(s => {
-                return { label: s.name, value: s._links.self.href }
-            });    
+        this.loadData();
+        this.areaService.getAllAreas().then((areas: []) => {
+            this.areas = areas.map(a => {
+                return { label: a, value: a }
+            });
+        });
+        this.imageShowStore.imageShowsFiltered.subscribe(imageShows => {
+            this.imageShowes = imageShows.toArray().map(im => {
+                return { label: im.name, value: im._links.self.href }
+            });
         });
         this.cols = [
             { field: 'name', header: 'monitor-name' },
@@ -66,14 +72,15 @@ export class MonitorComponent implements OnInit {
             this.monitorService.saveMonitor(this.monitor).then(m => {
                 this.loadData()
             })
+            this.addDisplayDialog = false;
         } else {
             this.monitorService.updateMonitor(this.monitor.id, this.monitor).then(m => {
                 this.loadData()
             })
+            this.displayDialog = false;
         }
         this.monitors = monitors;
         this.monitor = null;
-        this.addDisplayDialog = false;
     }
 
     loadData() {
@@ -86,6 +93,8 @@ export class MonitorComponent implements OnInit {
                     status => {
                         m.status = status.screenStatus;
                         m.serverIp = status.serverIp;
+                        m.wakeTime = new Date(new Date().toDateString() + ' ' + status.wakeTime);
+                        m.sleepTime = new Date(new Date().toDateString() + ' ' + status.sleepTime);
                     }
                 ).catch(error => {
                     console.log(error);
@@ -101,9 +110,14 @@ export class MonitorComponent implements OnInit {
         this.displayDialog = false;
     }
 
+    onAreaChange(){
+        this.imageShowStore.filterForArea(this.monitor.area);
+    }
+
     onRowSelect(event) {
         this.newMonitor = false;
         this.monitor = this.cloneMonitor(event.data);
+        this.imageShowStore.filterForArea(this.monitor.area);
         this.monitorService.getMonitorStatus(this.monitor).then(
             s => {
                 this.monitor.status = s.screenStatus;
@@ -129,30 +143,56 @@ export class MonitorComponent implements OnInit {
 
     monitorOff() {
         this.monitorService.monitorScreen(this.monitor, false).then(
-            s => this.monitor.status = s
-        );
+            s => {
+                this.monitor.status = s
+                this.messageService.add({ severity: 'success', summary: 'Monitor Screen turned Off!', detail: 'Monitor Screen was successfully turned Off!' });
+            });
     }
 
     monitorOn() {
         this.monitorService.monitorScreen(this.monitor, true).then(
-            s => this.monitor.status = s
-        );
+            s => {
+                this.monitor.status = s
+                this.messageService.add({ severity: 'success', summary: 'Monitor Screen turned On!', detail: 'Monitor Screen was successfully turned On!' });
+            });
     }
 
     loginMonitor() {
         this.monitorService.loginForShow(this.monitor);
     }
-    
-    loginAndStartShow(){
+
+    loginAndStartShow() {
         this.monitorService.loginAndStartShow(this.monitor)
     }
 
-    setServerIP(){
-        this.monitorService.setServerIP(this.monitor);
+    setServerIP() {
+        this.monitorService.setServerIP(this.monitor).then(ip => {
+            this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
+        });
     }
 
-    showCurrentSubstitutionsPlan(){
-        this.monitorService.loginAndShowSubstitution(this.monitor);
+    showCurrentSubstitutionsPlan() {
+        this.monitorService.loginAndShowSubstitution(this.monitor).then(() => {
+            this.messageService.add({ severity: 'success', summary: 'Monitor Show changed!', detail: 'The Monitor is showing the current Substitution' });
+        });
+    }
+
+    setSleepTime() {
+        this.monitorService.setSleepTime(this.monitor).then(time => {
+            this.messageService.add({ severity: 'success', summary: 'Sleep Time set Successfully!', detail: 'The Sleep Time was set to: ' + time });
+        });
+    }
+
+    setWakeTime() {
+        this.monitorService.setWakeTime(this.monitor).then(time => {
+            this.messageService.add({ severity: 'success', summary: 'Sleep Wake set Successfully!', detail: 'The Wake Time was set to: ' + time });
+        });
+    }
+
+    reboot() {
+        this.monitorService.reboot(this.monitor).then(time => {
+            this.messageService.add({ severity: 'success', summary: 'Raspberry Rebooting!', detail: 'Please wait a bit until Raspberry reconnected!' });
+        });;
     }
 
 }

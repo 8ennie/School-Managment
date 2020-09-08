@@ -12,28 +12,54 @@
 
                 <li ngbNavItem ngbDropdown class="nav-item">
                     <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
-                        *ngIf="isAuthenticated && (isAdmin())">{{'photoshow' | translate }}</a>
+                        *ngIf="isAuthenticated && hasPrivilege(['READ_SUBSTITUTIONS', 'READ_ADVERTISMENT'])">{{'photoshow' | translate }}</a>
                     <div ngbDropdownMenu>
-                        <a ngbDropdownItem [routerLink]="'photoshow/substitutions'" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}"
-                            class="dropdown-item">{{'substituition' | translate }}</a>
-                        <a ngbDropdownItem [routerLink]="'photoshow/advertisments'" routerLinkActive="active"
-                            class="dropdown-item">{{'advertisment' | translate }}</a>
+                        <!-- <a ngbDropdownItem [routerLink]="'photoshow/substitutions'" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
+                            *ngIf="hasPrivilege(['READ_SUBSTITUTIONS'])">{{'substituition' | translate }}
+                        </a> -->
+                        <a ngbDropdownItem [routerLink]="'photoshow/list'" routerLinkActive="active"
+                            class="dropdown-item"
+                            *ngIf="hasPrivilege(['READ_ADVERTISMENT'])">{{'image-show-list' | translate }}</a>
+                        <a ngbDropdownItem [routerLink]="'photoshow/edit/new'" routerLinkActive="active"
+                            class="dropdown-item"
+                            *ngIf="hasPrivilege(['READ_ADVERTISMENT'])">{{'edit-image-show' | translate }}</a>
+
                     </div>
                 </li>
 
                 <li ngbNavItem class="nav-item">
                     <a [routerLink]="'photoshow/monitors'" routerLinkActive="active"
                         [routerLinkActiveOptions]="{exact: true}" class="nav-link"
-                        *ngIf="isAuthenticated && (isAdmin())">{{'monitors' | translate }}</a>
+                        *ngIf="isAuthenticated && (hasPrivilege(['READ_MONITORS']))">{{'monitors' | translate }}</a>
                 </li>
 
+                <li ngbNavItem class="nav-item">
+                    <a [routerLink]="'photoshow/messages'" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}" class="nav-link"
+                        *ngIf="isAuthenticated && (hasPrivilege(['WRITE_MESSAGES']))">{{'messages' | translate }}</a>
+                </li>
+
+
+                <li ngbNavItem ngbDropdown class="nav-item">
+                    <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
+                        *ngIf="isAuthenticated && hasPrivilege(['READ_USER', 'READ_USER'])">{{'administration' | translate }}</a>
+                    <div ngbDropdownMenu>
+                        <a ngbDropdownItem [routerLink]="'auth/users'" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
+                            *ngIf="isAuthenticated && (hasPrivilege(['READ_USER']))">{{'user' | translate }}</a>
+                        <a ngbDropdownItem [routerLink]="'auth/roles'" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
+                            *ngIf="isAuthenticated && (hasPrivilege(['READ_USER']))">{{'roles' | translate }}</a>
+                    </div>
+                </li>
 
             </ul>
 
             <ul ngbNav class="navbar-nav ml-auto">
-                <li ngbDropdown class="nav-item">
-                    <a (click)="false" class="nav-link" ngbDropdownToggle *ngIf="isAuthenticated">{{user.username}}</a>
+                <li ngbDropdown class="d-inline-block float_right" placement="bottom-right" display="dynamic"
+                    *ngIf="isAuthenticated">
+                    <a (click)="false" class="nav-link" ngbDropdownToggle>{{user.username}}</a>
                     <div ngbDropdownMenu>
                         <a ngbDropdownItem [routerLink]="'auth'" class="dropdown-item"
                             (click)="onLogout()">{{'logout' | translate }}</a>
@@ -43,7 +69,7 @@
                     <a ngbNavLink routerLinkActive="active" *ngIf="!isAuthenticated" [routerLink]="'auth'"
                         (click)="isMenuCollapsed = true">{{'login' | translate }}</a>
                 </li>
-                <li ngNavItem>
+                <!-- <li ngNavItem>
                     <div ngbDropdown>
                         <a id="chooseLang" (click)="false" class="nav-link"
                             ngbDropdownToggle>{{getCurrentLang() ? ('language' | translate) + ' (' + getCurrentLang() + ')': 'language' | translate }}
@@ -55,7 +81,7 @@
                             </ng-container>
                         </div>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

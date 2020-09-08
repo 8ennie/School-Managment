@@ -4,7 +4,7 @@ package com.school.managment.Backend.model.photoshow.help.projection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import com.school.managment.Backend.model.photoshow.help.ShowType;
+import com.school.managment.Backend.model.photoshow.Area;
 
 
 @Projection(name = "monitorProjection", types = { MonitorProjection.class })
@@ -21,6 +21,6 @@ public interface MonitorProjection {
 	
 	String getIpAddress();
 	
-	ShowType getShowType();
+	Area getArea();
 	
 }

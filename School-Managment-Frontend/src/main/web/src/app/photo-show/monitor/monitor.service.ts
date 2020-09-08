@@ -63,7 +63,13 @@ export class MonitorService {
     loginAndStartShow(monitor: Monitor) {
         const formData = new FormData();
         formData.append('monitorId', monitor.id.toString());
-        formData.append('showId', monitor.imageShow.id.toString());
+        if(monitor.imageShow.id){
+            formData.append('showId', monitor.imageShow.id.toString());
+        } else {
+            const showUrlParts = monitor.imageShow.split("/");
+            const showId = showUrlParts[showUrlParts.length-1]
+            formData.append('showId', showId);
+        }
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise().then(
             () => {
                 console.log('Starting');
@@ -79,7 +85,7 @@ export class MonitorService {
 
     getMonitorStatus(monitor: Monitor) {
         return this.http.get('http://' + monitor.ipAddress + '/status').toPromise().then(
-            (status: ({ screenStatus: boolean, serverIp: string })) => {
+            (status: (MonitorStatus)) => {
                 return status;
             });
     }
@@ -88,17 +94,47 @@ export class MonitorService {
         const formData = new FormData();
         formData.append('ip', monitor.serverIp);
         return this.http.post('http://' + monitor.ipAddress + '/settings/serverIp', formData).toPromise().then(
+            (serverIP) => {
+                console.log(serverIP);
+                return serverIP;
+            });
+    }
+
+    setWakeTime(monitor: Monitor) {
+        const formData = new FormData();
+        formData.append('time',  monitor.wakeTime.getHours() + ':' + monitor.wakeTime.getMinutes());
+        return this.http.post('http://' + monitor.ipAddress + '/settings/wakeTime', formData).toPromise().then(
             (status: boolean) => {
                 return status;
             });
     }
 
-    loginAndShowSubstitution(monitor) {
+    setSleepTime(monitor: Monitor) {
+        const formData = new FormData();
+        formData.append('time', monitor.sleepTime.getHours() + ':' + monitor.sleepTime.getMinutes());
+        return this.http.post('http://' + monitor.ipAddress + '/settings/sleepTime', formData).toPromise().then(
+            (status: boolean) => {
+                return status;
+            });
+    }
+
+    loginAndShowSubstitution(monitor: Monitor) {
         const formData = new FormData();
         formData.append('monitorId', monitor.id.toString());
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShowSubstitution', formData).toPromise();
     }
 
+    reboot(monitor: Monitor){
+        const formData = new FormData();
+        formData.append('reboot', 'true');
+        return this.http.post('http://' + monitor.ipAddress + '/settings/reboot', formData).toPromise();
+    }
 
+}
 
+interface MonitorStatus{
+     screenStatus: boolean;
+     serverIp: string;
+     wakeTime: string;
+     sleepTime:string;
 }

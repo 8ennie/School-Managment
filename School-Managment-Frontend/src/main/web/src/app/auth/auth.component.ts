@@ -1,3 +1,5 @@
+import { UserStore } from './user/user.store';
+import { RoleStore } from './role/role.store';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -10,6 +12,7 @@ import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-auth',
+  providers: [],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })

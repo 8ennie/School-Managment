@@ -1,0 +1,20 @@
+<div style="text-align: center; margin: 15px;">
+    <h3 >Benutzer Liste</h3>
+    <p-table [value]="useres" selectionMode="single" [(selection)]="selectedUser"
+        (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Roles</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr [pSelectableRow]="user">
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>{{getRoles(user)}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,15 +1,16 @@
 package com.school.managment.Backend.security.services;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.school.managment.Backend.model.adminestration.Privilege;
+import com.school.managment.Backend.model.adminestration.Role;
 import com.school.managment.Backend.model.adminestration.User;
 
 public class UserDetailsImpl implements UserDetails {
@@ -36,9 +37,12 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(User user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-
+		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		for (Role role : user.getRoles()) {
+			for (Privilege privilege : role.getPrivileges()) {
+				authorities.add(new SimpleGrantedAuthority(privilege.getName().toString()));
+			}
+		}
 		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(),
 			authorities);
 	}

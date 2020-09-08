@@ -1,18 +1,24 @@
+
+
 export class Monitor {
 
+    constructor(){}
+
+
     id?: number;
-
     name?: string;
-
     showGroup?: string;
-
     location?: string;
-
     ipAddress?: string;
+    imageShow?;
+    area?: string;
+    _links?;
 
     status?: boolean;
+    serverIp?:string;
 
-    imageShow?;
+    sleepTime?: Date;
+    wakeTime?: Date;
 
     get imageShowUrl(): string | undefined {        
         if(this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href){
@@ -26,10 +32,6 @@ export class Monitor {
         this.imageShow = url;
     }
 
-    showType?: string;
 
-    _links?;
-
-    serverIp?;
 
 }

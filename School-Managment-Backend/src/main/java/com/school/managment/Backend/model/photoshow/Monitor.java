@@ -2,6 +2,8 @@ package com.school.managment.Backend.model.photoshow;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.school.managment.Backend.model.adminestration.User;
-import com.school.managment.Backend.model.photoshow.help.ShowType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,10 +41,11 @@ public class Monitor {
 	@Column
 	private boolean status;
 	
-	@Column
-	private ShowType showType;
 	
 	@OneToOne
 	private User user;
+	
+	@Enumerated(EnumType.STRING)
+	private Area area;
 	
 }

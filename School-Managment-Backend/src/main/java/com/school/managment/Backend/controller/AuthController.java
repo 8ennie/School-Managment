@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,22 +40,22 @@ import com.school.managment.Backend.security.services.UserDetailsImpl;
 @RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	PasswordEncoder encoder;
+	private PasswordEncoder encoder;
 	
 	@Autowired
-	MonitorRepository monitorRepository;
+	private MonitorRepository monitorRepository;
 
 	@Autowired
-	JwtUtils jwtUtils;
+	private JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -65,7 +66,7 @@ public class AuthController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
+		List<String> privileges = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
@@ -73,7 +74,7 @@ public class AuthController {
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(),
-												 roles));
+												 privileges));
 	}
 	
 	
@@ -81,6 +82,7 @@ public class AuthController {
 	
 
 	@PostMapping("/signup")
+	@PreAuthorize("hasAuthority('WRITE_USER')")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
@@ -99,13 +101,14 @@ public class AuthController {
 							 signUpRequest.getEmail(),
 							 encoder.encode(signUpRequest.getPassword()));
 
-		Set<Role> roles = setRoles(signUpRequest.getRole());
+		Set<Role> roles = setRoles(signUpRequest.getRoles());
 
 		user.setRoles(roles);
-		userRepository.save(user);
+		user = userRepository.save(user);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		return ResponseEntity.ok(user);
 	}
+	
 	
 
 	@PostMapping("/signup/monitor")
@@ -115,7 +118,7 @@ public class AuthController {
 				 "monitor" + "." + monitorId + "@fcsf.de",
 				 encoder.encode("Monitor(" + monitorId + ")"));
 		
-		Role monitorRole = roleRepository.findByName(ERole.ROLE_MONITOR).get();
+		Role monitorRole = roleRepository.findByName(ERole.ROLE_MONITOR.name()).get();
 		Set<Role> roles = new HashSet<>();
 		roles.add(monitorRole);
 		user.setRoles(roles);
@@ -130,38 +133,35 @@ public class AuthController {
 	private Set<Role> setRoles(Set<String> strRoles) {
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+		for (String strRole : strRoles) {
+			String[] urlParts = strRole.split("/");
+			Long roleId = Long.valueOf(urlParts[urlParts.length - 1]);
+			Role userRole = roleRepository.findById(roleId)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			roles.add(userRole);
-		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-				case "admin":
-					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
-
-					break;
-				case "teacher":
-					Role teacherRole = roleRepository.findByName(ERole.ROLE_TEACHER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(teacherRole);
-
-					break;
-				case "student":
-					Role studentRole = roleRepository.findByName(ERole.ROLE_STUDENT)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(studentRole);
-
-					break;
-				default:
-					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(userRole);
-				}
-			});
 		}
+		
+		
+//		if (strRoles == null) {
+//			Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
+//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//			roles.add(userRole);
+//		} else {
+//			strRoles.forEach(role -> {
+//				switch (role) {
+//				case "admin":
+//					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(adminRole);
+//
+//					break;
+//				default:
+//					Role userRole = roleRepository.findByName(ERole.ROLE_USER.name())
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(userRole);
+//				}
+//			});
+//		}
 		return roles;
 	}
 }

@@ -2,7 +2,8 @@ package com.school.managment.Backend.model.photoshow;
 
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,15 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.school.managment.Backend.model.photoshow.help.ShowType;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ImageShow {
 
 	@Id
@@ -36,18 +33,16 @@ public class ImageShow {
 	
 	private String name;
 	
-	@OneToOne
-	private Document document;
-	
 	@Enumerated(EnumType.STRING)
-	private ShowType showType;
+	private Area area;
 	
 	@JsonBackReference(value="showParts")
-	@OneToMany(mappedBy = "show")
-	private List<ShowPart> showParts;
+	@OneToMany(mappedBy = "imageShow")
+    Set<ImageShowShowPart> showParts = new HashSet<ImageShowShowPart>();
 	
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
+
 	
 }

@@ -27,8 +27,8 @@ export class PhotoShowService {
         return this.http.post(this.url, file).subscribe();
     }
 
-
     getShowShowParts(id : number){
-        return this.http.get(this.url + '/' + id + '/showParts');
+        let showPartURL = this.apiUrl + 'imageShowShowParts/search/findByImageShow?imageShow=' + this.apiUrl + 'imageShows/' + id + '&projection=imageShowPartProjection';
+        return this.http.get(showPartURL).toPromise();
     }
 }

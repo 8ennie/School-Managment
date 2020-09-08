@@ -2,9 +2,7 @@ package com.school.managment.Backend.service;
 import com.school.managment.Backend.exception.FileStorageException;
 import com.school.managment.Backend.exception.MyFileNotFoundException;
 import com.school.managment.Backend.model.photoshow.Document;
-import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.repository.DocumentRepository;
-import com.school.managment.Backend.repository.ImageShowRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +16,9 @@ public class DBFileStorageService {
     @Autowired
     private DocumentRepository documentRepository;
     
-    @Autowired
-    private ImageShowRepository showRepository;
-    
-    
-    @Autowired
-    private PDFConverterService converterService;
-
-    public ImageShow storeFile(MultipartFile file) {
+    public Document storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        ImageShow show = new ImageShow();
         try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
@@ -37,9 +27,7 @@ public class DBFileStorageService {
 
             Document doc = new Document(fileName, file.getContentType(), file.getBytes());
             doc = documentRepository.save(doc);
-            show.setDocument(doc);
-            show.setShowParts(converterService.convertPDFToPng(doc));
-            return show;
+            return doc;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

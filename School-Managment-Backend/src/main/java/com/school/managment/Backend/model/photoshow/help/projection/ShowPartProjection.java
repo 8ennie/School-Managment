@@ -11,11 +11,7 @@ public interface ShowPartProjection {
 
 	@Value("#{target.id}")
 	Long getId();
-
-	ImageShowProjection getShow();
 	
 	byte[] getImage();
-
-	String getOrigin();
 	
 }

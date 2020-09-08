@@ -1,11 +1,13 @@
 package com.school.managment.Backend.model.photoshow.help.projection;
 
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
+import com.school.managment.Backend.model.photoshow.Area;
 import com.school.managment.Backend.model.photoshow.ImageShow;
-import com.school.managment.Backend.model.photoshow.help.ShowType;
 
 @Projection(name = "imageShowProjection", types = { ImageShow.class })
 public interface ImageShowProjection {
@@ -15,8 +17,11 @@ public interface ImageShowProjection {
 
 	String getName();
 
-	ShowType getShowType();
-
-	DocumentNameProjection getDocument();
+	Area getArea();
+	
+	Date getDate();
+	
+	 @Value("#{target.getShowParts().size()}")
+	 int getImageCount();
 
 }

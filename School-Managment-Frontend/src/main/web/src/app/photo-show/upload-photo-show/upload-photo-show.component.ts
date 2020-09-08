@@ -1,114 +1,106 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { UploadPhotoShowService } from './upload-photo-show.service';
+
+import { ImageShowStore } from './../image-show.store';
 import { FileUpload } from 'primeng/fileupload';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AreaService } from '../area.service';
+import { ImageShowService } from '../image-show.service';
+import { ImageShow } from '../image-show.model';
 
 @Component({
   selector: 'app-upload-photo-show',
+  providers: [],
   templateUrl: './upload-photo-show.component.html',
   styleUrls: ['./upload-photo-show.component.css']
 })
 export class UploadPhotoShowComponent implements OnInit {
 
-  uploadUrl: string;
+  imageShows: ImageShow[];
 
-  displayDialog: boolean;
+  selectedImageShow;
 
-  imageShow: ImageShow;
+  imageShow;
+  newImageShow = true;
+  rowGroupMetadata: any;
 
-  selectedImageShow: ImageShow;
-
-  newImageShow: boolean;
-
-  imageShows: ImageShow[] = [];
-
-  cols: any[];
-
-  errorMessage: String;
+  createImageShow = true;
+  errorMessage: string;
+  displayImages = false;
+  displayDialog = false;
 
   @ViewChild('fileUpload')
   fileUpload: FileUpload;
+  areas = [];
+  load = true;
 
-  showTypes;
-
-  displayImages: boolean;
-
-  imageShowParts: [] = [];
-
-
+  currentAreas = [];
+  filterArea = [];
   constructor(
-    private uploadService: UploadPhotoShowService,
+    private imageShowStore: ImageShowStore,
+    private areaService: AreaService,
   ) {
-
-    this.showTypes = [
-      { label: 'Advertisment', value: 'ADVERTISEMENT' },
-      { label: 'Substitution', value: 'SUBSTITUTION' },
-    ];
 
   }
 
   ngOnInit(): void {
-    this.uploadService.getFiles().then(imageShowes => {
-      this.imageShows = imageShowes
+    this.imageShowStore.imageShows.subscribe(imageShows => {
+      if (imageShows.size > 0) {
+        this.load = false;
+        this.imageShows = null;
+        this.imageShows = imageShows.toArray();
+        this.updateRowGroupMetaData();
+        this.load = true;
+      }
     });
 
-    this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'showType', header: 'Type' },
-      { field: 'document', header: 'Document Name' },
-    ];
+    this.areaService.getAllAreas().then((areas: string[]) => {
+      this.areas = areas.map(a => {
+        return { label: a, value: a }
+      });
+    });
   }
 
-  onBeforeUpload(event) {
-    event.formData.append("showName", this.imageShow.name);
-    console.log("Sending File Upload to server!");
-    return event;
+  onSort() {
+    this.updateRowGroupMetaData();
   }
+
+  updateRowGroupMetaData() {
+    this.rowGroupMetadata = {};
+    this.currentAreas = [];
+    if (this.imageShows) {
+      for (let i = 0; i < this.imageShows.length; i++) {
+        let rowData = this.imageShows[i];
+        let area = rowData.area;
+        if (this.currentAreas.filter(a => a.value == area).length == 0) {
+          this.currentAreas.push({ label: area, value: area });
+        }
+        if (i == 0) {
+          this.rowGroupMetadata[area] = { index: 0, size: 1 };
+        }
+        else {
+          let previousRowData = this.imageShows[i - 1];
+          let previousRowGroup = previousRowData.area;
+          if (area === previousRowGroup)
+            this.rowGroupMetadata[area].size++;
+          else
+            this.rowGroupMetadata[area] = { index: i, size: 1 };
+        }
+      }
+    }
+  }
+
+
 
   showDialogToAdd() {
     this.newImageShow = true;
-    this.imageShow = {};
-    this.imageShow.date = new Date()
+    this.imageShow = new ImageShow();
     this.displayDialog = true;
   }
 
-  save() {
-    let newImageShows = [...this.imageShows];
-    this.errorMessage = null;
-    if (this.imageShow.name && this.imageShow.showType && this.fileUpload.files.length != 0) {
-      if (this.imageShow.showType == 'SUBSTITUTION' && this.imageShow.date) {
-
-      }
-      this.uploadUrl = this.imageShow.showType == 'SUBSTITUTION' ? environment.apiUrl + 'upload/substitution' : environment.apiUrl + 'upload/advertisment';
-      this.fileUpload.url = this.uploadUrl;
-      this.fileUpload.upload();
-      newImageShows.push(this.imageShow);
-    } else {
-      this.errorMessage = "Not all required filds are present!";
-      return;
-    }
-    this.imageShows = newImageShows;
-    this.close()
-  }
-
-  close() {
-    this.imageShow = null;
-    this.displayDialog = false;
-  }
-
-  delete() {
-    this.uploadService.delete(this.selectedImageShow.id);
-    let index = this.imageShows.indexOf(this.selectedImageShow);
-    this.imageShows = this.imageShows.filter((val, i) => i != index);
-    this.imageShow = null;
-    this.displayDialog = false;
-  }
-
   onRowSelect(event) {
+    this.errorMessage = ""
     this.newImageShow = false;
     this.imageShow = this.cloneShow(event.data);
-    console.log(this.imageShow);
-    
+    this.imageShow.date = new Date(this.imageShow.date)
     this.displayDialog = true;
   }
 
@@ -123,23 +115,59 @@ export class UploadPhotoShowComponent implements OnInit {
 
   showImages() {
 
-    this.displayImages = !this.displayImages;
-    this.uploadService.getImageShowParts(this.imageShow.id).then(showParts => {
-      this.imageShowParts = showParts;
-    })
-  }
-  getImage(showPart) {
-    return 'data:image/JPEG;base64,' + showPart.image;
   }
 
+
+  save() {
+    let newImageShows;
+    if (this.imageShows) {
+      newImageShows = [...this.imageShows];
+    } else {
+      newImageShows = [];
+    }
+    this.errorMessage = null;
+    if (this.newImageShow) {
+      if (this.imageShow.name && this.imageShow.area && this.fileUpload.files.length != 0) {
+        let doc
+        for (let file of this.fileUpload.files) {
+          doc = file;
+        }
+        var formData = new FormData();
+        formData.append("file", doc)
+        formData.append("showName", this.imageShow.name);
+        formData.append("area", this.imageShow.area);
+        this.imageShowStore.addImageShow2(formData);
+      } else {
+        this.errorMessage = "error.not-all-required-fields";
+        return;
+      }
+      this.imageShows = newImageShows;
+      this.close();
+    } else {
+      if (this.imageShow.name && this.imageShow.area && this.imageShow.id) {
+        var changedImageShow = new ImageShow();
+        changedImageShow.id = this.imageShow.id;
+        changedImageShow.name = this.imageShow.name;
+        changedImageShow.area = this.imageShow.area;
+        this.imageShowStore.updateImageShow(changedImageShow);
+      } else {
+        this.errorMessage = "error.not-all-required-fields";
+        return;
+      }
+      this.imageShows = newImageShows;
+      this.close();
+    }
+
+  }
+
+  close() {
+    this.imageShow = null;
+    this.displayDialog = false;
+  }
+
+  delete() {
+    this.imageShowStore.deleteImageShow(this.imageShow);
+    this.close();
+  }
 }
 
-
-class ImageShow {
-  name?: String;
-  showType?: String;
-  file?;
-  id?: number;
-  document?: { fileName: String };
-  date?: Date;
-}

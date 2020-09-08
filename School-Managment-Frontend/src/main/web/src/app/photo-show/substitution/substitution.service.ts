@@ -14,26 +14,31 @@ export class SubstitutionService {
     ) { }
 
 
-    getSubsitutions(){
+    getSubsitutions() {
         return this.http.get(this.url).toPromise()
-        // .then(d => {
-        //     console.log(d);
-        //     return d;
-        // })
-        .then((data:{_embedded}) => {
-            return data._embedded.substitutionShows;
-        });
+            // .then(d => {
+            //     console.log(d);
+            //     return d;
+            // })
+            .then((data: { _embedded }) => {
+                return data._embedded.substitutionShows;
+            });
     }
 
-    saveSubstitution(formData: FormData){
+    saveSubstitution(formData: FormData) {
         return this.http.post(this.uploadUrl + '/substitution', formData).toPromise();
     }
 
-    delete(id:number){
+    delete(id: number) {
         return this.http.delete(this.url + "/" + id).toPromise();
     }
 
-    getImageShowParts(id:number){
-        return this.http.get(this.url + "/" + id + "/" + "showParts").toPromise().then((data:{_embedded}) => data._embedded.showParts);
+    getImageShowParts(id: number) {
+        return this.http.get(this.url + "/" + id + "/" + "showParts").toPromise()
+            .then(d => {
+                console.log(d);
+                return d
+            })
+            .then((data: { _embedded }) => data._embedded.showParts);
     }
 }

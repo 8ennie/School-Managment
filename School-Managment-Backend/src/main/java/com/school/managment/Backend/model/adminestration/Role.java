@@ -1,24 +1,28 @@
 package com.school.managment.Backend.model.adminestration;
+
+import java.util.Collection;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "roles")
 @Data
 @NoArgsConstructor
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(length = 20)
-	private ERole name;
+	@Column(unique = true)
+	private String name;
 
-	public Role(ERole name) {
-		this.name = name;
-	}
+	@JsonBackReference(value="privileges")
+	@ManyToMany
+	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+	private Collection<Privilege> privileges;
 
 }

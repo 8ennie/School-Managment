@@ -1,0 +1,11 @@
+<div class="card" style="margin: 15px; text-align: center;">
+    <div class="p-grid" >
+        <div class="p-col">
+            <app-role-list (roleSelected)="roleSelected($event)"></app-role-list>
+        </div>
+    
+        <div class="p-col">
+            <app-role-details [roleId]="roleID"></app-role-details>
+        </div>
+    </div>
+</div>

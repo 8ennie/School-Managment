@@ -1,0 +1,77 @@
+<div style="margin: 15px;" class="p-grid" *ngIf="!loading" cdkDropListGroup>
+    <div class="p-col-3">
+        <p-tree [value]="imageShowParts" (onNodeExpand)="onNodeExpand($event)" [loading]="loading"
+            [style]="{width: '350px'}" cdkDropList #nodes [cdkDropListEnterPredicate]="noReturnPredicate">
+            <ng-template let-node pTemplate="default">
+                <div>
+                    <span>{{node.label | translate }}</span>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="picture">
+                <div cdkDrag="showParts" [cdkDragData]="node.data">
+                    <img [src]="getImage(node.data.showPartImage)" height="100px"
+                        style="border-width: 1px; border-color: black; border-style: solid;">
+                </div>
+            </ng-template>
+        </p-tree>
+    </div>
+    <div class="p-col-9">
+        <div cdkDropList="showParts" cdkDropListOrientation="horizontal" class="example-list"
+            (cdkDropListDropped)="onDrop($event)" cdkDropListConnectedTo="imageShow.showParts">
+            <div class="example-box" *ngFor="let showPart of imageShow.showParts; index as i;" cdkDrag
+                [cdkDragData]="showPart">
+                <div style="display: grid;">
+                    <span style="text-align: center;">{{('Position' | translate)+ ': ' + i}}</span>
+                    <div [style]=" showPart.active? null:{opacity: 0.5}  ">
+                        <img [src]="getImage(showPart.showPartImage)" height="200px"
+                            style="border-width: 1px; border-color: black; border-style: solid;">
+                    </div>
+                    <div style="text-align: center; margin-top: 5px; justify-content: space-evenly; display: flex;">
+                        <button pButton pRipple type="button" icon="pi pi-search" (click)="removeShowPart(i)"></button>
+                        <button *ngIf="!showPart.active" pButton pRipple type="button" icon="pi pi-eye-slash"
+                            style="background: orange;" (click)="showHide(showPart)"></button>
+                        <button *ngIf="showPart.active" pButton pRipple type="button" icon="pi pi-eye"
+                            style=" background: rgb(64, 255, 47);" (click)="showHide(showPart)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-times" style="background: red;"
+                            (click)="removeShowPart(i)"></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width:50%">
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="type">{{'area' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <p-dropdown id="type" [options]="areas" [(ngModel)]="imageShow.area" required="true"
+                        placeholder="Select a Type" appendTo="body">
+                        <ng-template pTemplate="item" let-item>
+                            {{item.value | translate}}
+                        </ng-template>
+                        <ng-template pTemplate="selectedItem" let-item>
+                            {{item.value | translate}}
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="ui-g-4">
+                    <label for="name">{{'image-show-name' | translate }}</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="name" [(ngModel)]="imageShow.name" required="true" />
+                </div>
+            </div>
+           
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button label="Save" pButton pRipple type="button" icon="pi pi-check" style="background: green;"
+                        (click)="save()"></button>
+                    </div>
+                </p-footer>
+        </div>
+
+
+
+    </div>
+</div>

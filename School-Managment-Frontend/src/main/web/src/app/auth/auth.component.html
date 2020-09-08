@@ -16,7 +16,7 @@
                                 <span class="input-group-text"><i class="pi pi-id-card"></i></span>
                             </div>
                             <input id="username" type="text" class="form-control" name="username" [attr.placeholder]="'username' | translate" ngModel
-                                required #username="ngModel" />
+                                required #username />
                         </div>
 
                         <div class="alert alert-danger" role="alert" *ngIf="form.submitted && username.invalid">
@@ -29,7 +29,7 @@
                                 <span class="input-group-text"><i class="pi pi-key"></i></span>
                             </div>
                             <input id="password" type="password" class="form-control" name="password" ngModel required minlength="6"
-                                #password="ngModel" [attr.placeholder]="'password' | translate"/>
+                                #password [attr.placeholder]="'password' | translate"/>
                         </div>
                         <div class="alert alert-danger" role="alert" *ngIf="form.submitted && password.invalid">
                             <div *ngIf="password.errors.required">Password is required</div>

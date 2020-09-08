@@ -24,6 +24,17 @@ import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-
 import { MonitorComponent } from './photo-show/monitor/monitor.component';
 import { SubstitutionComponent } from './photo-show/substitution/substitution.component';
 import { AdvertismentComponent } from './photo-show/advertisment/advertisment.component';
+import { UserListComponent } from './auth/user/user-list/user-list.component';
+import { UserDetailsComponent } from './auth/user/user-details/user-details.component';
+import { UserComponent } from './auth/user/user.component';
+import { RoleComponent } from './auth/role/role.component';
+import { RoleListComponent } from './auth/role/role-list/role-list.component';
+import { RoleDetailsComponent } from './auth/role/role-details/role-details.component';
+import { InputMaskModule } from 'primeng/inputmask';
+import { MessageComponent } from './message/message.component';
+import { ScrollingTextComponent } from './message/scrolling-text.component';
+import { SendMessageComponent } from './message/send-message/send-message.component';
+import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
 
 
 
@@ -39,6 +50,16 @@ import { AdvertismentComponent } from './photo-show/advertisment/advertisment.co
     MonitorComponent,
     SubstitutionComponent,
     AdvertismentComponent,
+    UserListComponent,
+    UserDetailsComponent,
+    UserComponent,
+    RoleComponent,
+    RoleListComponent,
+    RoleDetailsComponent,
+    MessageComponent,
+    ScrollingTextComponent,
+    SendMessageComponent,
+    EditImageShowComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +71,7 @@ import { AdvertismentComponent } from './photo-show/advertisment/advertisment.co
     BrowserAnimationsModule,
     PrimeNGModule,
     DragDropModule,
+    InputMaskModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

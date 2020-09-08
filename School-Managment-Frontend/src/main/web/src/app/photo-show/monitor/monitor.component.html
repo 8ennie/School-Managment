@@ -1,4 +1,4 @@
-<div style="text-align: center;">
+<div style="text-align: center; margin: 15px;">
     <h1>{{'monitors' | translate }}</h1>
     <p-table [columns]="cols" [value]="monitors" selectionMode="single" [(selection)]="selectedMonitor"
         (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
@@ -50,11 +50,11 @@
                     </div>
                     <div class="ui-g-12">
                         <div class="ui-g-4">
-                            <label for="type">{{'image-show' | translate }}</label>
+                            <label for="type">{{'area' | translate }}</label>
                         </div>
                         <div class="ui-g-8">
-                            <p-dropdown id="type" [options]="showTypes" [(ngModel)]="monitor.showType" required="true"
-                                placeholder="Select a Type" appendTo="body">
+                            <p-dropdown id="type" [options]="areas" [(ngModel)]="monitor.area" required="true"
+                                placeholder="Select a Type" appendTo="body" (onChange)="onAreaChange()">
                                 <ng-template pTemplate="item" let-item>
                                     {{item.value | translate}}
                                 </ng-template>
@@ -62,12 +62,12 @@
                                     {{item.value | translate}}
                                 </ng-template>
                             </p-dropdown>
-                            <ng-container *ngIf="monitor.showType != 'ADVERTISEMENT'">
+                            <ng-container *ngIf="monitor.area == 'SUBSTITUTION'">
                                 <button *ngIf="monitor.imageShow" type="button" pButton
                                     (click)="showCurrentSubstitutionsPlan()"
                                     label="{{'show-current-plan' | translate }}" style="margin-top: 5px;"></button>
                             </ng-container>
-                            <ng-container *ngIf="monitor.showType == 'ADVERTISEMENT'">
+                            <ng-container *ngIf="monitor.area != 'SUBSTITUTION'">
                                 <div style="margin-top: 5px;">
                                     <p-dropdown *ngIf="monitor" [options]="imageShowes"
                                         placeholder="Select an Image View" [(ngModel)]="monitor.imageShowUrl"
@@ -81,31 +81,13 @@
 
                         </div>
                     </div>
-                    <div class="ui-g-12" *ngIf="monitor.status != null">
-                        <div class="ui-g-4">
-                            <label for="status">{{'monitor-status' | translate }}</label>
-                        </div>
-                        <div class="ui-g-8">
-                            <div style="display: flex;">
-                                <label *ngIf="monitor.status == null"
-                                    style="width: 100%;">{{'offline' | translate }}</label>
-                                <label *ngIf="monitor.status == true" style="width: 50%;">{{'on' | translate }}</label>
-                                <label *ngIf="monitor.status == false"
-                                    style="width: 50%;">{{'off' | translate }}</label>
-                                <button *ngIf="monitor.status == false" type="button" pButton (click)="monitorOn()"
-                                    label="{{'turn-on' | translate }}" style="width: 50%;"></button>
-                                <button *ngIf="monitor.status == true" type="button" pButton (click)="monitorOff()"
-                                    label="{{'turn-off' | translate }}" style="width: 50%;"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-g-12" *ngIf="monitor.status == null">
+                    <div class="ui-g-12">
                         <div class="ui-g-4">
                             <label for="status">{{'raspberry-status' | translate }}</label>
                         </div>
                         <div class="ui-g-8">
                             <div style="display: flex;">
-                                <label style="width: 100%;">{{'offline' | translate }}</label>
+                                <label style="width: 100%;">{{ monitor.status == null? 'offline':'online' | translate }}</label>
                             </div>
                         </div>
                     </div>
@@ -129,7 +111,7 @@
                             <input pInputText id="location" [(ngModel)]="monitor.location" style="width: 100%;" />
                         </div>
                     </div>
-                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status == true">
+                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status != null">
                         <div class="ui-g-4">
                             <label for="serverIp">{{'server-ip-address' | translate }}</label>
                         </div>
@@ -141,8 +123,70 @@
                             </div>
                         </div>
                     </div>
+                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status != null">
+                        <div class="ui-g-4">
+                            <label for="reboot">{{'reboot' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="width: 100%; text-align: center;">
+                                <button type="button" pButton (click)="reboot()"
+                                    label="{{'reboot' | translate }}" style="width: 50%;"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </p-tabPanel>
+
+            <p-tabPanel header="{{'screen-settings' | translate }}" *ngIf="monitor && monitor.status != null">
+                <div class="ui-g ui-fluid" *ngIf="monitor">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="status">{{'monitor-status' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <label *ngIf="monitor.status == true" style="width: 50%;">{{'on' | translate }}</label>
+                                <label *ngIf="monitor.status == false"
+                                    style="width: 50%;">{{'off' | translate }}</label>
+                                <button *ngIf="monitor.status == false" type="button" pButton (click)="monitorOn()"
+                                    label="{{'turn-on' | translate }}" style="width: 50%;"></button>
+                                <button *ngIf="monitor.status == true" type="button" pButton (click)="monitorOff()"
+                                    label="{{'turn-off' | translate }}" style="width: 50%;"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="sleeptime">{{'monitor-sleep-time' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <div style="width: 80%;">
+                                    <p-calendar [(ngModel)]="monitor.sleepTime" [timeOnly]="true" inputId="sleeptime" appendTo="body" ></p-calendar>
+                                </div>
+                                <button type="button" pButton (click)="setSleepTime()"
+                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="waketime">{{'monitor-wake-time' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <div style="width: 80%;">
+                                    <p-calendar [(ngModel)]="monitor.wakeTime" [timeOnly]="true" inputId="waketime" appendTo="body"></p-calendar>
+                                </div>
+                                <button type="button" pButton (click)="setWakeTime()"
+                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+
         </p-tabView>
 
 
@@ -171,7 +215,7 @@
                     <input pInputText id="ipAddress" [(ngModel)]="monitor.ipAddress" style="width: 100%;" />
                 </div>
             </div>
-            
+
             <div class="ui-g-12">
                 <div class="ui-g-4">
                     <label for="name">{{'monitor-name' | translate }}</label>
@@ -192,10 +236,10 @@
 
             <div class="ui-g-12">
                 <div class="ui-g-4">
-                    <label for="type">{{'image-show' | translate }}</label>
+                    <label for="type">{{'area' | translate }}</label>
                 </div>
                 <div class="ui-g-8">
-                    <p-dropdown id="type" [options]="showTypes" [(ngModel)]="monitor.showType" required="true"
+                    <p-dropdown id="type" [options]="areas" [(ngModel)]="monitor.area" required="true"
                         placeholder="Select a Type" appendTo="body">
                         <ng-template pTemplate="item" let-item>
                             {{item.value | translate}}
@@ -204,17 +248,6 @@
                             {{item.value | translate}}
                         </ng-template>
                     </p-dropdown>
-                    <ng-container *ngIf="monitor.showType != 'ADVERTISEMENT'">
-                        <button *ngIf="monitor.imageShow" type="button" pButton (click)="showCurrentSubstitutionsPlan()"
-                            label="{{'show-current-plan' | translate }}" style="margin-top: 5px;"></button>
-                    </ng-container>
-                    <ng-container *ngIf="monitor.showType == 'ADVERTISEMENT'">
-                        <div style="margin-top: 5px;">
-                            <p-dropdown *ngIf="monitor" [options]="imageShowes" placeholder="Select an Image View"
-                                [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
-                        </div>
-                    </ng-container>
-
                 </div>
             </div>
         </div>

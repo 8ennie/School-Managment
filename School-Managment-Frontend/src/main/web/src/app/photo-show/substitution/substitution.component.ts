@@ -21,7 +21,7 @@ export class SubstitutionComponent implements OnInit {
 
   newImageShow: boolean;
 
-  imageShows: SubstitutionShow[];
+  imageShows: SubstitutionShow[] = [];
 
   errorMessage: string;
 
@@ -79,7 +79,7 @@ export class SubstitutionComponent implements OnInit {
           this.monitorService.getAllMonitors().then(
             (monitors) => {
               monitors.forEach(monitor => {
-                if(monitor.showType == 'SUBSTITUTION'){
+                if(monitor.area == 'SUBSTITUTION'){
                   this.monitorService.loginAndShowSubstitution(monitor);
                 }
               });
@@ -132,6 +132,7 @@ export class SubstitutionComponent implements OnInit {
     this.substitutionService.getImageShowParts(this.imageShow.id).then(showParts => {
       this.imageShowParts = showParts;
     })
+
   }
   getImage(showPart) {
     return 'data:image/JPEG;base64,' + showPart.image;
@@ -151,6 +152,5 @@ class SubstitutionShow {
   showType?: string;
   file?;
   id?: number;
-  document?: { fileName: string };
   date?: Date;
 }
