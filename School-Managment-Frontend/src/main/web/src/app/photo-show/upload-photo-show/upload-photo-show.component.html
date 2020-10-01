@@ -71,7 +71,7 @@
                 </div>
                 <div class="p-col-8">
                     <p-fileUpload required="true" #fileUpload accept=".pdf" [showCancelButton]="false"
-                        [showUploadButton]="false" chooseLabel="{{'choose' | translate }}"></p-fileUpload>
+                    [showUploadButton]="false" chooseLabel="{{'choose' | translate }}"></p-fileUpload>
                 </div>
                 <div class="p-col-4">
                     <label for="upadteMonitors">{{'create-image-show' | translate }}</label>
@@ -80,12 +80,14 @@
                     <p-checkbox name="upadteMonitors" [(ngModel)]="createImageShow" binary="true"></p-checkbox>
                 </div>
             </ng-container>
+
+
             <ng-container *ngIf="!newImageShow">
                 <div class="p-col-4">
                     <label for="name">{{'image-show' | translate }}</label>
                 </div>
                 <div class="p-col-8">
-                    <button pButton type="button" (click)="showImages()"
+                    <button pButton type="button" 
                         [label]="displayImages? ('hide-image-show' | translate) : 'show-image-show' | translate "></button>
                 </div>
             </ng-container>

@@ -53,16 +53,15 @@ export class UserStore {
     }
 
     updateUser(updateUser: User) {
-        console.log(updateUser);
-        
         let obs = this.userService.updatetUser(updateUser);
-
         obs.then(
             (res: User) => {
                 var id: number = res._links.self.href.split('/').pop();
                 this.userService.getUser(id.toString()).then((user: User) => {
                     let users: List<User> = this._users.getValue();
                     let index = users.findIndex((role) => role.id === updateUser.id);
+                    console.log(user);
+                    
                     this._users.next(users.update(index, () => user));
                 });
             }

@@ -1,10 +1,9 @@
 
-<p-carousel [value]="showParts" [autoplayInterval]="showParts.length > 1? 12000 : 0" [circular]="true">
-    <ng-template let-showPart pTemplate="item">
-        <div style="text-align: center;">
-            <img [src] = "getImage(showPart)"  [height]="getHeight()">
-        </div>
+<p-galleria [(value)]="showParts" [showThumbnails]="false" [showIndicators]="true"
+    [autoPlay]="this.showParts.length > 1" [circular]="true" [transitionInterval]="12000">
+    <ng-template pTemplate="item" let-showPart>
+        <img [src]="getImage(showPart)" style=" display: block;" [height]="getHeight()" />
     </ng-template>
-</p-carousel> 
+</p-galleria>
 <router-outlet></router-outlet>
 <app-message></app-message>

@@ -22,6 +22,10 @@ export class MonitorService {
             )
     }
 
+    getMonitorsByArea(area: string) {
+        return this.http.get(this.ressorceUrl + '/search/findByAreas?area=' + area).toPromise();
+    }
+
 
     saveMonitor(monitor: Monitor) {
         return this.http.post<Monitor>(this.ressorceUrl, monitor).toPromise()

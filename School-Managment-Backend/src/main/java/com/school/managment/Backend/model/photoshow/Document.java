@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,6 +44,9 @@ public class Document {
 	@Temporal(TemporalType.DATE)
 	@CreatedDate
 	private Date uploadDate;
+	
+	@Enumerated(EnumType.STRING)
+	private Area area;
 	
 	public Document(String fileName, String fileType, byte[] data) {
         this.fileName = fileName;

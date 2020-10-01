@@ -16,13 +16,13 @@
                     {{rowData['name']}}
                 </td>
                 <td>
-                    {{rowData['showType'] | translate }}
-                </td>
-                <td>
                     {{rowData['location']}}
                 </td>
                 <td>
                     {{rowData['status'] != null ? rowData['status'] === true ? "An": "Aus" : "Offline"}}
+                </td>
+                <td>
+                    {{(rowData['imageShow'] ?  rowData['imageShow'].area  : 'no-area') | translate }}
                 </td>
             </tr>
         </ng-template>
@@ -53,32 +53,19 @@
                             <label for="type">{{'area' | translate }}</label>
                         </div>
                         <div class="ui-g-8">
-                            <p-dropdown id="type" [options]="areas" [(ngModel)]="monitor.area" required="true"
-                                placeholder="Select a Type" appendTo="body" (onChange)="onAreaChange()">
-                                <ng-template pTemplate="item" let-item>
-                                    {{item.value | translate}}
+                            <p-multiSelect [options]="areas" [(ngModel)]="monitor.areas" appendTo="body"
+                                defaultLabel="{{ 'select-areas' | translate }}" [filter]="false">
+                                <ng-template let-areas pTemplate="selectedItems">
+                                    <span *ngFor="let area of areas"> {{area | translate}} </span>
+                                    <div *ngIf="!areas || areas.length === 0">
+                                        {{'select-areas' | translate }}
+                                    </div>
                                 </ng-template>
-                                <ng-template pTemplate="selectedItem" let-item>
-                                    {{item.value | translate}}
+
+                                <ng-template pTemplate="item" let-area>
+                                    {{area.value | translate}}
                                 </ng-template>
-                            </p-dropdown>
-                            <ng-container *ngIf="monitor.area == 'SUBSTITUTION'">
-                                <button *ngIf="monitor.imageShow" type="button" pButton
-                                    (click)="showCurrentSubstitutionsPlan()"
-                                    label="{{'show-current-plan' | translate }}" style="margin-top: 5px;"></button>
-                            </ng-container>
-                            <ng-container *ngIf="monitor.area != 'SUBSTITUTION'">
-                                <div style="margin-top: 5px;">
-                                    <p-dropdown *ngIf="monitor" [options]="imageShowes"
-                                        placeholder="Select an Image View" [(ngModel)]="monitor.imageShowUrl"
-                                        appendTo="body"></p-dropdown>
-
-                                    <button *ngIf="monitor.imageShow" type="button" pButton
-                                        (click)="loginAndStartShow()" label="{{'start-show' | translate }}"
-                                        style="margin-top: 5px;"></button>
-                                </div>
-                            </ng-container>
-
+                            </p-multiSelect>
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -87,7 +74,8 @@
                         </div>
                         <div class="ui-g-8">
                             <div style="display: flex;">
-                                <label style="width: 100%;">{{ monitor.status == null? 'offline':'online' | translate }}</label>
+                                <label
+                                    style="width: 100%;">{{ monitor.status == null? 'offline':'online' | translate }}</label>
                             </div>
                         </div>
                     </div>
@@ -129,8 +117,8 @@
                         </div>
                         <div class="ui-g-8">
                             <div style="width: 100%; text-align: center;">
-                                <button type="button" pButton (click)="reboot()"
-                                    label="{{'reboot' | translate }}" style="width: 50%;"></button>
+                                <button type="button" pButton (click)="reboot()" label="{{'reboot' | translate }}"
+                                    style="width: 50%;"></button>
                             </div>
                         </div>
                     </div>
@@ -162,12 +150,13 @@
                         <div class="ui-g-8">
                             <div style="display: flex;">
                                 <div style="width: 80%;">
-                                    <p-calendar [(ngModel)]="monitor.sleepTime" [timeOnly]="true" inputId="sleeptime" appendTo="body" ></p-calendar>
+                                    <p-calendar [(ngModel)]="monitor.sleepTime" [timeOnly]="true" inputId="sleeptime"
+                                        appendTo="body"></p-calendar>
                                 </div>
-                                <button type="button" pButton (click)="setSleepTime()"
-                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                                <button type="button" pButton (click)="setSleepTime()" label="{{'change' | translate }}"
+                                    style="width: 20%;"></button>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -177,12 +166,46 @@
                         <div class="ui-g-8">
                             <div style="display: flex;">
                                 <div style="width: 80%;">
-                                    <p-calendar [(ngModel)]="monitor.wakeTime" [timeOnly]="true" inputId="waketime" appendTo="body"></p-calendar>
+                                    <p-calendar [(ngModel)]="monitor.wakeTime" [timeOnly]="true" inputId="waketime"
+                                        appendTo="body"></p-calendar>
                                 </div>
-                                <button type="button" pButton (click)="setWakeTime()"
-                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                                <button type="button" pButton (click)="setWakeTime()" label="{{'change' | translate }}"
+                                    style="width: 20%;"></button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="{{'image-show-settings' | translate }}" *ngIf="monitor && monitor.status != null">
+                <div class="ui-g ui-fluid" *ngIf="monitor">
+                    <div class="ui-g-4">
+                        <label for="type">{{'area' | translate }}</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <p-dropdown id="type" [options]="areas" [(ngModel)]="imageShowArea" required="true"
+                            placeholder="Choose" appendTo="body" (onChange)="onAreaChange()">
+                            <ng-template pTemplate="item" let-item>
+                                {{item.label | translate}}
+                            </ng-template>
+                            <ng-template pTemplate="selectedItem" let-item>
+                                {{item.label | translate}}
+                            </ng-template>
+                        </p-dropdown>
+                        <ng-container *ngIf="imageShowArea == 'SUBSTITUTION'">
+                            <button *ngIf="monitor.imageShow" type="button" pButton
+                                (click)="showCurrentSubstitutionsPlan()" label="{{'show-current-plan' | translate }}"
+                                style="margin-top: 5px;"></button>
+                        </ng-container>
+                        <ng-container *ngIf="imageShowArea != 'SUBSTITUTION'">
+                            <div style="margin-top: 5px;">
+                                <p-dropdown *ngIf="monitor" [options]="imageShowes" placeholder="Select an Image View"
+                                    [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
+
+                                <button *ngIf="monitor.imageShow" type="button" pButton (click)="loginAndStartShow()"
+                                    label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </p-tabPanel>
@@ -239,7 +262,20 @@
                     <label for="type">{{'area' | translate }}</label>
                 </div>
                 <div class="ui-g-8">
-                    <p-dropdown id="type" [options]="areas" [(ngModel)]="monitor.area" required="true"
+                    <p-multiSelect [options]="areas" [(ngModel)]="monitor.areas"
+                        defaultLabel="{{ 'select-areas' | translate }}" [filter]="false" appendTo="body">
+                        <ng-template let-areas pTemplate="selectedItems">
+                            <span *ngFor="let area of areas"> {{area | translate}} </span>
+                            <div *ngIf="!areas || areas.length === 0">
+                                {{'select-areas' | translate }}
+                            </div>
+                        </ng-template>
+
+                        <ng-template pTemplate="item" let-area>
+                            {{area.value | translate}}
+                        </ng-template>
+                    </p-multiSelect>
+                    <!-- <p-dropdown id="type" [options]="areas" [(ngModel)]="monitor.area" required="true"
                         placeholder="Select a Type" appendTo="body">
                         <ng-template pTemplate="item" let-item>
                             {{item.value | translate}}
@@ -247,7 +283,7 @@
                         <ng-template pTemplate="selectedItem" let-item>
                             {{item.value | translate}}
                         </ng-template>
-                    </p-dropdown>
+                    </p-dropdown> -->
                 </div>
             </div>
         </div>

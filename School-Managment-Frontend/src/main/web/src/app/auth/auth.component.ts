@@ -51,8 +51,8 @@ export class AuthComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
-        this.messageService.add({ severity: 'success', summary: 'Successful Login', detail: 'Logged in as ' + this.roles + '.' });
-        
+        this.messageService.add({ severity: 'success', summary: 'Successful Login', detail: 'Logged in as ' + data.username });
+
         if (this.return && this.return !== '') {
           this.router.navigateByUrl(this.return);
         } else {
@@ -61,10 +61,10 @@ export class AuthComponent implements OnInit {
       },
       err => {
         console.log(err);
-        
+
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: err.error?.message });
         this.errorMessage = err.error?.message;
-        form.reset({ username: form.value.username, password: ''}) ;
+        form.reset({ username: form.value.username, password: '' });
         this.isLoginFailed = true;
       }
     );

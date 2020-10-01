@@ -22,8 +22,6 @@ import { httpErrorInterceptorProviders } from './_helper/http-error.interceptor'
 import { PhotoShowComponent } from './photo-show/photo-show.component';
 import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-photo-show.component';
 import { MonitorComponent } from './photo-show/monitor/monitor.component';
-import { SubstitutionComponent } from './photo-show/substitution/substitution.component';
-import { AdvertismentComponent } from './photo-show/advertisment/advertisment.component';
 import { UserListComponent } from './auth/user/user-list/user-list.component';
 import { UserDetailsComponent } from './auth/user/user-details/user-details.component';
 import { UserComponent } from './auth/user/user.component';
@@ -35,6 +33,10 @@ import { MessageComponent } from './message/message.component';
 import { ScrollingTextComponent } from './message/scrolling-text.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
+import { ImageListComponent } from './photo-show/image-list/image-list.component';
+import { UploadDocumentComponent } from './photo-show/document/upload-document/upload-document.component';
+import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-image-show/upload-image-show.component';
+import { AreaComponent } from './photo-show/area/area.component';
 
 
 
@@ -48,8 +50,6 @@ import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-
     PhotoShowComponent,
     UploadPhotoShowComponent,
     MonitorComponent,
-    SubstitutionComponent,
-    AdvertismentComponent,
     UserListComponent,
     UserDetailsComponent,
     UserComponent,
@@ -60,6 +60,10 @@ import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-
     ScrollingTextComponent,
     SendMessageComponent,
     EditImageShowComponent,
+    ImageListComponent,
+    UploadDocumentComponent,
+    UploadImageShowComponent,
+    AreaComponent,
   ],
   imports: [
     FormsModule,

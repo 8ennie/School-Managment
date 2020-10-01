@@ -30,6 +30,8 @@ export class MonitorComponent implements OnInit {
 
     areas;
 
+    imageShowArea: string;
+
     constructor(
         private monitorService: MonitorService,
         private areaService: AreaService,
@@ -48,14 +50,15 @@ export class MonitorComponent implements OnInit {
         });
         this.imageShowStore.imageShowsFiltered.subscribe(imageShows => {
             this.imageShowes = imageShows.toArray().map(im => {
+                this.imageShowArea = im.area;
                 return { label: im.name, value: im._links.self.href }
             });
         });
         this.cols = [
             { field: 'name', header: 'monitor-name' },
-            { field: 'showType', header: 'image-show-type' },
             { field: 'location', header: 'monitor-location' },
-            { field: 'status', header: 'monitor-status' }
+            { field: 'status', header: 'monitor-status' },
+            { field: 'area', header: 'area' },
         ];
     }
 
@@ -65,7 +68,7 @@ export class MonitorComponent implements OnInit {
         this.addDisplayDialog = true;
     }
 
-    save() {
+    save(closeDialog = true) {
         let monitors = [...this.monitors];
         this.monitor.imageShow = this.monitor.imageShowUrl
         if (this.newMonitor) {
@@ -73,14 +76,19 @@ export class MonitorComponent implements OnInit {
                 this.loadData()
             })
             this.addDisplayDialog = false;
+            this.monitors = monitors;
+            this.monitor = null;
         } else {
             this.monitorService.updateMonitor(this.monitor.id, this.monitor).then(m => {
                 this.loadData()
             })
-            this.displayDialog = false;
+            if (closeDialog) {
+                this.displayDialog = false;
+                this.monitors = monitors;
+                this.monitor = null;
+            }
         }
-        this.monitors = monitors;
-        this.monitor = null;
+
     }
 
     loadData() {
@@ -110,14 +118,17 @@ export class MonitorComponent implements OnInit {
         this.displayDialog = false;
     }
 
-    onAreaChange(){
-        this.imageShowStore.filterForArea(this.monitor.area);
+    onAreaChange() {
+        this.imageShowStore.filterForArea(this.imageShowArea);
     }
 
     onRowSelect(event) {
         this.newMonitor = false;
         this.monitor = this.cloneMonitor(event.data);
-        this.imageShowStore.filterForArea(this.monitor.area);
+        if (this.monitor.imageShow) {
+            this.imageShowArea = this.monitor.imageShow.area;
+        }
+        this.imageShowStore.filterForArea(this.imageShowArea);
         this.monitorService.getMonitorStatus(this.monitor).then(
             s => {
                 this.monitor.status = s.screenStatus;
@@ -162,7 +173,8 @@ export class MonitorComponent implements OnInit {
     }
 
     loginAndStartShow() {
-        this.monitorService.loginAndStartShow(this.monitor)
+        this.monitorService.loginAndStartShow(this.monitor);
+        this.save(false);
     }
 
     setServerIP() {

@@ -9,9 +9,9 @@ import { AuthGuard } from './auth/auth.guard';
 import { Privilege } from './auth/privilege.model';
 import { PhotoShowComponent } from './photo-show/photo-show.component';
 import { MonitorComponent } from './photo-show/monitor/monitor.component';
-import { SubstitutionComponent } from './photo-show/substitution/substitution.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
+import { AreaComponent } from './photo-show/area/area.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,10 +25,10 @@ const routes: Routes = [
   {
     path: 'photoshow', children: [
       { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_MESSAGES] } },
-      { path: 'substitutions', component: SubstitutionComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_SUBSTITUTIONS] } },
-      { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_ADVERTISMENT] } },
+      { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'monitors', component: MonitorComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
-      { path: 'edit/:id', component: EditImageShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_ADVERTISMENT] } },
+      { path: 'areas/:area', component: AreaComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
+      { path: 'edit/:id', component: EditImageShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'show/:id', component: PhotoShowComponent}
     ]
   },

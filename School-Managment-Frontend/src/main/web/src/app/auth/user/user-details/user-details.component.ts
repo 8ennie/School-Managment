@@ -1,3 +1,4 @@
+import { AreaService } from './../../../photo-show/area.service';
 import { RoleStore } from './../../role/role.store';
 import { UserStore } from './../user.store';
 import { UserService } from './../user.service';
@@ -30,11 +31,13 @@ export class UserDetailsComponent implements OnInit {
   isNew = true;
   errorMessage: string;
   roles = [];
+  areas = [];
 
   constructor(
     private userService: UserService,
     private userStore: UserStore,
     private roleStore: RoleStore,
+    private readonly areaService: AreaService,
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +48,11 @@ export class UserDetailsComponent implements OnInit {
         });
       }
     );
+    this.areaService.getAllAreas().then((areas: string[]) => {
+      this.areas = areas.map(a => {
+        return { label: a, value: a }
+      });
+    });
   }
 
   save() {

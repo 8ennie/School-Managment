@@ -3,6 +3,8 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
 
+import com.school.managment.Backend.model.photoshow.Area;
+
 import lombok.Data;
 
 @Data
@@ -17,6 +19,8 @@ public class SignupRequest {
     private String email;
     
     private Set<String> roles;
+    
+    private Set<Area> areas;
     
     @NotBlank
     @Size(min = 6, max = 40)

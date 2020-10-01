@@ -3,6 +3,7 @@ package com.school.managment.Backend.security.services;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.school.managment.Backend.model.adminestration.Privilege;
 import com.school.managment.Backend.model.adminestration.Role;
 import com.school.managment.Backend.model.adminestration.User;
+import com.school.managment.Backend.model.photoshow.Area;
 
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -26,14 +28,17 @@ public class UserDetailsImpl implements UserDetails {
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
+	
+	private Set<Area> areas;
 
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities, Set<Area> areas) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.areas = areas;
 	}
 
 	public static UserDetailsImpl build(User user) {
@@ -44,12 +49,16 @@ public class UserDetailsImpl implements UserDetails {
 			}
 		}
 		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(),
-			authorities);
+			authorities, user.getAreas());
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
+	}
+	
+	public Set<Area> getAreas(){
+		return areas;
 	}
 
 	public Long getId() {
@@ -89,6 +98,7 @@ public class UserDetailsImpl implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
 
 	@Override
 	public boolean equals(Object o) {

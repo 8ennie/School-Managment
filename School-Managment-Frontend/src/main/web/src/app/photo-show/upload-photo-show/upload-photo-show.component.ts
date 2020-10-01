@@ -51,8 +51,7 @@ export class UploadPhotoShowComponent implements OnInit {
         this.load = true;
       }
     });
-
-    this.areaService.getAllAreas().then((areas: string[]) => {
+    this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
         return { label: a, value: a }
       });
@@ -87,15 +86,11 @@ export class UploadPhotoShowComponent implements OnInit {
       }
     }
   }
-
-
-
   showDialogToAdd() {
     this.newImageShow = true;
     this.imageShow = new ImageShow();
     this.displayDialog = true;
   }
-
   onRowSelect(event) {
     this.errorMessage = ""
     this.newImageShow = false;
@@ -111,12 +106,6 @@ export class UploadPhotoShowComponent implements OnInit {
     }
     return imageShow;
   }
-
-
-  showImages() {
-
-  }
-
 
   save() {
     let newImageShows;

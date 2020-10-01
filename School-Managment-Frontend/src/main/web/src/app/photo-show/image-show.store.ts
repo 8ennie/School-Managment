@@ -5,11 +5,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 
-@Injectable({providedIn:'root'})
+@Injectable({ providedIn: 'root' })
 export class ImageShowStore {
     private _imageShows: BehaviorSubject<List<ImageShow>> = new BehaviorSubject(List([]));
     public readonly imageShows: Observable<List<ImageShow>> = this._imageShows.asObservable();
 
+    private _currentFiltedArea: string;
     private _imageShowsFiltered: BehaviorSubject<List<ImageShow>> = new BehaviorSubject(List([]));
     public readonly imageShowsFiltered: Observable<List<ImageShow>> = this._imageShowsFiltered.asObservable();
 
@@ -28,9 +29,10 @@ export class ImageShowStore {
             );
     }
 
-    filterForArea(area:string){
-        this.imageShowService.getImageShowsFiltered(area).then(
-            (res: {_embedded}) => {
+    filterForArea(area: string) {
+        this._currentFiltedArea = area;
+        this.imageShowService.getImageShowByArea(area).then(
+            (res: { _embedded }) => {
                 let imageShows = res._embedded.imageShows;
                 this._imageShowsFiltered.next(List(imageShows));
             },
@@ -44,12 +46,15 @@ export class ImageShowStore {
 
         obs.then(
             res => {
-                if(res){
+                if (res) {
                     var id: number = res.id;
                     this.imageShowService.getImageShow(id.toString()).then((imageShow: ImageShow) => {
                         let imageShows: List<ImageShow> = this._imageShows.getValue();
                         let index = imageShows.findIndex((i) => i.id === imageShow.id);
                         this._imageShows.next(imageShows.update(index, () => imageShow));
+                        if (this._currentFiltedArea == file.get('area')) {
+                            this.filterForArea(file.get('area'));
+                        }
                     });
                 }
             });
@@ -63,7 +68,7 @@ export class ImageShowStore {
 
         obs.then(
             res => {
-                if(res){
+                if (res) {
                     var id: number = res._links.self.href.split('/').pop();
                     this.imageShowService.getImageShow(id.toString()).then((imageShow: ImageShow) => {
                         this._imageShows.next(this._imageShows.getValue().push(imageShow));
@@ -75,7 +80,7 @@ export class ImageShowStore {
     }
 
     deleteImageShow(deleted: ImageShow) {
-        let obs = this.imageShowService.deleteImageShow(deleted);
+        let obs = this.imageShowService.deleteImageShow(deleted.id.toString());
         obs.then(
             res => {
                 let imageShows: List<ImageShow> = this._imageShows.getValue();
@@ -103,7 +108,7 @@ export class ImageShowStore {
         return obs;
     }
 
-    get(id){
+    get(id) {
         return this.imageShowService.getImageShow(id);
     }
 }

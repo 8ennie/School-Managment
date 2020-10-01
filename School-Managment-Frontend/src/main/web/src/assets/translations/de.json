@@ -4,7 +4,7 @@
     "teachers": "Lehrer",
     "classes": "Klassen",
     "subjects": "Fächer",
-    "header.header": "Schulverwaltung",
+    "header.header": "FCSF Monitore",
     "logout": "Abmelden",
     "login": "Anmelden",
     "username": "Benutzername",
@@ -127,5 +127,23 @@
     "filter-area":"Filter nach Bereich",
 
     "messages":"Nachrichten",
-    "area":"Bereich"
+    "area":"Bereich",
+    "areas":"Bereiche",
+    "select-areas":"Wähle Bereiche",
+    "choose-area":"Bereich wählen",
+    "image-show-list": "Präsentationen",
+    "edit-image-show":"Präsentation Bearbeiten",
+    "edit":"Bearbeiten",
+    "cancel":"Abbrechen",
+    "documents": "Documente",
+    "search":"Suchen",
+    "upload-document":"Document Hochladen",
+    "upload-image-show":"Präsentation Hochladen",
+    "administration":"Administrarion",
+    "online":"Online",
+    "screen-settings":"Monitor Einstellungen",
+    "image-show-settings":"Präsentations Einstellungen",
+    "this-area":"Dieser Bereich",
+    "no-area":"Kein Bereich zugeordnet",
+    "show-on-all":"Auf allen Bildschirmen Zeigen"
 }

@@ -31,4 +31,5 @@ export class PhotoShowService {
         let showPartURL = this.apiUrl + 'imageShowShowParts/search/findByImageShow?imageShow=' + this.apiUrl + 'imageShows/' + id + '&projection=imageShowPartProjection';
         return this.http.get(showPartURL).toPromise();
     }
+
 }

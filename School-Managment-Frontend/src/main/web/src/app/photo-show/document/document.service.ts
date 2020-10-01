@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 
 
 const API_URL = environment.apiUrl + 'documents';
+const UPLOAD_URL = environment.apiUrl + 'upload';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,14 @@ export class DocumentService {
     return this.http.get(API_URL + '/' + id + '?projection=documentProjection').toPromise();
   }
 
+  uploadDocument(doc: FormData) {
+    return this.http.post<any>(UPLOAD_URL + "/document", doc).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return this.handleError(err);
+      })
+    ).toPromise();
+  }
+
   saveDocument(document: Document): Promise<void | Document> {
     return this.http.post<Document>(API_URL, document).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -35,13 +44,21 @@ export class DocumentService {
   }
 
 
-  deleteDocument(document: Document) {
-    return this.http.delete(API_URL + '/' + document.id).toPromise();
+  deleteDocument(id: string) {
+    return this.http.delete(API_URL + '/' + id).toPromise();
   }
 
-  getImageShowParts(documentId){
+  getImageShowParts(documentId) {
     let showPartURL = environment.apiUrl + 'showParts/search/findByParentDocument?parentDocument=' + environment.apiUrl + 'documents/' + documentId;
     return this.http.get(showPartURL).toPromise();
+  }
+
+  getDocumentsByArea(area: string) {
+    return this.http.get(API_URL + '/search/findByArea?area=' + area + '&&projection=documentProjection').toPromise();
+  }
+
+  getDocumentsByFileNameContains(fileName: string) {
+    return this.http.get(API_URL + '/search/findByFileNameContains?fileName=' + fileName + '&&projection=documentProjection').toPromise();
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

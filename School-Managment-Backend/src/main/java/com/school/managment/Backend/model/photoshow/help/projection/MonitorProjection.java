@@ -1,6 +1,8 @@
 package com.school.managment.Backend.model.photoshow.help.projection;
 
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -21,6 +23,6 @@ public interface MonitorProjection {
 	
 	String getIpAddress();
 	
-	Area getArea();
+	Set<Area> getAreas();
 	
 }

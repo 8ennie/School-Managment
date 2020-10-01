@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import com.school.managment.Backend.model.photoshow.Document;
 import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.model.photoshow.ImageShowShowPart;
 import com.school.managment.Backend.model.photoshow.ShowPart;
+import com.school.managment.Backend.payload.request.ImageShowPart;
+import com.school.managment.Backend.payload.request.ImageShowPartRequest;
 //import com.school.managment.Backend.model.photoshow.SubstitutionShow;
 import com.school.managment.Backend.repository.ImageShowRepository;
 import com.school.managment.Backend.repository.ImageShowShowPartRepository;
@@ -42,31 +45,12 @@ public class ShowPartService {
 	@Autowired
 	private PDFConverterService pdfConverterService;
 
-//	public SubstitutionShow saveSubstitutionShow(MultipartFile file, String showName, Date date) throws IOException {
-//		List<ShowPart> imageParts = saveShowParts(file);
-//		SubstitutionShow substitutionShow = new SubstitutionShow();
-//		substitutionShow.setName(showName);
-//		substitutionShow.setArea(Area.SUBSTITUTION);
-//		substitutionShow.setDate(date);
-//
-//		substitutionShow = substitutionShowRepository.save(substitutionShow);
-//		for (int i = 1; i <= imageParts.size(); i++) {
-//			ShowPart showPart = imageParts.get(i - 1);
-//			ImageShowShowPart imageShowPart = showPart.addImageShow(substitutionShow);
-//			imageShowPart.setPosition(i);
-//			imageShowShowPartRepository.save(imageShowPart);
-//			showPartRepository.save(showPart);
-//		}
-//		substitutionShowRepository.save(substitutionShow);
-//		return substitutionShow;
-//	}
-
 	public ImageShow saveImageShow(MultipartFile file, String showName, Area area) throws IOException {
-		List<ShowPart> imageParts = saveShowParts(file);
+		List<ShowPart> imageParts = saveShowParts(file, area);
 		ImageShow imageShow = new ImageShow();
 		imageShow.setName(showName);
 		imageShow.setArea(area);
-		
+
 		imageShow = imageShowRepository.save(imageShow);
 		for (int i = 1; i <= imageParts.size(); i++) {
 			ShowPart showPart = imageParts.get(i - 1);
@@ -79,11 +63,68 @@ public class ShowPartService {
 		return imageShow;
 	}
 
-	public List<ShowPart> saveShowParts(MultipartFile file) throws IOException {
-		Document document = dbFileStorageService.storeFile(file);
+	public List<ShowPart> saveShowParts(MultipartFile file, Area area) throws IOException {
+		Document document = dbFileStorageService.storeFile(file, area);
 		ArrayList<ShowPart> showParts = new ArrayList<ShowPart>(pdfConverterService.convertPDFToPng(document));
 		showPartRepository.saveAll(showParts);
 		return showParts;
+	}
+
+	public ImageShow saveShowParts(List<ImageShowPart> imageShowParts, Long imageShowId) {
+		ImageShow imageShow = imageShowRepository.findById(imageShowId).get();
+		for (int i = 1; i <= imageShowParts.size(); i++) {
+			ImageShowPart imageShowPart = imageShowParts.get(i - 1);
+			ShowPart showPart = showPartRepository.findById(imageShowPart.getShowPartId()).orElse(null);
+			if (showPart != null && imageShow != null) {
+				createImageShowShowPart(imageShow, i, imageShowPart, showPart);
+			}
+		}
+		return imageShowRepository.save(imageShow);
+	}
+
+	public ImageShow updateShowParts(List<ImageShowPart> imageShowParts, Long imageShowId) {
+		ImageShow imageShow = imageShowRepository.findById(imageShowId).get();
+		imageShow.getShowParts().clear();
+
+		List<Long> imageShowShowPartIds = imageShowShowPartRepository.findByImageShow(imageShow).stream().map(showPart -> showPart.getId())
+				.collect(Collectors.toList());
+		List<Long> currentImageShowShowPartIds = imageShowParts.stream().map(showPart -> showPart.getImageShowShowPartId())
+				.collect(Collectors.toList());
+		imageShowShowPartIds.removeAll(currentImageShowShowPartIds);
+		for (Long id : imageShowShowPartIds) {
+			imageShowShowPartRepository.deleteById(id);
+		}
+		
+		for (int i = 1; i <= imageShowParts.size(); i++) {
+			ImageShowPart imageShowPart = imageShowParts.get(i - 1);
+			ShowPart showPart = showPartRepository.findById(imageShowPart.getShowPartId()).orElse(null);
+			if (showPart != null && imageShow != null) {
+				if (imageShowPart.getImageShowShowPartId() == null) {
+					createImageShowShowPart(imageShow, i, imageShowPart, showPart);
+				} else {
+
+					ImageShowShowPart imageShowShowPart = imageShowShowPartRepository
+							.findById(imageShowPart.getImageShowShowPartId()).orElse(null);
+					if (imageShowShowPart == null) {
+						createImageShowShowPart(imageShow, i, imageShowPart, showPart);
+					} else {
+						imageShowShowPart.setPosition(i);
+						imageShowShowPart.setActive(imageShowPart.isActive());
+						imageShowShowPartRepository.save(imageShowShowPart);
+					}
+				}
+
+			}
+		}
+		return imageShowRepository.save(imageShow);
+	}
+
+	private void createImageShowShowPart(ImageShow imageShow, int i, ImageShowPart imageShowPart, ShowPart showPart) {
+		ImageShowShowPart imageShowShowPart = showPart.addImageShow(imageShow);
+		imageShowShowPart.setPosition(i);
+		imageShowShowPart.setActive(imageShowPart.isActive());
+		imageShowShowPartRepository.save(imageShowShowPart);
+		showPartRepository.save(showPart);
 	}
 
 	public Optional<List<ShowPart>> getCurrentSubstitutionShowParts() {

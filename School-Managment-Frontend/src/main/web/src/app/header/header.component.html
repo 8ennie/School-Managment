@@ -9,21 +9,27 @@
         <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
             <ul ngbNav class="navbar-nav">
 
+                <li ngbNavItem ngbDropdown class="nav-item">
+                    <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
+                        *ngIf="isAuthenticated && areas.length > 0">{{'areas' | translate }}</a>
+                    <div ngbDropdownMenu>
+                        <a *ngFor="let area of areas" ngbDropdownItem routerLinkActive="active" [routerLink]="'photoshow/areas/' + area"
+                            class="dropdown-item">
+                            {{area | translate }}
+                        </a>
+                    </div>
+                </li>
 
                 <li ngbNavItem ngbDropdown class="nav-item">
                     <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
-                        *ngIf="isAuthenticated && hasPrivilege(['READ_SUBSTITUTIONS', 'READ_ADVERTISMENT'])">{{'photoshow' | translate }}</a>
+                        *ngIf="isAuthenticated">{{'photoshow' | translate }}</a>
                     <div ngbDropdownMenu>
-                        <!-- <a ngbDropdownItem [routerLink]="'photoshow/substitutions'" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
-                            *ngIf="hasPrivilege(['READ_SUBSTITUTIONS'])">{{'substituition' | translate }}
-                        </a> -->
-                        <a ngbDropdownItem [routerLink]="'photoshow/list'" routerLinkActive="active"
+                        <!-- <a ngbDropdownItem [routerLink]="'photoshow/list'" routerLinkActive="active"
                             class="dropdown-item"
-                            *ngIf="hasPrivilege(['READ_ADVERTISMENT'])">{{'image-show-list' | translate }}</a>
+                            >{{'image-show-list' | translate }}</a> -->
                         <a ngbDropdownItem [routerLink]="'photoshow/edit/new'" routerLinkActive="active"
                             class="dropdown-item"
-                            *ngIf="hasPrivilege(['READ_ADVERTISMENT'])">{{'edit-image-show' | translate }}</a>
+                            >{{'edit-image-show' | translate }}</a>
 
                     </div>
                 </li>
@@ -34,11 +40,11 @@
                         *ngIf="isAuthenticated && (hasPrivilege(['READ_MONITORS']))">{{'monitors' | translate }}</a>
                 </li>
 
-                <li ngbNavItem class="nav-item">
+                <!-- <li ngbNavItem class="nav-item">
                     <a [routerLink]="'photoshow/messages'" routerLinkActive="active"
                         [routerLinkActiveOptions]="{exact: true}" class="nav-link"
                         *ngIf="isAuthenticated && (hasPrivilege(['WRITE_MESSAGES']))">{{'messages' | translate }}</a>
-                </li>
+                </li> -->
 
 
                 <li ngbNavItem ngbDropdown class="nav-item">

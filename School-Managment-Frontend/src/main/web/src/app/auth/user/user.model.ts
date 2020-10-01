@@ -5,6 +5,7 @@ export class User {
   public email: string;
   public id: string;
   public roles: [];
+  public areas:[];
   public privileges: Privilege[];
   public password:string;
 

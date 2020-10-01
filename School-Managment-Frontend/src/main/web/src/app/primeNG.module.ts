@@ -25,7 +25,8 @@ import { DragDropModule } from 'primeng/dragdrop';
 import { OrderListModule } from 'primeng/orderlist';
 import { PickListModule } from 'primeng/picklist';
 import { ListboxModule } from 'primeng/listbox';
-
+import { GalleriaModule } from 'primeng/galleria';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 
@@ -56,6 +57,8 @@ import { ListboxModule } from 'primeng/listbox';
         OrderListModule,
         DragDropModule,
         ListboxModule,
+        GalleriaModule,
+        ConfirmDialogModule,
     ],
     exports: [
         DataViewModule,
@@ -83,6 +86,8 @@ import { ListboxModule } from 'primeng/listbox';
         OrderListModule,
         DragDropModule,
         ListboxModule,
+        GalleriaModule,
+        ConfirmDialogModule,
     ],
     providers: [MessageService]
 })

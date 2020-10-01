@@ -17,4 +17,8 @@ public interface ImageShowRepository extends JpaRepository<ImageShow, Long>{
 
 	public List<ImageShow> findByArea(Area area);
 	
+	public List<ImageShow> findByNameContains(String name);
+	
+	public List<ImageShow> findByAreaAndNameContains(Area area, String name);
+	
 }

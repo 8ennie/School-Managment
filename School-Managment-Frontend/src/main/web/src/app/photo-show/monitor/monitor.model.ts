@@ -11,7 +11,7 @@ export class Monitor {
     location?: string;
     ipAddress?: string;
     imageShow?;
-    area?: string;
+    areas?: string[];
     _links?;
 
     status?: boolean;

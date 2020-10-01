@@ -3,7 +3,10 @@ package com.school.managment.Backend.model.adminestration;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.school.managment.Backend.model.photoshow.Area;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +60,10 @@ public class User {
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+	
+	@ElementCollection(targetClass = Area.class)
+	@Enumerated(EnumType.STRING)
+	private Set<Area> areas;
 	
 	public User(String username, String email, String password) {
 		this.username = username;

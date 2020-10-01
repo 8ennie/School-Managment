@@ -1,0 +1,103 @@
+<div style="margin: 15px; text-align: center;">
+    <h1>{{'area' |translate}}: {{area |translate}}</h1>
+    <div class="p-grid">
+        <div class="p-col" style="margin:15px">
+            <div style="display: flex; justify-content: center; position: relative;">
+                <h3>{{'monitors' | translate }}</h3>
+                <button type="button" pButton icon="pi pi-plus" (click)="displayAllMonitorDialog = true" label="{{ 'show-on-all' | translate }}"
+                    style="position: absolute; right: 15px;"></button>
+            </div>
+            <p-table [value]="monitors" selectionMode="single" [(selection)]="selectedMonitor"
+                (onRowSelect)="onMonitorRowSelect($event)">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th>
+                            {{'monitor-name' | translate }}
+                        </th>
+                        <th>
+                            {{'monitor-location' | translate }}
+                        </th>
+                        <th>
+                            {{'monitor-status' | translate }}
+                        </th>
+                        <th>
+                            {{'this-area' | translate }}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            {{rowData['name']}}
+                        </td>
+                        <td>
+                            {{rowData['location']}}
+                        </td>
+                        <td>
+                            {{rowData['status'] != null ? rowData['status'] === true ? "An": "Aus" : "Offline"}}
+                        </td>
+                        <td>
+                            {{rowData['imageShow'] ? ( rowData['imageShow'].area === area ? '✅' : '❌') :  '❌' }}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-dialog header="{{'monitor-details' | translate }}" [(visible)]="displayDialog" [focusOnShow]="false"
+                showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
+                <div class="ui-g ui-fluid" *ngIf="monitor">
+                    <div class="ui-g-4">
+                        <label for="type">{{'image-show' | translate }}</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <div>
+                            <p-dropdown [options]="monitorImageShowes"
+                                placeholder="Select an Image View" [(ngModel)]="monitor.imageShowUrl" appendTo="body">
+                            </p-dropdown>
+                            <button *ngIf="monitor.imageShow" type="button" pButton (click)="loginAndStartShow()"
+                                label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
+                        </div>
+                    </div>
+                </div>
+            </p-dialog>
+            <p-dialog header="{{'monitor-details' | translate }}" [(visible)]="displayAllMonitorDialog" [focusOnShow]="false"
+                showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-4">
+                        <label for="type">{{'image-show' | translate }}</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <div>
+                            <p-dropdown [options]="monitorImageShowes"
+                                placeholder="Select an Image View" #allImageShowUrl appendTo="body">
+                            </p-dropdown>
+                            <button  type="button" pButton (click)="loginAndStartShowOnAllMonitors(allImageShowUrl.value)"
+                                label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
+                        </div>
+                    </div>
+                </div>
+            </p-dialog>
+        </div>
+        <div class="p-col" style="margin:15px">
+            <div style="display: flex; justify-content: center; position: relative;">
+                <h3>{{'image-show' | translate }}</h3>
+                <button type="button" pButton icon="pi pi-plus" (click)="uploadImageShow = true" label="{{ 'add' | translate }}"
+                    style="position: absolute; right: 15px;"></button>
+            </div>
+            <p-table [value]="imageShows" selectionMode="single" (onRowSelect)="onImageShowSelect($event)" [paginator]="true" [rows]="10">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th>{{'image-show-name' | translate }}</th>
+                        <th>{{'image-count' | translate }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr [pSelectableRow]="rowData">
+                        <td>{{rowData.name}}</td>
+                        <td>{{rowData.imageCount}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <app-upload-image-show [(displayDialog)]="uploadImageShow" [area]="area"></app-upload-image-show>
+</div>

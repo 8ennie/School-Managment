@@ -44,7 +44,7 @@ export class DocumentStore {
     }
 
     deleteDocument(deleted: Document) {
-        let obs = this.documentService.deleteDocument(deleted);
+        let obs = this.documentService.deleteDocument(deleted.id);
         obs.then(
             res => {
                 let documents: List<Document> = this._documents.getValue();

@@ -1,6 +1,9 @@
 package com.school.managment.Backend.model.photoshow;
 
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -45,7 +48,8 @@ public class Monitor {
 	@OneToOne
 	private User user;
 	
+	@ElementCollection(targetClass = Area.class)
 	@Enumerated(EnumType.STRING)
-	private Area area;
+	private Set<Area> areas;
 	
 }

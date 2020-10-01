@@ -1,3 +1,4 @@
+import { AreaService } from './../photo-show/area.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
@@ -25,9 +26,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private translate: TranslateService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private readonly areaService: AreaService,
   ) { }
   isMenuCollapsed;
+  areas = [];
 
   ngOnInit() {
     this.isAuthenticated = this.authService.isAthenticated();
@@ -41,8 +44,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user = user;
         this.privilege = this.authService.getUser().roles;
       }
+      this.loadAreas()
     });
     this.headerSubscription = this.headerService.showHeader.subscribe(hide => this.showHeader = hide);
+    this.loadAreas()
+  }
+
+  loadAreas(){
+    this.areaService.getUserAreas().then(areas => {
+      this.areas = areas;
+    });
   }
 
   onLogout() {

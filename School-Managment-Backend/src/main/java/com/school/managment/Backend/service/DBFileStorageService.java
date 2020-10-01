@@ -1,6 +1,7 @@
 package com.school.managment.Backend.service;
 import com.school.managment.Backend.exception.FileStorageException;
 import com.school.managment.Backend.exception.MyFileNotFoundException;
+import com.school.managment.Backend.model.photoshow.Area;
 import com.school.managment.Backend.model.photoshow.Document;
 import com.school.managment.Backend.repository.DocumentRepository;
 
@@ -16,7 +17,7 @@ public class DBFileStorageService {
     @Autowired
     private DocumentRepository documentRepository;
     
-    public Document storeFile(MultipartFile file) {
+    public Document storeFile(MultipartFile file, Area area) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
@@ -26,6 +27,7 @@ public class DBFileStorageService {
             }
 
             Document doc = new Document(fileName, file.getContentType(), file.getBytes());
+            doc.setArea(area);
             doc = documentRepository.save(doc);
             return doc;
         } catch (IOException ex) {
