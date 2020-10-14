@@ -19,6 +19,8 @@ public interface MonitorProjection {
 	
 	ImageShowProjection getImageShow();
 	
+	boolean getImageShowLocked();
+	
 	String getLocation();
 	
 	String getIpAddress();

@@ -21,7 +21,7 @@ export class AreaService {
     }
 
     getUserAreas() {
-        return Promise.resolve(this.authService.getUser().areas ? this.authService.getUser().areas : []);
+        return Promise.resolve(this.authService.getUser() ? this.authService.getUser().areas : []);
     }
 
 }

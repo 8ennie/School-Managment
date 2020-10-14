@@ -36,6 +36,9 @@ public class Monitor {
 	private ImageShow imageShow;
 	
 	@Column
+	private boolean imageShowLocked = false;
+	
+	@Column
 	private String location;
 	
 	@Column
@@ -43,7 +46,6 @@ public class Monitor {
 	
 	@Column
 	private boolean status;
-	
 	
 	@OneToOne
 	private User user;

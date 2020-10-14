@@ -13,7 +13,7 @@ export class Monitor {
     imageShow?;
     areas?: string[];
     _links?;
-
+    imageShowLocked?: boolean;
     status?: boolean;
     serverIp?:string;
 

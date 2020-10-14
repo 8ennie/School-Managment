@@ -81,7 +81,7 @@
     "off":"Aus",
     "turn-on":"Anschalten",
     "turn-off":"Ausschalten",
-    "start-show":"Präsentation anzeigen",
+    "start-show":"Präsentation ändern",
     "show-current-plan":"Actuellen Vertretungsplan anzeigen",
     "monitor-details":"Monitor Details",
     "ip-address":"IP Adresse",
@@ -118,10 +118,12 @@
     "no-roles": "Keine Rollen",
     "select-roles":"Wähle Rollen",
 
-    "ALL":"Alle",
+    "GENERAL":"Allgemein",
     "ADVERTISMENT":"Werbung",
     "EVENT":"Veranstaltung",
     "AFTERCARE":"Nachmittagsbetreuung",
+    "STUDENTGROUP":"Schülerkreis",
+    "PARENTEVENING":"Elternabend",
 
     "image-count":"Seiten Anzahl",
     "filter-area":"Filter nach Bereich",
@@ -145,5 +147,14 @@
     "image-show-settings":"Präsentations Einstellungen",
     "this-area":"Dieser Bereich",
     "no-area":"Kein Bereich zugeordnet",
-    "show-on-all":"Auf allen Bildschirmen Zeigen"
+    "show-on-all":"Auf allen Bildschirmen Zeigen",
+    "yes":"Ja",
+    "no":"Nein",
+    "update-monitors":"Update Monitore",
+    "monitor-sleep-time":"Monitor aus Zeit",
+    "monitor-wake-time":"Monitor einschalt Zeit",
+    "change":"Ändern",
+    "reboot":"Neu Starten",
+    "lock-image-show":"Für Änderugen sperren",
+    "monitor-locked":"Der Monitor wurde für änderungen gespärt. Bitte im Sekretreriat nachfragen woran dies liegt!"
 }

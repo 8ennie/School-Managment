@@ -1,3 +1,5 @@
+import { Monitor } from './../monitor/monitor.model';
+import { MonitorService } from './../monitor/monitor.service';
 import { ImageShowService } from './../image-show.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ImageShow } from './../image-show.model';
@@ -21,6 +23,8 @@ export class EditImageShowComponent implements OnInit {
   id;
   areas: { label: string, value: string }[];
   reset: boolean;
+  monitorUsingShow: Monitor[] = [];
+  updateMonitors = false;
 
   constructor(
     private readonly areaService: AreaService,
@@ -29,6 +33,7 @@ export class EditImageShowComponent implements OnInit {
     private readonly imageShowService: ImageShowService,
     private readonly router: Router,
     private readonly imageShowStore: ImageShowStore,
+    private readonly monitorService: MonitorService,
     private readonly messageService: MessageService,
   ) { }
 
@@ -37,7 +42,6 @@ export class EditImageShowComponent implements OnInit {
       this.id = parms['id'];
       this.loadImageShow();
     });
-    this.loadImageShow();
     this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
         return { label: a, value: a }
@@ -59,6 +63,9 @@ export class EditImageShowComponent implements OnInit {
       this.imageShow.showParts = [];
     } else {
       this.imageShowService.getImageShow(this.id).then(imageShow => {
+        this.monitorService.getMonitorsByShowId(this.id).then((monitors: { _embedded }) => {
+          this.monitorUsingShow = monitors._embedded.monitors;
+        });
         this.imageShow = imageShow;
         this.photoShowService.getShowShowParts(this.id).then((showParts: any) => {
           if (showParts) {
@@ -79,7 +86,6 @@ export class EditImageShowComponent implements OnInit {
   }
 
   save() {
-    console.log(this.imageShow);
     if (this.id != 'new') {
       let showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
@@ -91,7 +97,6 @@ export class EditImageShowComponent implements OnInit {
         );
       });
     } else {
-      console.log(this.imageShow);
       let showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
       this.imageShowStore.addImageShow(this.imageShow).then((imageShow: { _links }) => {
@@ -105,6 +110,12 @@ export class EditImageShowComponent implements OnInit {
         );
       });
     }
+    if (this.monitorUsingShow.length > 0 && this.updateMonitors) {
+      this.monitorUsingShow.forEach(monitor => {
+        this.monitorService.loginAndStartShow(monitor);
+      });
+    }
+
   }
 
   showHide(showPart) {

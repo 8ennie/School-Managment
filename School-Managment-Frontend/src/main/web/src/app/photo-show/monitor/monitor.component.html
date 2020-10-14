@@ -192,21 +192,26 @@
                                 {{item.label | translate}}
                             </ng-template>
                         </p-dropdown>
-                        <ng-container *ngIf="imageShowArea == 'SUBSTITUTION'">
-                            <button *ngIf="monitor.imageShow" type="button" pButton
-                                (click)="showCurrentSubstitutionsPlan()" label="{{'show-current-plan' | translate }}"
-                                style="margin-top: 5px;"></button>
-                        </ng-container>
-                        <ng-container *ngIf="imageShowArea != 'SUBSTITUTION'">
-                            <div style="margin-top: 5px;">
-                                <p-dropdown *ngIf="monitor" [options]="imageShowes" placeholder="Select an Image View"
-                                    [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
 
-                                <button *ngIf="monitor.imageShow" type="button" pButton (click)="loginAndStartShow()"
-                                    label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
-                            </div>
-                        </ng-container>
+                        <div style="margin-top: 5px;">
+                            <p-dropdown *ngIf="monitor" [options]="imageShowes" placeholder="Select an Image View"
+                                [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
+                        </div>
                     </div>
+                    <ng-container *ngIf="hasPrivilege(['LOCK_SHOW']) && monitor.imageShow">
+                        <div class="ui-g-4">
+                            <label for="type">{{'lock-image-show' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <p-toggleButton [(ngModel)]="monitor.imageShowLocked" onLabel="{{ 'yes' | translate}}"
+                            offLabel="{{ 'no' | translate}}"></p-toggleButton>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="monitor.imageShow">
+                        <button *ngIf="monitor.imageShow" type="button" pButton (click)="loginAndStartShow()"
+                                label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
+                    </ng-container>
                 </div>
             </p-tabPanel>
 

@@ -1,3 +1,5 @@
+import { ImageShow } from './../image-show.model';
+import { AuthService } from 'src/app/auth/auth.service';
 import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
 import { Monitor } from './monitor.model'
@@ -32,11 +34,14 @@ export class MonitorComponent implements OnInit {
 
     imageShowArea: string;
 
+    oldShowUrl: string;
+
     constructor(
         private monitorService: MonitorService,
         private areaService: AreaService,
         private imageShowStore: ImageShowStore,
         private messageService: MessageService,
+        private authService: AuthService,
     ) {
 
     }
@@ -70,7 +75,12 @@ export class MonitorComponent implements OnInit {
 
     save(closeDialog = true) {
         let monitors = [...this.monitors];
-        this.monitor.imageShow = this.monitor.imageShowUrl
+        if (this.oldShowUrl != this.monitor.imageShowUrl) {
+            this.monitor.imageShow = this.monitor.imageShowUrl;
+            this.loginAndStartShow(false);
+        } else {
+            this.monitor.imageShow = this.monitor.imageShowUrl;
+        }
         if (this.newMonitor) {
             this.monitorService.saveMonitor(this.monitor).then(m => {
                 this.loadData()
@@ -124,11 +134,13 @@ export class MonitorComponent implements OnInit {
 
     onRowSelect(event) {
         this.newMonitor = false;
+        this.oldShowUrl = null;
         this.monitor = this.cloneMonitor(event.data);
         if (this.monitor.imageShow) {
+            this.oldShowUrl = this.monitor.imageShowUrl;
             this.imageShowArea = this.monitor.imageShow.area;
+            this.imageShowStore.filterForArea(this.imageShowArea);
         }
-        this.imageShowStore.filterForArea(this.imageShowArea);
         this.monitorService.getMonitorStatus(this.monitor).then(
             s => {
                 this.monitor.status = s.screenStatus;
@@ -172,9 +184,12 @@ export class MonitorComponent implements OnInit {
         this.monitorService.loginForShow(this.monitor);
     }
 
-    loginAndStartShow() {
+    loginAndStartShow(save: boolean = true) {
         this.monitorService.loginAndStartShow(this.monitor);
-        this.save(false);
+        this.oldShowUrl = this.monitor.imageShowUrl;
+        if (save) {
+            this.save(false);
+        } 
     }
 
     setServerIP() {
@@ -207,4 +222,12 @@ export class MonitorComponent implements OnInit {
         });;
     }
 
+    hasPrivilege(privileges: string[]): boolean {
+        for (let p of privileges) {
+            if (!this.authService.hasPrivilege(privileges)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

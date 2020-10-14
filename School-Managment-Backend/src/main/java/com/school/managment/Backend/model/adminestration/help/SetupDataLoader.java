@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ import com.school.managment.Backend.model.adminestration.ERole;
 import com.school.managment.Backend.model.adminestration.Privilege;
 import com.school.managment.Backend.model.adminestration.Role;
 import com.school.managment.Backend.model.adminestration.User;
+import com.school.managment.Backend.model.photoshow.Area;
 import com.school.managment.Backend.repository.PrivilegeRepository;
 import com.school.managment.Backend.repository.RoleRepository;
 import com.school.managment.Backend.repository.UserRepository;
@@ -59,10 +61,20 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		}
 
 		Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name()).get();
-		Role userRole = roleRepository.findByName(ERole.ROLE_USER.name()).get();
 		
-		createUserIfNotFound("Admin", "admin@admin.com", "adminadmin", Arrays.asList(adminRole));
-		createUserIfNotFound("User", "user@user.com", "useruser", Arrays.asList(userRole));
+		Role schulleitungRoles = roleRepository.findByName(ERole.ROLE_SCHULLEITUNG.name()).get();
+		Role schuelerkreisRoles = roleRepository.findByName(ERole.ROLE_SCHUELERKREIS.name()).get(); 
+		Role sekreteriatRoles = roleRepository.findByName(ERole.ROLE_SEKRETARIAT.name()).get(); 
+		Role nachmittagsbetreuung = roleRepository.findByName(ERole.ROLE_NACHMITTAGSBETREUUNG.name()).get(); 
+		//Role userRole = roleRepository.findByName(ERole.ROLE_USER.name()).get();
+		
+		createUserIfNotFound("Admin", null, "adminadmin", Arrays.asList(adminRole), new HashSet<Area>(Arrays.asList(Area.values())));
+		//createUserIfNotFound("User", "user@user.com", "useruser", Arrays.asList(userRole), null);
+		
+		createUserIfNotFound("Schulleitung", null, "Schulleitung", Arrays.asList(schulleitungRoles), new HashSet<Area>(Arrays.asList(Area.values())));
+		createUserIfNotFound("Sekretariat", null, "Sekretariat", Arrays.asList(sekreteriatRoles), new HashSet<Area>(Arrays.asList(Area.values())));
+		createUserIfNotFound("Schülerkreis", null, "Schülerkreis", Arrays.asList(schuelerkreisRoles), new HashSet<Area>(Arrays.asList(Area.STUDENTGROUP)));
+		createUserIfNotFound("Nachmittagsbetreuung", null, "Nachmittagsbetreuung", Arrays.asList(nachmittagsbetreuung), new HashSet<Area>(Arrays.asList(Area.AFTERCARE)));
 		
 		alreadySetup = true;
 	}
@@ -91,11 +103,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	}
 	
 	@Transactional
-	User createUserIfNotFound(String username,String email, String password,  List<Role> roles) {
+	User createUserIfNotFound(String username,String email, String password,  List<Role> roles, Set<Area> areas) {
 		Optional<User> userDB = userRepository.findByUsername(username);
 		if (!userDB.isPresent()) {
 			User user = new User(username, email, passwordEncoder.encode(password));
 			user.setRoles(new HashSet<Role>(roles));
+			user.setAreas(areas);
 			return userRepository.save(user);
 		}
 		return userDB.get();

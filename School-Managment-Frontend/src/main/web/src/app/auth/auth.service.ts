@@ -20,11 +20,18 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private tokenStorage: TokenStorageService) { }
 
-  login(credentials): Observable<any> {
+  login(credentials) {
     return this.http.post(AUTH_API + 'signin', {
       username: credentials.username,
       password: credentials.password
-    }, httpOptions);
+    }, httpOptions).toPromise().then(
+      (data:{token}) => {
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser(data);
+        this.updateUser();
+        return data;
+      }
+    );
   }
 
   register(user): Observable<any> {
@@ -58,6 +65,16 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     return this.getRoles().includes(role);
+  }
+
+  hasPrivilege(privileges: string[]): boolean {
+    const userPrivilages = this.getUser().roles;
+    for (let p of privileges) {
+      if (userPrivilages.includes(p)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   signUpMonitor(monitor:Monitor){

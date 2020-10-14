@@ -26,6 +26,10 @@ export class MonitorService {
         return this.http.get(this.ressorceUrl + '/search/findByAreas?area=' + area).toPromise();
     }
 
+    getMonitorsByShowId(id: string) {
+        return this.http.get(this.ressorceUrl + '/search/findByImageShowId?id=' + id).toPromise();
+    }
+
 
     saveMonitor(monitor: Monitor) {
         return this.http.post<Monitor>(this.ressorceUrl, monitor).toPromise()
@@ -63,6 +67,8 @@ export class MonitorService {
                 return status;
             });
     }
+
+    
 
     loginAndStartShow(monitor: Monitor) {
         const formData = new FormData();

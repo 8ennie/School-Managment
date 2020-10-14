@@ -2,11 +2,11 @@ package com.school.managment.Backend.model.photoshow;
 
 
 public enum Area {
-
-	ALL,
+	GENERAL,
+	STUDENTGROUP,
 	ADVERTISMENT,
 	AFTERCARE,
 	EVENT,
 	SUBSTITUTION,
-	
+	PARENTEVENING,
 }

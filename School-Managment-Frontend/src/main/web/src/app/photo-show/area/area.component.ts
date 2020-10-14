@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/auth/auth.service';
 import { ImageShow } from './../image-show.model';
 import { ImageShowStore } from './../image-show.store';
 import { List } from 'immutable';
@@ -20,6 +21,7 @@ export class AreaComponent implements OnInit {
     private readonly monitorService: MonitorService,
     private readonly imageShowStore: ImageShowStore,
     private readonly router: Router,
+    private readonly authService:AuthService,
   ) {
 
   }
@@ -123,5 +125,14 @@ export class AreaComponent implements OnInit {
   onImageShowSelect(event) {
     this.router.navigate(['photoshow', 'edit', event.data.id])
   }
+
+  hasPrivilege(privileges: string[]): boolean {
+    for (let p of privileges) {
+        if (!this.authService.hasPrivilege(privileges)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 }
