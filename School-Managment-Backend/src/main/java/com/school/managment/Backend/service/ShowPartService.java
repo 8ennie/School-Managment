@@ -2,9 +2,7 @@ package com.school.managment.Backend.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +15,12 @@ import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.model.photoshow.ImageShowShowPart;
 import com.school.managment.Backend.model.photoshow.ShowPart;
 import com.school.managment.Backend.payload.request.ImageShowPart;
-import com.school.managment.Backend.payload.request.ImageShowPartRequest;
-//import com.school.managment.Backend.model.photoshow.SubstitutionShow;
 import com.school.managment.Backend.repository.ImageShowRepository;
 import com.school.managment.Backend.repository.ImageShowShowPartRepository;
 import com.school.managment.Backend.repository.ShowPartRepository;
-//import com.school.managment.Backend.repository.SubstitutionShowRepository;
 
 @Service
 public class ShowPartService {
-
-//	@Autowired
-//	private SubstitutionShowRepository substitutionShowRepository;
 
 	@Autowired
 	private ShowPartRepository showPartRepository;
@@ -48,6 +40,7 @@ public class ShowPartService {
 	public ImageShow saveImageShow(MultipartFile file, String showName, Area area) throws IOException {
 		List<ShowPart> imageParts = saveShowParts(file, area);
 		ImageShow imageShow = new ImageShow();
+		
 		imageShow.setName(showName);
 		imageShow.setArea(area);
 
@@ -57,17 +50,21 @@ public class ShowPartService {
 			ImageShowShowPart imageShowPart = showPart.addImageShow(imageShow);
 			imageShowPart.setPosition(i);
 			imageShowShowPartRepository.save(imageShowPart);
+			System.out.println("Saved ImageShowShowPart number: " + imageShowPart.getPosition());
 			showPartRepository.save(showPart);
 		}
-		imageShowRepository.save(imageShow);
-		return imageShow;
+		ImageShow savedImageShow =  imageShowRepository.save(imageShow);
+		System.out.println("Saved Image Show!");
+		return savedImageShow;
 	}
 
 	public List<ShowPart> saveShowParts(MultipartFile file, Area area) throws IOException {
 		Document document = dbFileStorageService.storeFile(file, area);
 		ArrayList<ShowPart> showParts = new ArrayList<ShowPart>(pdfConverterService.convertPDFToPng(document));
-		showPartRepository.saveAll(showParts);
-		return showParts;
+		List<ShowPart> savedShowParts = showPartRepository.saveAll(showParts);
+		System.out.println("Successfully saved the ImageShowParts!");
+		//System.out.println(savedShowParts);
+		return savedShowParts;
 	}
 
 	public ImageShow saveShowParts(List<ImageShowPart> imageShowParts, Long imageShowId) {
@@ -127,8 +124,4 @@ public class ShowPartService {
 		showPartRepository.save(showPart);
 	}
 
-	public Optional<List<ShowPart>> getCurrentSubstitutionShowParts() {
-
-		return null;
-	}
 }

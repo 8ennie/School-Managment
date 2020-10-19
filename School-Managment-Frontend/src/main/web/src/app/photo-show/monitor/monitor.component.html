@@ -204,14 +204,35 @@
                         </div>
                         <div class="ui-g-8">
                             <p-toggleButton [(ngModel)]="monitor.imageShowLocked" onLabel="{{ 'yes' | translate}}"
-                            offLabel="{{ 'no' | translate}}"></p-toggleButton>
+                                offLabel="{{ 'no' | translate}}"></p-toggleButton>
                         </div>
                     </ng-container>
 
                     <ng-container *ngIf="monitor.imageShow">
                         <button *ngIf="monitor.imageShow" type="button" pButton (click)="loginAndStartShow()"
-                                label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
+                            label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
                     </ng-container>
+
+                    <div class="ui-g-4">
+                        <label for="type">{{'start-last-show' | translate }}</label>
+                    </div>
+                    <div class="ui-g-8">
+                        <p-toggleButton [(ngModel)]="monitor.onStartResumeLastShow" onLabel="{{ 'yes' | translate}}"
+                            offLabel="{{ 'no' | translate}}" (click)="setStartResumeLastShow()"></p-toggleButton>
+                    </div>
+                    <ng-container *ngIf="!monitor.onStartResumeLastShow">
+                        <div class="ui-g-4">
+                            <label for="type">{{'start-url' | translate }}</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <div style="display: flex;">
+                                <input pInputText [(ngModel)]="monitor.startUrl" style="width: 80%;" />
+                                <button type="button" pButton (click)="setStartUrl()"
+                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                            </div>
+                        </div>
+                    </ng-container>
+
                 </div>
             </p-tabPanel>
 

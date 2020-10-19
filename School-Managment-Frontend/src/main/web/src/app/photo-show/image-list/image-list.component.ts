@@ -38,7 +38,7 @@ export class ImageListComponent implements OnInit {
     if (!uploadDocument) {
       this.resetChildrenNodes(this.treeNodes[0]);
     }
-    this._uploadImageShow = uploadDocument;
+    this._uploadDocument = uploadDocument;
   }
 
   get uploadDocument() {

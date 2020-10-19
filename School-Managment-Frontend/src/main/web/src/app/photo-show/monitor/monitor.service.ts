@@ -68,16 +68,16 @@ export class MonitorService {
             });
     }
 
-    
+
 
     loginAndStartShow(monitor: Monitor) {
         const formData = new FormData();
         formData.append('monitorId', monitor.id.toString());
-        if(monitor.imageShow.id){
+        if (monitor.imageShow.id) {
             formData.append('showId', monitor.imageShow.id.toString());
         } else {
             const showUrlParts = monitor.imageShow.split("/");
-            const showId = showUrlParts[showUrlParts.length-1]
+            const showId = showUrlParts[showUrlParts.length - 1]
             formData.append('showId', showId);
         }
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise().then(
@@ -112,7 +112,7 @@ export class MonitorService {
 
     setWakeTime(monitor: Monitor) {
         const formData = new FormData();
-        formData.append('time',  monitor.wakeTime.getHours() + ':' + monitor.wakeTime.getMinutes());
+        formData.append('time', monitor.wakeTime.getHours() + ':' + monitor.wakeTime.getMinutes());
         return this.http.post('http://' + monitor.ipAddress + '/settings/wakeTime', formData).toPromise().then(
             (status: boolean) => {
                 return status;
@@ -128,13 +128,33 @@ export class MonitorService {
             });
     }
 
+    setStartUrl(monitor: Monitor) {
+        const formData = new FormData();
+        formData.append('resumeLastShow', monitor.startUrl);
+        return this.http.post('http://' + monitor.ipAddress + '/settings/startUrl', formData).toPromise().then(
+            (serverIP) => {
+                console.log(serverIP);
+                return serverIP;
+            });
+    }
+
+    setStartResumeLastShow(monitor: Monitor) {
+        const formData = new FormData();
+        formData.append('resumeLastShow', monitor.onStartResumeLastShow ? 'true' : 'false');
+        return this.http.post('http://' + monitor.ipAddress + '/settings/onStartResumeLastShow', formData).toPromise().then(
+            (serverIP) => {
+                console.log(serverIP);
+                return serverIP;
+            });
+    }
+
     loginAndShowSubstitution(monitor: Monitor) {
         const formData = new FormData();
         formData.append('monitorId', monitor.id.toString());
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShowSubstitution', formData).toPromise();
     }
 
-    reboot(monitor: Monitor){
+    reboot(monitor: Monitor) {
         const formData = new FormData();
         formData.append('reboot', 'true');
         return this.http.post('http://' + monitor.ipAddress + '/settings/reboot', formData).toPromise();
@@ -142,9 +162,11 @@ export class MonitorService {
 
 }
 
-interface MonitorStatus{
-     screenStatus: boolean;
-     serverIp: string;
-     wakeTime: string;
-     sleepTime:string;
+interface MonitorStatus {
+    screenStatus: boolean;
+    serverIp: string;
+    wakeTime: string;
+    sleepTime: string;
+    onStartResumeLastShow: boolean;
+    startUrl: string;
 }

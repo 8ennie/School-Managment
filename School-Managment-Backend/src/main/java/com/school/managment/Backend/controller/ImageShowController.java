@@ -1,19 +1,16 @@
 package com.school.managment.Backend.controller;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.trace.http.HttpTrace.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.school.managment.Backend.exception.CantDeleteException;
 import com.school.managment.Backend.model.photoshow.Area;
 import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.model.photoshow.ShowPart;
@@ -38,20 +35,25 @@ public class ImageShowController {
 	public ImageShow uploadImageShow(@RequestParam("file") MultipartFile file,
 			@RequestParam("showName") String showName, Area area) throws IOException {
 		ImageShow imageShow = showPartService.saveImageShow(file, showName, area);
+		System.out.println("Sending back Image Show!");
 		return imageShow;
 	}
 	
 	@PostMapping("/upload/document")
-	public List<ShowPart> uploadDocument(@RequestParam("file") MultipartFile file, Area area) throws IOException {
-		List<ShowPart> showParts = showPartService.saveShowParts(file, area);
-		return showParts;
+	public List<ShowPart> uploadDocument(@RequestParam("file") MultipartFile file, Area area) {
+		List<ShowPart> showParts;
+		try {
+			showParts = showPartService.saveShowParts(file, area);
+			System.out.println("sending image show Parts Back!");
+			return showParts;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("PROBLEM!");
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
-
-	@GetMapping("/currentSubstitutionShowParts")
-	public Optional<List<ShowPart>> getCurrentSubstitutionShowParts() {
-		return showPartService.getCurrentSubstitutionShowParts();
-	}
-	
 	
 	@PostMapping("/imageShows/showParts")
 	public ImageShow saveImageShow(@Valid @RequestBody ImageShowPartRequest imageShowPartRequest) {
@@ -64,7 +66,7 @@ public class ImageShowController {
 	}
 	
 	@DeleteMapping("/imageShows/delete/{imageShowid}")
-	public ResponseEntity deleteImageShow(@PathVariable("imageShowid") Long imageShowid){
+	public ResponseEntity<?> deleteImageShow(@PathVariable("imageShowid") Long imageShowid){
 		if(!imageShowService.deleteImageShow(imageShowid)) {
 			return ResponseEntity.ok(new MessageResponse("IMAGE_SHOW_IN_USE"));
 		} else {

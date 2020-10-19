@@ -45,7 +45,7 @@ export class AreaComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.monitors);
       },
-      err => console.log("Error retrieving Documents")
+      err => console.log("Error retrieving Monitors!")
     ).then((monitors: List<Monitor>) => {
       if (monitors) {
         this.monitors = monitors.toArray();

@@ -25,7 +25,10 @@ export class DocumentStore {
                     let documents = res._embedded.documents;
                     this._documents.next(List(documents));
                 },
-                err => console.log("Error retrieving ImageShowes")
+                err => {
+                    console.log(err);
+                    console.log("Error retrieving Documents!")
+                }
             );
     }
 

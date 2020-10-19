@@ -156,5 +156,8 @@
     "change":"Ändern",
     "reboot":"Neu Starten",
     "lock-image-show":"Für Änderugen sperren",
-    "monitor-locked":"Der Monitor wurde für änderungen gespärt. Bitte im Sekretreriat nachfragen woran dies liegt!"
+    "monitor-locked":"Der Monitor wurde für änderungen gespärt. Bitte im Sekretreriat nachfragen woran dies liegt!",
+
+    "start-last-show":"Bei neusstart alte Präsentation Laden",
+    "start-url":"Start URL"
 }

@@ -57,6 +57,14 @@ export class UploadImageShowComponent implements OnInit {
 
   close() {
     this.displayDialog = false;
+    this.reset();
+  }
+
+  reset(){
+    this.errorMessage = null;
+    this.area = null;
+    this.fileUpload.clear();
+    this.imageShow = new ImageShow();
   }
 
   save() {

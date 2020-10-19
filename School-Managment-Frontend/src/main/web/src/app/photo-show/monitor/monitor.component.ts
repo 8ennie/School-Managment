@@ -113,6 +113,8 @@ export class MonitorComponent implements OnInit {
                         m.serverIp = status.serverIp;
                         m.wakeTime = new Date(new Date().toDateString() + ' ' + status.wakeTime);
                         m.sleepTime = new Date(new Date().toDateString() + ' ' + status.sleepTime);
+                        m.onStartResumeLastShow = status.onStartResumeLastShow;
+                        m.startUrl = status.startUrl;
                     }
                 ).catch(error => {
                     console.log(error);
@@ -195,6 +197,19 @@ export class MonitorComponent implements OnInit {
     setServerIP() {
         this.monitorService.setServerIP(this.monitor).then(ip => {
             this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
+        });
+    }
+
+    setStartUrl(){
+        this.monitorService.setStartUrl(this.monitor).then(ip => {
+            //this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
+        });
+    }
+
+    setStartResumeLastShow(){
+        this.monitorService.setStartResumeLastShow(this.monitor).then(ip => {
+            //console.log(ip); 
+            //this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
         });
     }
 

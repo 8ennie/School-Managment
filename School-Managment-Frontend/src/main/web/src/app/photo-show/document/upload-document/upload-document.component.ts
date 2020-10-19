@@ -45,6 +45,13 @@ export class UploadDocumentComponent implements OnInit {
 
   close() {
     this.displayDialog = false;
+    this.reset();
+  }
+
+  reset(){
+    this.errorMessage = null;
+    this.document = new Document();
+    this.fileUpload.clear();
   }
 
   save() {

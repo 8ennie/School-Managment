@@ -29,6 +29,7 @@ public class DBFileStorageService {
             Document doc = new Document(fileName, file.getContentType(), file.getBytes());
             doc.setArea(area);
             doc = documentRepository.save(doc);
+            System.out.println("Successfully saved the document to the Database!");
             return doc;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

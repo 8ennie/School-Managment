@@ -19,6 +19,8 @@ export class Monitor {
 
     sleepTime?: Date;
     wakeTime?: Date;
+    onStartResumeLastShow?: boolean;
+    startUrl:string;
 
     get imageShowUrl(): string | undefined {        
         if(this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href){
