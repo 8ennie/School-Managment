@@ -13,7 +13,7 @@ import com.school.managment.Backend.model.photoshow.help.projection.MonitorProje
 
 
 
-@Repository
+
 @CrossOrigin(origins = "*")
 @RepositoryRestResource(excerptProjection = MonitorProjection.class)
 public interface MonitorRepository extends JpaRepository<Monitor, Long> {

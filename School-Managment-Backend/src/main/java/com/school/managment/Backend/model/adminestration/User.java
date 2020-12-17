@@ -54,10 +54,13 @@ public class User {
 	@JsonIgnore
 	private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "user_roles", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@ManyToMany
+	@JoinTable( 
+    name = "users_roles", 
+    joinColumns = @JoinColumn(
+      name = "user_id", referencedColumnName = "id"), 
+    inverseJoinColumns = @JoinColumn(
+      name = "role_id", referencedColumnName = "id")) 
 	private Set<Role> roles = new HashSet<>();
 	
 	@ElementCollection(targetClass = Area.class)

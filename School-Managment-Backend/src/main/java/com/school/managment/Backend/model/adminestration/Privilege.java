@@ -2,14 +2,8 @@ package com.school.managment.Backend.model.adminestration;
 
 import java.util.Collection;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -30,7 +24,7 @@ public class Privilege {
     private EPrivilege name;
  
 	@JsonBackReference(value="roles")
-    @ManyToMany(mappedBy = "privileges")
+	@ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
     
     

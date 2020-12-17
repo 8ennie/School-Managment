@@ -1,7 +1,10 @@
 package com.school.managment.Backend.security.services;
 
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ import com.school.managment.Backend.model.adminestration.Privilege;
 import com.school.managment.Backend.model.adminestration.Role;
 import com.school.managment.Backend.model.adminestration.User;
 import com.school.managment.Backend.model.photoshow.Area;
+
+import lombok.Data;
 
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +47,7 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(User user) {
-		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		List<GrantedAuthority> authorities = new ArrayList<>();
 		for (Role role : user.getRoles()) {
 			for (Privilege privilege : role.getPrivileges()) {
 				authorities.add(new SimpleGrantedAuthority(privilege.getName().toString()));

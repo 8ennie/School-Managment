@@ -17,9 +17,9 @@ export class MonitorService {
 
     getAllMonitors() {
         return this.http.get<any>(this.ressorceUrl).toPromise()
-            // .then(res =>
-            //     <Monitor[]>res._embedded.monitors
-            // )
+             .then(res =>
+                 <Monitor[]>res._embedded.monitors
+             )
     }
 
     getMonitorsByArea(area: string) {
