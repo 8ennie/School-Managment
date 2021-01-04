@@ -34,12 +34,12 @@ export class MonitorService {
     saveMonitor(monitor: Monitor) {
         return this.http.post<Monitor>(this.ressorceUrl, monitor).toPromise()
             .then(monitor => {
-                //let monitorId = monitor._links.self.href.split("/").slice(-1)[0];
-                //monitor.id = monitorId
+                let monitorId = monitor._links.self.href.split("/").slice(-1)[0];
+                monitor.id = monitorId;
                 this.authService.signUpMonitor(monitor).then(
                     monitorUser => console.log(monitorUser)
                 );
-                return monitor
+                return monitor;
             });
     }
 

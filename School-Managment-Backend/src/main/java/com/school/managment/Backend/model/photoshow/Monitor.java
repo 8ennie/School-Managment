@@ -54,4 +54,10 @@ public class Monitor {
 	@Enumerated(EnumType.STRING)
 	private Set<Area> areas;
 	
+	public Monitor(String ipAdresse, String name, String location){
+		this.ipAddress = ipAdresse;
+		this.name = name;
+		this.location = location;
+	}
+	
 }
