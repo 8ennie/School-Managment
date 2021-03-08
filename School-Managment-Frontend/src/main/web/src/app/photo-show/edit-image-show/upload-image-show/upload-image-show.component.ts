@@ -17,6 +17,7 @@ export class UploadImageShowComponent implements OnInit {
 
   errorMessage: string;
   displayDialogValue = false;
+  uploading = false;
 
   @Output() displayDialogChange = new EventEmitter<boolean>();
 
@@ -44,7 +45,7 @@ export class UploadImageShowComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(!this.area){
+    if (!this.area) {
       this.areaService.getUserAreas().then((areas: string[]) => {
         this.areas = areas.map(a => {
           return { label: a, value: a }
@@ -60,7 +61,7 @@ export class UploadImageShowComponent implements OnInit {
     this.reset();
   }
 
-  reset(){
+  reset() {
     this.errorMessage = null;
     this.area = null;
     this.fileUpload.clear();
@@ -71,6 +72,7 @@ export class UploadImageShowComponent implements OnInit {
     this.errorMessage = null;
 
     if (this.imageShow.area && this.fileUpload.files.length != 0) {
+      this.uploading = true;
       let doc
       for (let file of this.fileUpload.files) {
         doc = file;
@@ -79,12 +81,15 @@ export class UploadImageShowComponent implements OnInit {
       formData.append("file", doc);
       formData.append("showName", this.imageShow.name);
       formData.append("area", this.imageShow.area);
-      this.imageShowStore.addImageShow2(formData);
+      this.imageShowStore.addImageShow2(formData).then(() => {
+        this.uploading = false;
+        this.close();
+      }
+      );
     } else {
       this.errorMessage = "error.not-all-required-fields";
       return;
     }
-    this.close();
 
   }
 }

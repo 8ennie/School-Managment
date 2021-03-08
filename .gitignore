@@ -7,3 +7,5 @@
 node_modules
 target/
 .settings/
+School-Managment-Frontend/src/main/web/dist/*
+School-Managment-Backend/src/main/java/com/school/managment/Backend/model/adminestration/help/*

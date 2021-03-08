@@ -27,7 +27,7 @@ const routes: Routes = [
       { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_MESSAGES] } },
       { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'monitors', component: MonitorComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
-      { path: 'areas/:area', component: AreaComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
+      { path: 'areas/:area', component: AreaComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
       { path: 'edit/:id', component: EditImageShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'show/:id', component: PhotoShowComponent}
     ]

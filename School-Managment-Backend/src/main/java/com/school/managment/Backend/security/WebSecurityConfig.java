@@ -22,9 +22,9 @@ import com.school.managment.Backend.security.services.UserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-		// securedEnabled = true,
-		// jsr250Enabled = true,
-		prePostEnabled = true)
+	 securedEnabled = true,
+	 jsr250Enabled = true,
+ 	prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -52,6 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+//	 @Bean
+//	    CorsConfigurationSource corsConfigurationSource() {
+//	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//	        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+//	        return source;
+//	    }
 	
 	
 

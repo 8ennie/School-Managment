@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -84,6 +85,7 @@ import { AreaComponent } from './photo-show/area/area.component';
       }
     }),
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   entryComponents: [
   ],
