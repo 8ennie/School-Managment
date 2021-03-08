@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "lite-server"
+    "dev": "lite-server",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
