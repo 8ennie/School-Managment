@@ -1,13 +1,19 @@
-<p-tree [value]="treeNodes" (onNodeExpand)="onNodeExpand($event)" [style]="{width: '350px'}" cdkDropList #nodes
-    [cdkDropListEnterPredicate]="false">
+<p-tree [value]="treeNodes" (onNodeExpand)="onNodeExpand($event)" [style]="{width: '350px'}"  #nodes
+    cdkDropList
+    cdkDropListConnectedTo="imageShowParts"
+    [cdkDropListEnterPredicate]="returnFalse"
+    >
 
     <ng-template let-node pTemplate="default">
         <div>
             <span>{{node.label | translate }}</span>
         </div>
     </ng-template>
+
     <ng-template let-node pTemplate="picture">
-        <div cdkDrag="showParts" [cdkDragData]="node.data">
+        <div 
+        cdkDrag 
+        [cdkDragData]="node.data">
             <img [src]="getImage(node.data.showPartImage)" height="100px"
                 style="border-width: 1px; border-color: black; border-style: solid;">
         </div>

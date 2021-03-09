@@ -19,24 +19,24 @@ export class RoleStore {
         this.roleService.getAllRoles()
             .then(
                 (res: { _embedded }) => {
-                    let roles = res._embedded.roles;
+                    const roles = res._embedded.roles;
                     this._roles.next(List(roles));
                 },
-                err => console.log("Error retrieving Roles")
+                err => console.log('Error retrieving Roles')
             );
     }
 
 
     addRole(newRole: Role) {
-        let obs = this.roleService.saveRole(newRole);
+        const obs = this.roleService.saveRole(newRole);
 
         obs.then(
             res => {
-                if(res){
-                    var id: number = res._links.self.href.split('/').pop();
+                if (res) {
+                    const id: number = res._links.self.href.split('/').pop();
                     this.roleService.getRole(id.toString()).then((role: Role) => {
                         console.log(role);
-                        
+
                         this._roles.next(this._roles.getValue().push(role));
                     });
                 }
@@ -46,11 +46,11 @@ export class RoleStore {
     }
 
     deleteRole(deleted: Role) {
-        let obs = this.roleService.deleteRole(deleted);
+        const obs = this.roleService.deleteRole(deleted);
         obs.then(
             res => {
-                let roles: List<Role> = this._roles.getValue();
-                let index = roles.findIndex((role) => role.id === deleted.id);
+                const roles: List<Role> = this._roles.getValue();
+                const index = roles.findIndex((role) => role.id === deleted.id);
                 this._roles.next(roles.delete(index));
             }
         );
@@ -59,14 +59,14 @@ export class RoleStore {
     }
 
     updateRole(updateRole: Role) {
-        let obs = this.roleService.updateRole(updateRole);
+        const obs = this.roleService.updateRole(updateRole);
 
         obs.then(
             (res: Role) => {
-                var id: number = res._links.self.href.split('/').pop();
+                const id: number = res._links.self.href.split('/').pop();
                 this.roleService.getRole(id.toString()).then((role: Role) => {
-                    let roles: List<Role> = this._roles.getValue();
-                    let index = roles.findIndex((role) => role.id === updateRole.id);
+                    const roles: List<Role> = this._roles.getValue();
+                    const index = roles.findIndex((r) => r.id === updateRole.id);
                     this._roles.next(roles.update(index, () => role));
                 });
             }

@@ -20,19 +20,19 @@ export class RoleService {
         return this.http.get(API_URL).toPromise();
     }
 
-    getRole(id: string){
+    getRole(id: string) {
         return this.http.get(API_URL + '/' +  id + '?projection=roleProjection').toPromise();
     }
 
-    getPrivileges(role: Role){
+    getPrivileges(role: Role) {
         return this.http.get(role._links.privileges.href).toPromise();
     }
 
-    getAllPrivileges(){
+    getAllPrivileges() {
         return this.http.get(environment.apiUrl + 'privileges').toPromise();
     }
 
-    saveRole(role: Role) : Promise<void | Role>{
+    saveRole(role: Role): Promise<void | Role> {
         return this.http.post<Role>(API_URL , role).pipe(
             catchError((err: HttpErrorResponse) => {
                 return this.handleError(err);
@@ -40,7 +40,7 @@ export class RoleService {
         ).toPromise();
     }
 
-    updateRole(role: Role){
+    updateRole(role: Role) {
         return this.http.patch(API_URL + '/' + role.id  , role).pipe(
             catchError((err: HttpErrorResponse) => {
                 return this.handleError(err);
@@ -48,7 +48,7 @@ export class RoleService {
         ).toPromise();
     }
 
-    deleteRole(role: Role){
+    deleteRole(role: Role) {
         return this.http.delete(API_URL + '/' + role.id).toPromise();
     }
 
@@ -57,7 +57,7 @@ export class RoleService {
         if (error.error instanceof ErrorEvent) {
           console.error('An error occurred:', error.error.message);
         } else {
-          if (error.status == 409 && error.error.message.includes('ConstraintViolationException')){
+          if (error.status === 409 && error.error.message.includes('ConstraintViolationException')) {
             return throwError(
                 'ConstraintViolationException');
           }

@@ -7,7 +7,7 @@ import { Role } from './role.model';
   selector: 'app-role',
   providers: [],
   templateUrl: './role.component.html',
-  styleUrls: ['./role.component.css']
+  styleUrls: ['./role.component.scss']
 })
 export class RoleComponent implements OnInit {
 
@@ -18,10 +18,10 @@ export class RoleComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  roleSelected(event){
+  roleSelected(event) {
     this.roleID = event;
   }
-  
+
 }
 
 

@@ -2,7 +2,7 @@
 
 export class Monitor {
 
-    constructor(){}
+    constructor() {}
 
 
     id?: number;
@@ -15,17 +15,17 @@ export class Monitor {
     _links?;
     imageShowLocked?: boolean;
     status?: boolean;
-    serverIp?:string;
+    serverIp?: string;
 
     sleepTime?: Date;
     wakeTime?: Date;
     onStartResumeLastShow?: boolean;
-    startUrl:string;
+    startUrl: string;
 
-    get imageShowUrl(): string | undefined {        
-        if(this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href){
-            return this.imageShow?._links.self.href.replace("{?projection}", "");
-        }else{
+    get imageShowUrl(): string | undefined {
+        if (this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href) {
+            return this.imageShow?._links.self.href.replace('{?projection}', '');
+        } else {
             return this.imageShow;
         }
     }

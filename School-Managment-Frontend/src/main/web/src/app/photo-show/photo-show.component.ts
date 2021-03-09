@@ -7,7 +7,7 @@ import { Params, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-photo-show',
   templateUrl: './photo-show.component.html',
-  styleUrls: ['./photo-show.component.css']
+  styleUrls: ['./photo-show.component.scss']
 })
 export class PhotoShowComponent implements OnInit {
 
@@ -21,8 +21,8 @@ export class PhotoShowComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   
-    
+
+
     this.route.params.subscribe((parms: Params) => {
       this.id = parms['id'];
     });
@@ -33,11 +33,11 @@ export class PhotoShowComponent implements OnInit {
         if (showParts) {
           this.showParts = showParts._embedded.imageShowShowParts.filter(sp => sp.active);
         }
-      });;
+      });
     } else {
       this.showService.getShowShowParts(this.id).then((showParts: any) => {
         if (showParts) {
-          this.showParts = showParts._embedded.imageShowShowParts.filter(sp => sp.active).sort((sp1,sp2) => sp1.position - sp2.position);
+          this.showParts = showParts._embedded.imageShowShowParts.filter(sp => sp.active).sort((sp1, sp2) => sp1.position - sp2.position);
         }
       });
     }
@@ -49,6 +49,6 @@ export class PhotoShowComponent implements OnInit {
 
 
   getHeight() {
-    return window.innerHeight -55;
+    return window.innerHeight - 55;
   }
 }

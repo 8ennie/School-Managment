@@ -22,10 +22,10 @@ export class ImageShowStore {
         this.imageShowService.getAllImageShows()
             .then(
                 (res) => {
-                    let imageShows = res;
+                    const imageShows = res;
                     this._imageShows.next(List(imageShows));
                 },
-                err => console.log("Error retrieving ImageShowes")
+                err => console.log('Error retrieving ImageShowes')
             );
     }
 
@@ -33,26 +33,26 @@ export class ImageShowStore {
         this._currentFiltedArea = area;
         this.imageShowService.getImageShowByArea(area).then(
             (res: { _embedded }) => {
-                let imageShows = res._embedded.imageShows;
+                const imageShows = res._embedded.imageShows;
                 this._imageShowsFiltered.next(List(imageShows));
             },
-            err => console.log("Error retrieving ImageShowes")
+            err => console.log('Error retrieving ImageShowes')
         );
     }
 
 
     addImageShow2(file) {
-        let obs = this.imageShowService.saveImageShow2(file);
+        const obs = this.imageShowService.saveImageShow2(file);
 
         obs.then(
             res => {
                 if (res) {
-                    var id: number = res.id;
+                    const id: number = res.id;
                     this.imageShowService.getImageShow(id.toString()).then((imageShow: ImageShow) => {
-                        let imageShows: List<ImageShow> = this._imageShows.getValue();
-                        let index = imageShows.findIndex((i) => i.id === imageShow.id);
+                        const imageShows: List<ImageShow> = this._imageShows.getValue();
+                        const index = imageShows.findIndex((i) => i.id === imageShow.id);
                         this._imageShows.next(imageShows.update(index, () => imageShow));
-                        if (this._currentFiltedArea == file.get('area')) {
+                        if (this._currentFiltedArea === file.get('area')) {
                             this.filterForArea(file.get('area'));
                         }
                     });
@@ -64,12 +64,12 @@ export class ImageShowStore {
 
 
     addImageShow(newImageShow: ImageShow) {
-        let obs = this.imageShowService.saveImageShow(newImageShow);
+        const obs = this.imageShowService.saveImageShow(newImageShow);
 
         obs.then(
             res => {
                 if (res) {
-                    var id: number = res._links.self.href.split('/').pop();
+                    const id: number = res._links.self.href.split('/').pop();
                     this.imageShowService.getImageShow(id.toString()).then((imageShow: ImageShow) => {
                         this._imageShows.next(this._imageShows.getValue().push(imageShow));
                     });
@@ -80,11 +80,11 @@ export class ImageShowStore {
     }
 
     deleteImageShow(deleted: ImageShow) {
-        let obs = this.imageShowService.deleteImageShow(deleted.id.toString());
+        const obs = this.imageShowService.deleteImageShow(deleted.id.toString());
         obs.then(
             res => {
-                let imageShows: List<ImageShow> = this._imageShows.getValue();
-                let index = imageShows.findIndex((imageShow) => imageShow.id === deleted.id);
+                const imageShows: List<ImageShow> = this._imageShows.getValue();
+                const index = imageShows.findIndex((imageShow) => imageShow.id === deleted.id);
                 this._imageShows.next(imageShows.delete(index));
             }
         );
@@ -93,14 +93,14 @@ export class ImageShowStore {
     }
 
     updateImageShow(updateRole: ImageShow) {
-        let obs = this.imageShowService.updateImageShow(updateRole);
+        const obs = this.imageShowService.updateImageShow(updateRole);
 
         obs.then(
             (res: ImageShow) => {
-                var id: number = res._links.self.href.split('/').pop();
+                const id: number = res._links.self.href.split('/').pop();
                 this.imageShowService.getImageShow(id.toString()).then((imageShow: ImageShow) => {
-                    let imageShows: List<ImageShow> = this._imageShows.getValue();
-                    let index = imageShows.findIndex((i) => i.id === imageShow.id);
+                    const imageShows: List<ImageShow> = this._imageShows.getValue();
+                    const index = imageShows.findIndex((i) => i.id === imageShow.id);
                     this._imageShows.next(imageShows.update(index, () => imageShow));
                 });
             }

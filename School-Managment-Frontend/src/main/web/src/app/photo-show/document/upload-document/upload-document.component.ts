@@ -7,7 +7,7 @@ import { Document } from '../document.model';
 @Component({
   selector: 'app-upload-document',
   templateUrl: './upload-document.component.html',
-  styleUrls: ['./upload-document.component.css']
+  styleUrls: ['./upload-document.component.scss']
 })
 export class UploadDocumentComponent implements OnInit {
 
@@ -22,7 +22,7 @@ export class UploadDocumentComponent implements OnInit {
     this.displayDialogChange.emit(this.displayDialog);
   }
 
-  get displayDialog(){
+  get displayDialog() {
     return this.displayDialogValue;
   }
 
@@ -38,7 +38,7 @@ export class UploadDocumentComponent implements OnInit {
   ngOnInit(): void {
     this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
-        return { label: a, value: a }
+        return { label: a, value: a };
       });
     });
   }
@@ -48,7 +48,7 @@ export class UploadDocumentComponent implements OnInit {
     this.reset();
   }
 
-  reset(){
+  reset() {
     this.errorMessage = null;
     this.document = new Document();
     this.fileUpload.clear();
@@ -57,17 +57,17 @@ export class UploadDocumentComponent implements OnInit {
   save() {
     this.errorMessage = null;
 
-    if (this.document.area && this.fileUpload.files.length != 0) {
-      let doc
-      for (let file of this.fileUpload.files) {
+    if (this.document.area && this.fileUpload.files.length !== 0) {
+      let doc;
+      for (const file of this.fileUpload.files) {
         doc = file;
       }
-      var formData = new FormData();
-      formData.append("file", doc)
-      formData.append("area", this.document.area);
+      const formData = new FormData();
+      formData.append('file', doc);
+      formData.append('area', this.document.area);
       this.documentService.uploadDocument(formData);
     } else {
-      this.errorMessage = "error.not-all-required-fields";
+      this.errorMessage = 'error.not-all-required-fields';
       return;
     }
     this.close();

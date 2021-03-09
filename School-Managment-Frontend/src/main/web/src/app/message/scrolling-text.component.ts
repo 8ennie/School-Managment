@@ -14,7 +14,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
         position: relative;
         width:100%;
       }
-  
+
       .scrolling-text {
         position: absolute;
         white-space: nowrap;
@@ -34,7 +34,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 })
 export class ScrollingTextComponent {
     state = 0;
-    @Input() text:string = '';
+    @Input() text = '';
     @Input() height = '80px';
     scrollDone() {
         this.state++;

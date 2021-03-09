@@ -10,7 +10,7 @@ import { ImageShow } from '../image-show.model';
   selector: 'app-upload-photo-show',
   providers: [],
   templateUrl: './upload-photo-show.component.html',
-  styleUrls: ['./upload-photo-show.component.css']
+  styleUrls: ['./upload-photo-show.component.scss']
 })
 export class UploadPhotoShowComponent implements OnInit {
 
@@ -53,7 +53,7 @@ export class UploadPhotoShowComponent implements OnInit {
     });
     this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
-        return { label: a, value: a }
+        return { label: a, value: a };
       });
     });
   }
@@ -67,21 +67,21 @@ export class UploadPhotoShowComponent implements OnInit {
     this.currentAreas = [];
     if (this.imageShows) {
       for (let i = 0; i < this.imageShows.length; i++) {
-        let rowData = this.imageShows[i];
-        let area = rowData.area;
-        if (this.currentAreas.filter(a => a.value == area).length == 0) {
+        const rowData = this.imageShows[i];
+        const area = rowData.area;
+        if (this.currentAreas.filter(a => a.value === area).length === 0) {
           this.currentAreas.push({ label: area, value: area });
         }
         if (i == 0) {
           this.rowGroupMetadata[area] = { index: 0, size: 1 };
-        }
-        else {
-          let previousRowData = this.imageShows[i - 1];
-          let previousRowGroup = previousRowData.area;
-          if (area === previousRowGroup)
+        } else {
+          const previousRowData = this.imageShows[i - 1];
+          const previousRowGroup = previousRowData.area;
+          if (area === previousRowGroup) {
             this.rowGroupMetadata[area].size++;
-          else
+          } else {
             this.rowGroupMetadata[area] = { index: i, size: 1 };
+          }
         }
       }
     }
@@ -92,16 +92,16 @@ export class UploadPhotoShowComponent implements OnInit {
     this.displayDialog = true;
   }
   onRowSelect(event) {
-    this.errorMessage = ""
+    this.errorMessage = '';
     this.newImageShow = false;
     this.imageShow = this.cloneShow(event.data);
-    this.imageShow.date = new Date(this.imageShow.date)
+    this.imageShow.date = new Date(this.imageShow.date);
     this.displayDialog = true;
   }
 
   cloneShow(is: ImageShow): ImageShow {
-    let imageShow = {};
-    for (let prop in is) {
+    const imageShow = {};
+    for (const prop in is) {
       imageShow[prop] = is[prop];
     }
     return imageShow;
@@ -117,30 +117,30 @@ export class UploadPhotoShowComponent implements OnInit {
     this.errorMessage = null;
     if (this.newImageShow) {
       if (this.imageShow.name && this.imageShow.area && this.fileUpload.files.length != 0) {
-        let doc
-        for (let file of this.fileUpload.files) {
+        let doc;
+        for (const file of this.fileUpload.files) {
           doc = file;
         }
-        var formData = new FormData();
-        formData.append("file", doc)
-        formData.append("showName", this.imageShow.name);
-        formData.append("area", this.imageShow.area);
+        const formData = new FormData();
+        formData.append('file', doc);
+        formData.append('showName', this.imageShow.name);
+        formData.append('area', this.imageShow.area);
         this.imageShowStore.addImageShow2(formData);
       } else {
-        this.errorMessage = "error.not-all-required-fields";
+        this.errorMessage = 'error.not-all-required-fields';
         return;
       }
       this.imageShows = newImageShows;
       this.close();
     } else {
       if (this.imageShow.name && this.imageShow.area && this.imageShow.id) {
-        var changedImageShow = new ImageShow();
+        const changedImageShow = new ImageShow();
         changedImageShow.id = this.imageShow.id;
         changedImageShow.name = this.imageShow.name;
         changedImageShow.area = this.imageShow.area;
         this.imageShowStore.updateImageShow(changedImageShow);
       } else {
-        this.errorMessage = "error.not-all-required-fields";
+        this.errorMessage = 'error.not-all-required-fields';
         return;
       }
       this.imageShows = newImageShows;

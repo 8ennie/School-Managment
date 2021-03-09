@@ -1,7 +1,7 @@
 export class Message {
 
-    message?:string;
+    message?: string;
 
-    category?:string;
+    category?: string;
 
 }

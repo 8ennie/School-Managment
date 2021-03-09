@@ -6,7 +6,7 @@ import { Role } from '../role.model';
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
-  styleUrls: ['./role-list.component.css']
+  styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
 
@@ -37,7 +37,7 @@ export class RoleListComponent implements OnInit {
     this.roleSelected.emit(this.selectedRole.id);
   }
 
-  getPrivileges(role){
+  getPrivileges(role) {
     return role.privileges.map(r => r.name);
   }
 }

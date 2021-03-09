@@ -1,5 +1,4 @@
 import { ImageShowStore } from './../../image-show.store';
-import { ImageShowService } from './../../image-show.service';
 import { ImageShow } from './../../image-show.model';
 import { AreaService } from './../../area.service';
 import { FileUpload } from 'primeng/fileupload';
@@ -8,7 +7,7 @@ import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angu
 @Component({
   selector: 'app-upload-image-show',
   templateUrl: './upload-image-show.component.html',
-  styleUrls: ['./upload-image-show.component.css']
+  styleUrls: ['./upload-image-show.component.scss']
 })
 export class UploadImageShowComponent implements OnInit {
 
@@ -48,7 +47,7 @@ export class UploadImageShowComponent implements OnInit {
     if (!this.area) {
       this.areaService.getUserAreas().then((areas: string[]) => {
         this.areas = areas.map(a => {
-          return { label: a, value: a }
+          return { label: a, value: a };
         });
       });
     } else {
@@ -71,23 +70,23 @@ export class UploadImageShowComponent implements OnInit {
   save() {
     this.errorMessage = null;
 
-    if (this.imageShow.area && this.fileUpload.files.length != 0) {
+    if (this.imageShow.area && this.fileUpload.files.length !== 0) {
       this.uploading = true;
-      let doc
-      for (let file of this.fileUpload.files) {
+      let doc;
+      for (const file of this.fileUpload.files) {
         doc = file;
       }
-      var formData = new FormData();
-      formData.append("file", doc);
-      formData.append("showName", this.imageShow.name);
-      formData.append("area", this.imageShow.area);
+      const formData = new FormData();
+      formData.append('file', doc);
+      formData.append('showName', this.imageShow.name);
+      formData.append('area', this.imageShow.area);
       this.imageShowStore.addImageShow2(formData).then(() => {
         this.uploading = false;
         this.close();
       }
       );
     } else {
-      this.errorMessage = "error.not-all-required-fields";
+      this.errorMessage = 'error.not-all-required-fields';
       return;
     }
 

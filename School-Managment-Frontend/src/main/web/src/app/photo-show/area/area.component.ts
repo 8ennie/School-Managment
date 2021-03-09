@@ -10,21 +10,33 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
-  styleUrls: ['./area.component.css']
+  styleUrls: ['./area.component.scss']
 })
 export class AreaComponent implements OnInit {
-
-  area: string;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly monitorService: MonitorService,
     private readonly imageShowStore: ImageShowStore,
     private readonly router: Router,
-    private readonly authService:AuthService,
+    private readonly authService: AuthService,
   ) {
 
   }
+
+  area: string;
+
+  // For Monitors
+  monitors: Monitor[];
+  selectedMonitor: Monitor;
+  monitor: Monitor = new Monitor();
+  displayDialog = false;
+  monitorImageShowes: { label: any; value: any; }[];
+  displayAllMonitorDialog = false;
+
+  // For ImageShow
+  imageShows: ImageShow[] = [];
+  uploadImageShow = false;
 
   ngOnInit(): void {
     this.route.params.subscribe((parms: Params) => {
@@ -34,7 +46,7 @@ export class AreaComponent implements OnInit {
     this.imageShowStore.imageShowsFiltered.subscribe(imageShows => {
       this.imageShows = imageShows.toArray();
       this.monitorImageShowes = imageShows.toArray().map(im => {
-        return { label: im.name, value: im._links.self.href }
+        return { label: im.name, value: im._links.self.href };
       });
     });
   }
@@ -45,7 +57,7 @@ export class AreaComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.monitors);
       },
-      err => console.log("Error retrieving Monitors!")
+      err => console.log('Error retrieving Monitors!')
     ).then((monitors: List<Monitor>) => {
       if (monitors) {
         this.monitors = monitors.toArray();
@@ -59,20 +71,12 @@ export class AreaComponent implements OnInit {
             }
           ).catch(error => {
             console.log(error);
-            m.status = null
-          })
-        })
+            m.status = null;
+          });
+        });
       }
     });
   }
-
-  //For Monitors
-  monitors: Monitor[];
-  selectedMonitor: Monitor;
-  monitor: Monitor = new Monitor();
-  displayDialog: boolean = false;
-  monitorImageShowes: { label: any; value: any; }[];
-  displayAllMonitorDialog = false;
 
   onMonitorRowSelect(event) {
     this.monitor = this.cloneMonitor(event.data);
@@ -82,17 +86,17 @@ export class AreaComponent implements OnInit {
         this.monitor.serverIp = s.serverIp;
       }
     ).catch(error => {
-      console.log("Couldn't Reach Monitor");
+      console.log('Couldn\'t Reach Monitor');
       if (this.monitor) {
-        this.monitor.status = null
+        this.monitor.status = null;
       }
-    })
+    });
     this.displayDialog = true;
   }
 
   cloneMonitor(c: Monitor): Monitor {
-    let monitor = new Monitor();
-    for (let prop in c) {
+    const monitor = new Monitor();
+    for (const prop in c) {
       monitor[prop] = c[prop];
     }
     return monitor;
@@ -106,7 +110,7 @@ export class AreaComponent implements OnInit {
   saveMonitor() {
     this.monitor.imageShow = this.monitor.imageShowUrl;
     this.monitorService.updateMonitor(this.monitor.id, this.monitor).then(m => {
-      this.loadData()
+      this.loadData();
     });
   }
 
@@ -118,16 +122,12 @@ export class AreaComponent implements OnInit {
     });
     this.displayAllMonitorDialog = false;
   }
-
-  //For ImageShow
-  imageShows: ImageShow[] = [];
-  uploadImageShow = false;
   onImageShowSelect(event) {
-    this.router.navigate(['photoshow', 'edit', event.data.id])
+    this.router.navigate(['photoshow', 'edit', event.data.id]);
   }
 
   hasPrivilege(privileges: string[]): boolean {
-    for (let p of privileges) {
+    for (const p of privileges) {
         if (!this.authService.hasPrivilege(privileges)) {
             return false;
         }

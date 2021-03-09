@@ -28,7 +28,7 @@ export class DocumentService {
   }
 
   uploadDocument(doc: FormData) {
-    return this.http.post<any>(UPLOAD_URL + "/document", doc).pipe(
+    return this.http.post<any>(UPLOAD_URL + '/document', doc).pipe(
       catchError((err: HttpErrorResponse) => {
         return this.handleError(err);
       })
@@ -49,7 +49,7 @@ export class DocumentService {
   }
 
   getImageShowParts(documentId) {
-    let showPartURL = environment.apiUrl + 'showParts/search/findByParentDocument?parentDocument=' + environment.apiUrl + 'documents/' + documentId;
+    const showPartURL = environment.apiUrl + 'showParts/search/findByParentDocument?parentDocument=' + environment.apiUrl + 'documents/' + documentId;
     return this.http.get(showPartURL).toPromise();
   }
 

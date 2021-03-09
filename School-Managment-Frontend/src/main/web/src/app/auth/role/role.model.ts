@@ -1,6 +1,6 @@
 
 export class Role {
-  id?:string;
+  id?: string;
   name: string;
   privileges?: [];
 

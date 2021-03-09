@@ -18,8 +18,8 @@ export class MonitorService {
     getAllMonitors() {
         return this.http.get<any>(this.ressorceUrl).toPromise()
              .then(res =>
-                 <Monitor[]>res._embedded.monitors
-             )
+                 res._embedded.monitors as Monitor[]
+             );
     }
 
     getMonitorsByArea(area: string) {
@@ -33,28 +33,28 @@ export class MonitorService {
 
     saveMonitor(monitor: Monitor) {
         return this.http.post<Monitor>(this.ressorceUrl, monitor).toPromise()
-            .then(monitor => {
-                let monitorId = monitor._links.self.href.split("/").slice(-1)[0];
-                monitor.id = monitorId;
-                this.authService.signUpMonitor(monitor).then(
+            .then(m => {
+                const monitorId = m._links.self.href.split('/').slice(-1)[0];
+                m.id = monitorId;
+                this.authService.signUpMonitor(m).then(
                     monitorUser => console.log(monitorUser)
                 );
-                return monitor;
+                return m;
             });
     }
 
     updateMonitor(id: number, monitor: Monitor) {
         return this.http.patch<any>(this.ressorceUrl + '/' + id, monitor).toPromise()
             .then(res =>
-                <Monitor>res
+                res as Monitor
             )
             .then(data => {
                 return data;
             });
     }
 
-    deleteMonitor(id: number,) {
-        return this.http.delete<any>(this.ressorceUrl + '/' + id).toPromise()
+    deleteMonitor(id: number, ) {
+        return this.http.delete<any>(this.ressorceUrl + '/' + id).toPromise();
     }
 
 
@@ -76,8 +76,8 @@ export class MonitorService {
         if (monitor.imageShow.id) {
             formData.append('showId', monitor.imageShow.id.toString());
         } else {
-            const showUrlParts = monitor.imageShow.split("/");
-            const showId = showUrlParts[showUrlParts.length - 1]
+            const showUrlParts = monitor.imageShow.split('/');
+            const showId = showUrlParts[showUrlParts.length - 1];
             formData.append('showId', showId);
         }
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise().then(

@@ -6,13 +6,13 @@ import { MessageService } from './message.service';
   selector: 'app-message',
   providers: [MessageService],
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
 
   display: boolean;
-  width:number = window.innerWidth;
-  message: string = '';
+  width: number = window.innerWidth;
+  message = '';
 
   showDialog() {
       this.display = true;
@@ -24,9 +24,9 @@ export class MessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageService.message.subscribe((message) => {
-      if(message.length > 0){
+      if (message.length > 0) {
         this.display = true;
-      }else {
+      } else {
         this.display = false;
       }
       this.message = message;

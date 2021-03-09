@@ -5,7 +5,7 @@ import { DocumentService } from './document.service';
 import { Document } from './document.model';
 
 
-@Injectable({providedIn:'root'})
+@Injectable({providedIn: 'root'})
 export class DocumentStore {
 
     private _documents: BehaviorSubject<List<Document>> = new BehaviorSubject(List([]));
@@ -14,30 +14,30 @@ export class DocumentStore {
 
     constructor(
         private readonly documentService: DocumentService
-    ){
+    ) {
         this.loadInitialData();
     }
 
     loadInitialData() {
         this.documentService.getAllDocuments()
             .then(
-                (res:{_embedded}) => {
-                    let documents = res._embedded.documents;
+                (res: {_embedded}) => {
+                    const documents = res._embedded.documents;
                     this._documents.next(List(documents));
                 },
                 err => {
                     console.log(err);
-                    console.log("Error retrieving Documents!")
+                    console.log('Error retrieving Documents!');
                 }
             );
     }
 
     addDocument(newDocument: Document) {
-        let obs = this.documentService.saveDocument(newDocument);
+        const obs = this.documentService.saveDocument(newDocument);
         obs.then(
             res => {
-                if(res){
-                    var id: number = res._links.self.href.split('/').pop();
+                if (res) {
+                    const id: number = res._links.self.href.split('/').pop();
                     this.documentService.getDocument(id.toString()).then((document: Document) => {
                         this._documents.next(this._documents.getValue().push(document));
                     });
@@ -47,18 +47,18 @@ export class DocumentStore {
     }
 
     deleteDocument(deleted: Document) {
-        let obs = this.documentService.deleteDocument(deleted.id);
+        const obs = this.documentService.deleteDocument(deleted.id);
         obs.then(
             res => {
-                let documents: List<Document> = this._documents.getValue();
-                let index = documents.findIndex((document) => document.id === deleted.id);
+                const documents: List<Document> = this._documents.getValue();
+                const index = documents.findIndex((document) => document.id === deleted.id);
                 this._documents.next(documents.delete(index));
             }
         );
         return obs;
     }
 
-    getImageShowParts(document:Document){
+    getImageShowParts(document: Document) {
         return this.documentService.getImageShowParts(document);
     }
 

@@ -24,17 +24,17 @@ export class ImageShowService {
             //     return d
             // })
             .then((data: { _embedded }) => {
-                let imageShows = []
+                const imageShows = [];
                 if (data._embedded.imageShows) {
-                    imageShows.push(...data._embedded.imageShows)
+                    imageShows.push(...data._embedded.imageShows);
                 }
                 if (data._embedded.advertismentShows) {
-                    imageShows.push(...data._embedded.advertismentShows)
+                    imageShows.push(...data._embedded.advertismentShows);
                 }
                 if (data._embedded.substitutionShows) {
-                    imageShows.push(...data._embedded.substitutionShows)
+                    imageShows.push(...data._embedded.substitutionShows);
                 }
-                return imageShows
+                return imageShows;
             });
     }
 
@@ -51,7 +51,7 @@ export class ImageShowService {
     }
 
     saveImageShow2(file): Promise<void | ImageShow> {
-        return this.http.post<any>(UPLOAD_URL + "/show", file).pipe(
+        return this.http.post<any>(UPLOAD_URL + '/show', file).pipe(
             catchError((err: HttpErrorResponse) => {
                 return this.handleError(err);
             })
@@ -66,7 +66,7 @@ export class ImageShowService {
         ).toPromise();
     }
 
-    deleteImageShow(id: String) {
+    deleteImageShow(id: string) {
         return this.http.delete(API_URL + '/delete/' + id).toPromise();
     }
 
@@ -75,24 +75,24 @@ export class ImageShowService {
     }
 
     saveImageShowParts(imageShowId, imageShowParts) {
-        let imageShowPartRequest = {
-            "update": false,
-            "imageShowParts": imageShowParts.map(isp => {
+        const imageShowPartRequest = {
+            update: false,
+            imageShowParts: imageShowParts.map(isp => {
                 return { showPartId: isp.showPartId, active: isp.active };
             }),
-            "imageShowId": imageShowId
-        }
+            imageShowId
+        };
         return this.http.post(API_URL + '/showParts', imageShowPartRequest).toPromise();
     }
 
     updateImageShowParts(imageShowId, imageShowParts) {
-        let imageShowPartRequest = {
-            "update": true,
-            "imageShowParts": imageShowParts.map(isp => {
+        const imageShowPartRequest = {
+            update: true,
+            imageShowParts: imageShowParts.map(isp => {
                 return { showPartId: isp.showPartId, active: isp.active, imageShowShowPartId: isp.id ? isp.id : null };
             }),
-            "imageShowId": imageShowId
-        }
+            imageShowId
+        };
         return this.http.post(API_URL + '/showParts', imageShowPartRequest).toPromise();
     }
 
@@ -104,7 +104,7 @@ export class ImageShowService {
         if (error.error instanceof ErrorEvent) {
             console.error('An error occurred:', error.error.message);
         } else {
-            if (error.status == 409 && error.error.message.includes('ConstraintViolationException')) {
+            if (error.status === 409 && error.error.message.includes('ConstraintViolationException')) {
                 return throwError(
                     'ConstraintViolationException');
             }

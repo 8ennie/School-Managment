@@ -1,22 +1,21 @@
-import { ImageShow } from './../image-show.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
-import { Monitor } from './monitor.model'
-import { MonitorService } from './monitor.service'
+import { Monitor } from './monitor.model';
+import { MonitorService } from './monitor.service';
 import { AreaService } from '../area.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-monitor',
     templateUrl: './monitor.component.html',
-    styleUrls: ['./monitor.component.css']
+    styleUrls: ['./monitor.component.scss']
 })
 export class MonitorComponent implements OnInit {
 
     displayDialog: boolean;
 
-    addDisplayDialog: boolean = false;
+    addDisplayDialog = false;
 
     monitor: Monitor = new Monitor();
 
@@ -50,13 +49,13 @@ export class MonitorComponent implements OnInit {
         this.loadData();
         this.areaService.getAllAreas().then((areas: []) => {
             this.areas = areas.map(a => {
-                return { label: a, value: a }
+                return { label: a, value: a };
             });
         });
         this.imageShowStore.imageShowsFiltered.subscribe(imageShows => {
             this.imageShowes = imageShows.toArray().map(im => {
                 this.imageShowArea = im.area;
-                return { label: im.name, value: im._links.self.href }
+                return { label: im.name, value: im._links.self.href };
             });
         });
         this.cols = [
@@ -74,8 +73,8 @@ export class MonitorComponent implements OnInit {
     }
 
     save(closeDialog = true) {
-        let monitors = [...this.monitors];
-        if (this.oldShowUrl != this.monitor.imageShowUrl) {
+        const monitors = [...this.monitors];
+        if (this.oldShowUrl !== this.monitor.imageShowUrl) {
             this.monitor.imageShow = this.monitor.imageShowUrl;
             this.loginAndStartShow(false);
         } else {
@@ -83,15 +82,15 @@ export class MonitorComponent implements OnInit {
         }
         if (this.newMonitor) {
             this.monitorService.saveMonitor(this.monitor).then(m => {
-                this.loadData()
-            })
+                this.loadData();
+            });
             this.addDisplayDialog = false;
             this.monitors = monitors;
             this.monitor = null;
         } else {
             this.monitorService.updateMonitor(this.monitor.id, this.monitor).then(m => {
-                this.loadData()
-            })
+                this.loadData();
+            });
             if (closeDialog) {
                 this.displayDialog = false;
                 this.monitors = monitors;
@@ -104,7 +103,7 @@ export class MonitorComponent implements OnInit {
     loadData() {
         this.monitorService.getAllMonitors().then(monitors => {
             this.monitors = monitors;
-            return monitors
+            return monitors;
         }).then(monitors => {
             monitors.forEach(m => {
                 this.monitorService.getMonitorStatus(m).then(
@@ -118,14 +117,14 @@ export class MonitorComponent implements OnInit {
                     }
                 ).catch(error => {
                     console.log(error);
-                    m.status = null
-                })
-            })
+                    m.status = null;
+                });
+            });
         });
     }
 
     delete() {
-        this.monitorService.deleteMonitor(this.monitor.id).then(m => { this.loadData() })
+        this.monitorService.deleteMonitor(this.monitor.id).then(m => { this.loadData(); });
         this.monitor = null;
         this.displayDialog = false;
     }
@@ -149,18 +148,18 @@ export class MonitorComponent implements OnInit {
                 this.monitor.serverIp = s.serverIp;
             }
         ).catch(error => {
-            console.log("Couldn't Reach Monitor");
+            console.log('Couldn\'t Reach Monitor');
             if (this.monitor) {
-                this.monitor.status = null
+                this.monitor.status = null;
             }
 
-        })
+        });
         this.displayDialog = true;
     }
 
     cloneMonitor(c: Monitor): Monitor {
-        let monitor = new Monitor();
-        for (let prop in c) {
+        const monitor = new Monitor();
+        for (const prop in c) {
             monitor[prop] = c[prop];
         }
         return monitor;
@@ -169,7 +168,7 @@ export class MonitorComponent implements OnInit {
     monitorOff() {
         this.monitorService.monitorScreen(this.monitor, false).then(
             s => {
-                this.monitor.status = s
+                this.monitor.status = s;
                 this.messageService.add({ severity: 'success', summary: 'Monitor Screen turned Off!', detail: 'Monitor Screen was successfully turned Off!' });
             });
     }
@@ -177,7 +176,7 @@ export class MonitorComponent implements OnInit {
     monitorOn() {
         this.monitorService.monitorScreen(this.monitor, true).then(
             s => {
-                this.monitor.status = s
+                this.monitor.status = s;
                 this.messageService.add({ severity: 'success', summary: 'Monitor Screen turned On!', detail: 'Monitor Screen was successfully turned On!' });
             });
     }
@@ -191,7 +190,7 @@ export class MonitorComponent implements OnInit {
         this.oldShowUrl = this.monitor.imageShowUrl;
         if (save) {
             this.save(false);
-        } 
+        }
     }
 
     setServerIP() {
@@ -200,16 +199,16 @@ export class MonitorComponent implements OnInit {
         });
     }
 
-    setStartUrl(){
+    setStartUrl() {
         this.monitorService.setStartUrl(this.monitor).then(ip => {
-            //this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
+            // this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
         });
     }
 
-    setStartResumeLastShow(){
+    setStartResumeLastShow() {
         this.monitorService.setStartResumeLastShow(this.monitor).then(ip => {
-            //console.log(ip); 
-            //this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
+            // console.log(ip);
+            // this.messageService.add({ severity: 'success', summary: 'Monitor ServerIP changed Successfully!', detail: 'The Monitor ServerIP' + ip });
         });
     }
 
@@ -234,11 +233,11 @@ export class MonitorComponent implements OnInit {
     reboot() {
         this.monitorService.reboot(this.monitor).then(time => {
             this.messageService.add({ severity: 'success', summary: 'Raspberry Rebooting!', detail: 'Please wait a bit until Raspberry reconnected!' });
-        });;
+        });
     }
 
     hasPrivilege(privileges: string[]): boolean {
-        for (let p of privileges) {
+        for (const p of privileges) {
             if (!this.authService.hasPrivilege(privileges)) {
                 return false;
             }

@@ -11,7 +11,7 @@ import { HeaderService } from './header.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   showHeader = true;
@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   headerSubscription: Subscription;
 
-  
+
   constructor(
     private authService: AuthService,
     private translate: TranslateService,
@@ -44,13 +44,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user = user;
         this.privilege = this.authService.getUser().roles;
       }
-      this.loadAreas()
+      this.loadAreas();
     });
     this.headerSubscription = this.headerService.showHeader.subscribe(hide => this.showHeader = hide);
-    this.loadAreas()
+    this.loadAreas();
   }
 
-  loadAreas(){
+  loadAreas() {
     this.areaService.getUserAreas().then(areas => {
       this.areas = areas;
     });
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   hasPrivilege(privileges: string[]): boolean {
-    for (let p of privileges) {
+    for (const p of privileges) {
       if (this.privilege.includes(p)) {
         return true;
       }

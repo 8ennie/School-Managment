@@ -8,12 +8,12 @@ import { User } from '../user.model';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css']
+  styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
 
   @Input() set userId(value: string) {
-    if (value != undefined) {
+    if (value !== undefined) {
       this.userService.getUser(value).then(
         (user: User) => {
           this.isNew = false;
@@ -44,19 +44,19 @@ export class UserDetailsComponent implements OnInit {
     this.roleStore.roles.subscribe(
       roles => {
         this.roles = roles.toArray().map(r => {
-          return { "label": r.name, "value": r._links.self.href }
+          return { label: r.name, value: r._links.self.href };
         });
       }
     );
     this.areaService.getAllAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
-        return { label: a, value: a }
+        return { label: a, value: a };
       });
     });
   }
 
   save() {
-    this.errorMessage = ''
+    this.errorMessage = '';
     if (!this.user.username || this.user.username == '') {
       this.errorMessage = 'error.not-all-required-fields';
       return;

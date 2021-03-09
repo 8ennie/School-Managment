@@ -15,7 +15,7 @@ import { from } from 'rxjs';
   selector: 'app-auth',
   providers: [],
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
   form: any = {};
@@ -41,7 +41,7 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if(form.valid){
+    if (form.valid) {
       const credentials = { username: form.value.username, password: form.value.password };
       this.authService.login(credentials).then(
         (data: any) => {
@@ -55,7 +55,7 @@ export class AuthComponent implements OnInit {
             this.router.navigate(['photoshow', 'monitors']);
           }
         },
-        err => { 
+        err => {
           console.log(err);
           this.messageService.add({ severity: 'error', summary: 'Error Message', detail: err.error?.message });
           this.errorMessage = err.error?.message;
@@ -67,9 +67,9 @@ export class AuthComponent implements OnInit {
     } else {
       console.log(form.form.controls['username'].errors);
       console.log(form.form.controls['username'].invalid);
-      
+
     }
-   
+
   }
 
 

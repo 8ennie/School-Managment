@@ -4,7 +4,7 @@ export class ImageShow {
     id?: number;
     document?: { fileName: string };
     date?: Date;
-    imageCount?:number;
+    imageCount?: number;
     showParts?;
     _links?;
 }

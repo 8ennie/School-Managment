@@ -25,7 +25,7 @@ export class AuthService {
       username: credentials.username,
       password: credentials.password
     }, httpOptions).toPromise().then(
-      (data:{token}) => {
+      (data: {token}) => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
         this.updateUser();
@@ -69,7 +69,7 @@ export class AuthService {
 
   hasPrivilege(privileges: string[]): boolean {
     const userPrivilages = this.getUser().roles;
-    for (let p of privileges) {
+    for (const p of privileges) {
       if (userPrivilages.includes(p)) {
         return true;
       }
@@ -77,8 +77,8 @@ export class AuthService {
     return false;
   }
 
-  signUpMonitor(monitor:Monitor){
+  signUpMonitor(monitor: Monitor) {
     console.log(monitor);
-    return this.http.post(AUTH_API + "signup/monitor", monitor).toPromise();
+    return this.http.post(AUTH_API + 'signup/monitor', monitor).toPromise();
   }
 }

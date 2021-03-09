@@ -34,7 +34,7 @@ export class MessageService {
       });
     });
     this.http.get<any>(environment.apiUrl + 'message/current').toPromise().then(message => {
-      if(message){
+      if (message) {
         console.log('The last Message was:' + message.message);
         _that._message.next(message.message);
       }

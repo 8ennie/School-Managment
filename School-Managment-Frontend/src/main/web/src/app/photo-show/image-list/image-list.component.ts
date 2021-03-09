@@ -7,14 +7,13 @@ import { PhotoShowService } from './../photo-show.service';
 import { TreeNode, MessageService } from 'primeng/api';
 import { ImageShowService } from './../image-show.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { DocumentStore } from '../document/document.store';
 import { Document } from '../document/document.model';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-image-list',
   templateUrl: './image-list.component.html',
-  styleUrls: ['./image-list.component.css'],
+  styleUrls: ['./image-list.component.scss'],
   providers: [ConfirmationService]
 })
 export class ImageListComponent implements OnInit {
@@ -65,24 +64,25 @@ export class ImageListComponent implements OnInit {
   }
 
 
-  @Output() onEditImageShow = new EventEmitter<string>();
+  @Output()
+  showEdited = new EventEmitter<string>();
 
   ngOnInit(): void {
 
     this.treeNodes = [
       {
-        "label": "documents",
-        "type": "DOCUMENTS",
-        "expandedIcon": "pi pi-folder-open",
-        "collapsedIcon": "pi pi-folder",
-        "leaf": false
+        label: 'documents',
+        type: 'DOCUMENTS',
+        expandedIcon: 'pi pi-folder-open',
+        collapsedIcon: 'pi pi-folder',
+        leaf: false
       },
       {
-        "label": "image-show-list",
-        "type": "IMAGE_SHOWS",
-        "expandedIcon": "pi pi-images",
-        "collapsedIcon": "pi pi-images",
-        "leaf": false
+        label: 'image-show-list',
+        type: 'IMAGE_SHOWS',
+        expandedIcon: 'pi pi-images',
+        collapsedIcon: 'pi pi-images',
+        leaf: false
       },
     ];
   }
@@ -115,12 +115,12 @@ export class ImageListComponent implements OnInit {
       });
     } else {
       for (let i = 0; i < this.areas.length; i++) {
-        let area = this.areas[i];
-        let node = {
+        const area = this.areas[i];
+        const node = {
           label: area,
           type: parentNode.type + '_AREA',
           data: {
-            area: area,
+            area,
           },
           leaf: false
         };
@@ -131,7 +131,7 @@ export class ImageListComponent implements OnInit {
   }
 
   onNodeExpand(event) {
-    let node = event.node;
+    const node = event.node;
 
     if (!node.children && node.type == 'DOCUMENTS') {
       this.loadAreas(node);
@@ -160,11 +160,11 @@ export class ImageListComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.documents);
       },
-      err => console.log("Error retrieving ImageShowes")
+      err => console.log('Error retrieving ImageShowes')
     ).then((documents: List<Document>) => {
       for (let i = 0; i < documents.size; i++) {
-        let document = documents.get(i);
-        let node = {
+        const document = documents.get(i);
+        const node = {
           label: document.fileName,
           type: 'DOCUMENT',
           data: {
@@ -188,11 +188,11 @@ export class ImageListComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.imageShows);
       },
-      err => console.log("Error retrieving ImageShowes")
+      err => console.log('Error retrieving ImageShowes')
     ).then((filterdImageShows: List<ImageShow>) => {
       for (let i = 0; i < filterdImageShows.size; i++) {
-        let imageShow = filterdImageShows.get(i);
-        let node = {
+        const imageShow = filterdImageShows.get(i);
+        const node = {
           label: imageShow.name,
           type: 'IMAGE_SHOW',
           data: {
@@ -218,8 +218,8 @@ export class ImageListComponent implements OnInit {
       if (showParts) {
         parentNode.children = [];
         for (let i = 0; i < showParts._embedded.imageShowShowParts.length; i++) {
-          let showPart = showParts._embedded.imageShowShowParts[i];
-          let node = {
+          const showPart = showParts._embedded.imageShowShowParts[i];
+          const node = {
             type: 'picture',
             data: {
               showPartImage: showPart.showPartImage,
@@ -239,8 +239,8 @@ export class ImageListComponent implements OnInit {
       if (showParts) {
         parentNode.children = [];
         for (let i = 0; i < showParts._embedded.showParts.length; i++) {
-          let showPart = showParts._embedded.showParts[i];
-          let node = {
+          const showPart = showParts._embedded.showParts[i];
+          const node = {
             type: 'picture',
             data: {
               showPartId: showPart.id,
@@ -252,11 +252,11 @@ export class ImageListComponent implements OnInit {
           parentNode.children.push(node);
         }
       }
-    });;
+    });
   }
 
   editImageShow(node) {
-    this.onEditImageShow.emit(node.data.id);
+    this.showEdited.emit(node.data.id);
   }
 
   deleteImageShow(node) {
@@ -289,11 +289,11 @@ export class ImageListComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.documents);
       },
-      err => console.log("Error retrieving Documents")
+      err => console.log('Error retrieving Documents')
     ).then((documents: List<Document>) => {
       for (let i = 0; i < documents.size; i++) {
-        let document = documents.get(i);
-        let node = {
+        const document = documents.get(i);
+        const node = {
           label: document.fileName,
           type: 'DOCUMENT',
           data: {
@@ -301,7 +301,7 @@ export class ImageListComponent implements OnInit {
           },
           leaf: false
         };
-        let areaNode = this.treeNodes[0].children.filter(node => node.type == "DOCUMENTS_AREA" && node.data.area == document.area)[0];
+        const areaNode = this.treeNodes[0].children.filter(node => node.type == 'DOCUMENTS_AREA' && node.data.area == document.area)[0];
         if (areaNode) {
           if (areaNode.children) {
             areaNode.children.push(node);
@@ -311,7 +311,7 @@ export class ImageListComponent implements OnInit {
         }
 
       }
-      this.treeNodes[0].children = this.treeNodes[0].children.filter(node => { return node.children || node.type != "DOCUMENTS_AREA" });
+      this.treeNodes[0].children = this.treeNodes[0].children.filter(n => n.children || n.type != 'DOCUMENTS_AREA');
       this.treeNodes = [...this.treeNodes];
     });
   }
@@ -323,11 +323,11 @@ export class ImageListComponent implements OnInit {
       (res: { _embedded }) => {
         return List(res._embedded.imageShows);
       },
-      err => console.log("Error retrieving ImageShowes")
+      err => console.log('Error retrieving ImageShowes')
     ).then((imageShows: List<ImageShow>) => {
       for (let i = 0; i < imageShows.size; i++) {
-        let imageShow = imageShows.get(i);
-        let node = {
+        const imageShow = imageShows.get(i);
+        const node = {
           label: imageShow.name,
           type: 'IMAGE_SHOW',
           data: {
@@ -335,7 +335,7 @@ export class ImageListComponent implements OnInit {
           },
           leaf: false
         };
-        let areaNode = this.treeNodes[1].children.filter(node => node.type == "IMAGE_SHOWS_AREA" && node.data.area == imageShow.area)[0];
+        const areaNode = this.treeNodes[1].children.filter(n => n.type == 'IMAGE_SHOWS_AREA' && n.data.area == imageShow.area)[0];
         if (areaNode) {
           if (areaNode.children) {
             areaNode.children.push(node);
@@ -345,7 +345,7 @@ export class ImageListComponent implements OnInit {
         }
 
       }
-      this.treeNodes[1].children = this.treeNodes[1].children.filter(node => { return node.children || node.type != "IMAGE_SHOWS_AREA" });
+      this.treeNodes[1].children = this.treeNodes[1].children.filter(node => node.children || node.type != 'IMAGE_SHOWS_AREA');
       this.treeNodes = [...this.treeNodes];
     });
   }
@@ -364,6 +364,10 @@ export class ImageListComponent implements OnInit {
         leaf: true
       });
     }
+  }
+
+  returnFalse(){
+    return false;
   }
 
 }

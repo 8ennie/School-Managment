@@ -1,6 +1,6 @@
 <div style="margin: 15px;" class="p-grid" *ngIf="!loading" cdkDropListGroup>
     <div class="p-col-3">
-        <app-image-list (onEditImageShow)="onEditImageShow($event)" [reset]="reset"></app-image-list>
+        <app-image-list (showEdited)="onEditImageShow($event)" [reset]="reset"></app-image-list>
     </div>
     <div class="p-col-9">
         <div class="card" style="padding: 5px 15px;">
@@ -30,28 +30,40 @@
                 </div>
             </div>
             <h4 style="margin-left: 15px;">{{'images' | translate}}:</h4>
-            <div cdkDropList="showParts" cdkDropListOrientation="horizontal" class="example-list"
-                (cdkDropListDropped)="onDrop($event)" cdkDropListConnectedTo="imageShow.showParts">
-                <div class="example-box" *ngFor="let showPart of imageShow.showParts; index as i;" cdkDrag
-                    [cdkDragData]="showPart">
+            <div 
+            id="imageShowParts"
+            class="example-list"
+            cdkDropList
+            cdkDropListOrientation="horizontal" 
+            (cdkDropListDropped)="onDrop($event)" 
+            >
+                <div 
+                class="example-box" 
+                *ngFor="let showPart of imageShow.showParts; index as i;" 
+                cdkDrag
+                cdkDropList
+                [cdkDragData]="showPart"
+                >
                     <div style="display: grid;">
                         <div [style]=" showPart.active? null:{opacity: 0.5}  ">
                             <img [src]="getImage(showPart.showPartImage)" height="200px"
                                 style="border-width: 1px; border-color: black; border-style: solid;">
                         </div>
                         <div style="text-align: center; margin-top: 5px; justify-content: space-evenly; display: flex;">
-                            <button pButton pRipple type="button" icon="pi pi-search"
-                                (click)="removeShowPart(i)"></button>
-                            <button *ngIf="!showPart.active" pButton pRipple type="button" icon="pi pi-eye-slash"
-                                style="background: orange;" (click)="showHide(showPart)"></button>
+                            <!-- <button pButton pRipple type="button" icon="pi pi-search"
+                                (click)="removeShowPart(i)"></button> -->
+                                
+                            <button *ngIf="!showPart.active" pRipple type="button" icon="pi pi-eye-slash"
+                            class="p-button-rounded" style="background: orange;" (click)="showHide(showPart)"></button>
                             <button *ngIf="showPart.active" pButton pRipple type="button" icon="pi pi-eye"
-                                style=" background: rgb(64, 255, 47);" (click)="showHide(showPart)"></button>
+                            class="p-button-rounded" style=" background: rgb(64, 255, 47);" (click)="showHide(showPart)"></button>
                             <button pButton pRipple type="button" icon="pi pi-times"
-                                style="background: red; float: left;" (click)="removeShowPart(i)"></button>
+                            class="p-button-rounded"  style="background: red; float: left;" (click)="removeShowPart(i)"></button>
                         </div>
 
                     </div>
                 </div>
+               
             </div>
             <div style="display: flex; justify-content: space-evenly; padding:15px;">
                 <div style="display: flex; width: 15%; justify-content: space-evenly; align-content: center;"

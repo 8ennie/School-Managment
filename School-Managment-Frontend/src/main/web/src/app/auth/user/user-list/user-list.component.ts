@@ -1,13 +1,11 @@
 import { UserStore } from './../user.store';
-
-import { UserService } from './../user.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { User } from '../user.model';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
 
@@ -32,7 +30,7 @@ export class UserListComponent implements OnInit {
     this.userSelected.emit(this.selectedUser.id);
   }
 
-  getRoles(user){
+  getRoles(user) {
     return user.roles.map(r => r.name);
   }
 }

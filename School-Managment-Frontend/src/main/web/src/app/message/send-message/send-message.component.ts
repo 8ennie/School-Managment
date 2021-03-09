@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-send-message',
   providers: [MessageService],
   templateUrl: './send-message.component.html',
-  styleUrls: ['./send-message.component.css']
+  styleUrls: ['./send-message.component.scss']
 })
 export class SendMessageComponent implements OnInit {
 
@@ -33,18 +33,18 @@ export class SendMessageComponent implements OnInit {
     this.rowGroupMetadata = {};
     if (this.messages) {
       for (let i = 0; i < this.messages.length; i++) {
-        let rowData = this.messages[i];
-        let category = rowData.brand;
-        if (i == 0) {
+        const rowData = this.messages[i];
+        const category = rowData.brand;
+        if (i === 0) {
           this.rowGroupMetadata[category] = { index: 0, size: 1 };
-        }
-        else {
-          let previousRowData = this.messages[i - 1];
-          let previousRowGroup = previousRowData.brand;
-          if (category === previousRowGroup)
+        } else {
+          const previousRowData = this.messages[i - 1];
+          const previousRowGroup = previousRowData.brand;
+          if (category === previousRowGroup) {
             this.rowGroupMetadata[category].size++;
-          else
+          } else {
             this.rowGroupMetadata[category] = { index: i, size: 1 };
+          }
         }
       }
     }

@@ -1,12 +1,10 @@
-import { RoleStore } from './../role/role.store';
-import { UserStore } from './user.store';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-user',
   providers: [],
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
 
@@ -16,7 +14,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  userSelected(event){
-    this.userID = event
+  userSelected(event) {
+    this.userID = event;
   }
 }

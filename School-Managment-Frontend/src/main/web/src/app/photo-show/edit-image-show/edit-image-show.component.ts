@@ -7,19 +7,18 @@ import { PhotoShowService } from './../photo-show.service';
 import { AreaService } from './../area.service';
 import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
-import { TreeDragDropService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-edit-image-show',
   templateUrl: './edit-image-show.component.html',
-  styleUrls: ['./edit-image-show.component.css'],
-  providers: [TreeDragDropService]
+  styleUrls: ['./edit-image-show.component.scss'],
 })
 export class EditImageShowComponent implements OnInit {
 
   loading: boolean;
-  imageShow = new ImageShow;
+  public imageShow: ImageShow;
   id;
   areas: { label: string, value: string }[];
   reset: boolean;
@@ -44,7 +43,7 @@ export class EditImageShowComponent implements OnInit {
     });
     this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
-        return { label: a, value: a }
+        return { label: a, value: a };
       });
     });
   }
@@ -58,8 +57,8 @@ export class EditImageShowComponent implements OnInit {
   }
 
   loadImageShow() {
-    this.imageShow = new ImageShow;
-    if (this.id == 'new') {
+    this.imageShow = new ImageShow();
+    if (this.id === 'new') {
       this.imageShow.showParts = [];
     } else {
       this.imageShowService.getImageShow(this.id).then(imageShow => {
@@ -87,7 +86,7 @@ export class EditImageShowComponent implements OnInit {
 
   save() {
     if (this.id != 'new') {
-      let showParts = this.imageShow.showParts;
+      const showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
       this.imageShowStore.updateImageShow(this.imageShow).then(() => {
         this.imageShowService.updateImageShowParts(this.id, showParts).then(
@@ -97,14 +96,14 @@ export class EditImageShowComponent implements OnInit {
         );
       });
     } else {
-      let showParts = this.imageShow.showParts;
+      const showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
       this.imageShowStore.addImageShow(this.imageShow).then((imageShow: { _links }) => {
-        let imageShowId = imageShow._links.self.href.split('/').pop();
+        const imageShowId = imageShow._links.self.href.split('/').pop();
         this.imageShowService.saveImageShowParts(imageShowId, showParts).then(
           () => {
             this.id = imageShowId;
-            this.router.navigate(['photoshow', 'edit', imageShowId])
+            this.router.navigate(['photoshow', 'edit', imageShowId]);
             this.loadImageShow();
           }
         );
@@ -124,7 +123,7 @@ export class EditImageShowComponent implements OnInit {
   }
 
   onEditImageShow(id) {
-    this.router.navigate(['photoshow', 'edit', id])
+    this.router.navigate(['photoshow', 'edit', id]);
     this.id = id;
     this.loadImageShow();
   }
@@ -133,13 +132,11 @@ export class EditImageShowComponent implements OnInit {
     this.imageShowService.deleteImageShow(this.id).then((res: { message }) => {
       if (res.message == 'SUCCSESS') {
         this.messageService.add({ severity: 'success', summary: 'Deleted Successfully!', detail: 'The Image Show was Deleted' });
-        this.router.navigate(['photoshow', 'edit', 'new'])
+        this.router.navigate(['photoshow', 'edit', 'new']);
         this.reset = true;
       } else if (res.message == 'IMAGE_SHOW_IN_USE') {
         this.messageService.add({ severity: 'error', summary: 'Delete Failed!', detail: 'A Monitor is Currently Using the Image Show' });
       }
     });
   }
-
-
 }

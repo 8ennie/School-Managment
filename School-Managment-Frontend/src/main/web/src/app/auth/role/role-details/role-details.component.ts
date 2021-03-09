@@ -1,4 +1,3 @@
-import { catchError } from 'rxjs/operators';
 import { RoleStore } from './../role.store';
 import { RoleService } from './../role.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -7,14 +6,14 @@ import { Role } from '../role.model';
 @Component({
   selector: 'app-role-details',
   templateUrl: './role-details.component.html',
-  styleUrls: ['./role-details.component.css']
+  styleUrls: ['./role-details.component.scss']
 })
 export class RoleDetailsComponent implements OnInit {
 
   @Input() set roleId(value: string) {
-    if(value != undefined){
+    if (value !== undefined) {
       this.roleService.getRole(value).then(
-        (role:Role) => {
+        (role: Role) => {
           this.isNew = false;
           this.errorMessage = '';
           this.role = role;
@@ -29,35 +28,35 @@ export class RoleDetailsComponent implements OnInit {
   privileges = [];
   role: Role = new Role();
   isNew = true;
-  errorMessage:string;
+  errorMessage: string;
 
   constructor(
     private roleService: RoleService,
     private roleStore: RoleStore,
-  ) { 
+  ) {
     this.newRole();
   }
 
   ngOnInit(): void {
     this.roleService.getAllPrivileges().then((privileges: {_embedded}) => {
-      this.privileges = privileges._embedded.privileges.map(p => {return {"label": p.name, "value":p._links.self.href}});
+      this.privileges = privileges._embedded.privileges.map(p => ({label: p.name, value: p._links.self.href}));
     });
   }
-  save(){
-    this.errorMessage = ''
-    if(!this.role.name || this.role.name == ''){
-      this.errorMessage = 'error.not-all-required-fields'
+  save() {
+    this.errorMessage = '';
+    if (!this.role.name || this.role.name == '') {
+      this.errorMessage = 'error.not-all-required-fields';
       return;
     }
     this.role.name = 'ROLE_' + this.role.name.toUpperCase();
-    if(this.isNew){
+    if (this.isNew) {
       this.roleStore.addRole(this.role).then(p => {
         this.newRole();
       }).catch(error => {
         this.role.name = this.role.name.substring(5, this.role.name.length);
-        if(error == 'ConstraintViolationException'){
+        if (error == 'ConstraintViolationException') {
           console.log('Error');
-          
+
           this.errorMessage = 'error.constraint-violation-exception';
         }
       });
@@ -66,20 +65,20 @@ export class RoleDetailsComponent implements OnInit {
         this.newRole();
       }).catch(error => {
         this.role.name = this.role.name.substring(5, this.role.name.length);
-        if(error == 'ConstraintViolationException'){
+        if (error == 'ConstraintViolationException') {
           this.errorMessage = 'error.constraint-violation-exception';
         }
       });
     }
   }
 
-  newRole(){
+  newRole() {
     this.role = new Role();
     this.isNew = true;
     this.errorMessage = '';
   }
 
-  delete(){
+  delete() {
     this.roleStore.deleteRole(this.role);
     this.newRole();
   }
