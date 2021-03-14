@@ -46,7 +46,7 @@
                 showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
                 <div class="ui-g ui-fluid" *ngIf="monitor">
 
-                    <ng-container *ngIf="hasPrivilege(['LOCK_SHOW']) || !monitor.imageShowLocked">
+                    <ng-container *ngIf="authService.hasPrivileges(['LOCK_SHOW']) || !monitor.imageShowLocked">
                         <div class="ui-g-4">
                             <label for="type">{{'image-show' | translate }}</label>
                         </div>
@@ -57,7 +57,7 @@
                                 </p-dropdown>
                             </div>
                         </div>
-                        <ng-container *ngIf="hasPrivilege(['LOCK_SHOW']) && monitor.imageShow">
+                        <ng-container *ngIf="authService.hasPrivileges(['LOCK_SHOW']) && monitor.imageShow">
                             <div class="ui-g-4">
                                 <label for="type">{{'lock-image-show' | translate }}</label>
                             </div>
@@ -70,7 +70,7 @@
                             label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
                     </ng-container>
 
-                    <ng-container *ngIf="!hasPrivilege(['LOCK_SHOW']) && monitor.imageShowLocked">
+                    <ng-container *ngIf="!authService.hasPrivileges(['LOCK_SHOW']) && monitor.imageShowLocked">
                         <div style="text-align: center; width: 100%;" >
                             {{'monitor-locked' | translate}}
                         </div>

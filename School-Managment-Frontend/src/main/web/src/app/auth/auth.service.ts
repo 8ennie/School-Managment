@@ -1,8 +1,8 @@
+import { Privilege } from './privilege.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { TokenStorageService } from '../_services/token-storage.service';
+import { LocalStorageService } from '../_services/local-storage.service';
 import { AuthUser } from './auth-user.model';
 import { environment } from 'src/environments/environment';
 import { Monitor } from '../photo-show/monitor/monitor.model';
@@ -16,18 +16,25 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  userChanges = new Subject<AuthUser>();
+  userChanges: Subject<AuthUser> = new Subject<AuthUser>();
 
-  constructor(private http: HttpClient, private router: Router, private tokenStorage: TokenStorageService) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly localStorage: LocalStorageService,
+  ) { }
 
-  login(credentials) {
+  login(credentials: { username: string, password: string }): Promise<any> {
     return this.http.post(AUTH_API + 'signin', {
       username: credentials.username,
       password: credentials.password
     }, httpOptions).toPromise().then(
-      (data: {token}) => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
+      (data: { token: string, roles: [] }) => {
+        if (data['roles']) {
+          data['privileges'] = data.roles;
+          delete data.roles;
+        }
+        this.localStorage.saveToken(data.token);
+        this.localStorage.saveUser(data);
         this.updateUser();
         return data;
       }
@@ -42,35 +49,34 @@ export class AuthService {
     }, httpOptions);
   }
 
-
-  isAthenticated() {
-    return !!this.tokenStorage.getToken();
+  isAthenticated(): boolean {
+    return !!this.localStorage.getToken();
   }
 
-  logout() {
-    this.tokenStorage.signOut();
+  logout(): void {
+    this.localStorage.signOut();
   }
 
-  getUser() {
-    return this.tokenStorage.getUser();
+  getUser(): AuthUser {
+    return this.localStorage.getUser();
   }
 
-  getRoles(): string[] {
-    return this.tokenStorage.getUser().roles;
+  getPrivileges(): Privilege[] {
+    return this.getUser().privileges;
   }
 
-  updateUser() {
+  updateUser(): void {
     this.userChanges.next(this.getUser());
   }
 
-  hasRole(role: string): boolean {
-    return this.getRoles().includes(role);
+  hasPrivilege(privilege: Privilege | string): boolean {
+    return this.getPrivileges().includes(Privilege[privilege]);
   }
 
-  hasPrivilege(privileges: string[]): boolean {
-    const userPrivilages = this.getUser().roles;
+  hasPrivileges(privileges: Privilege[] | string[]): boolean {
+    const userPrivilages = this.getUser().privileges;
     for (const p of privileges) {
-      if (userPrivilages.includes(p)) {
+      if (userPrivilages.includes(Privilege[p])) {
         return true;
       }
     }
@@ -78,7 +84,6 @@ export class AuthService {
   }
 
   signUpMonitor(monitor: Monitor) {
-    console.log(monitor);
     return this.http.post(AUTH_API + 'signup/monitor', monitor).toPromise();
   }
 }

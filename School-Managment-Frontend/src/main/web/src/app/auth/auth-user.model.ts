@@ -6,6 +6,7 @@ export class AuthUser {
         public email: string,
         public id: string,
         public privileges: Privilege[],
+        public areas: string[],
         private _token: string,
         private _tokenExpirationDate: Date
       ) {}

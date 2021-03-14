@@ -1,6 +1,6 @@
 <p-dialog header="{{ 'upload-image-show' | translate }}" [(visible)]="displayDialog" showEffect="fade" [modal]="true"
     [style]="{width: '50vw'}">
-    <div class="p-grid ui-fluid" *ngIf="imageShow && !uploading">
+    <div class="p-grid ui-fluid" *ngIf="imageShow" [style.display]="uploading ? 'none': ''">
         <div class="p-col-4">
             <label for="name">{{'image-show-name' | translate }}</label>
         </div>

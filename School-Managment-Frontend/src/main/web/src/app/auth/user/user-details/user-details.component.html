@@ -5,51 +5,57 @@
             style="position: absolute; right: 15px;"></button>
     </div>
     <div class="card" style="margin: 15px;" *ngIf="user">
-        <div class="ui-g ui-fluid">
-            <div class="ui-g-12">
-                <div class="ui-g-4">
-                    <label for="name">{{'username' | translate }}</label>
-                </div>
-                <div class="ui-g-8">
-                    <input pInputText id="name" [(ngModel)]="user.username" style="width: 100%;" />
+        <div class="p-grid">
+            <div class="p-col-12">
+                <div class="p-inputgroup">
+                    <label class="p-inputgroup-addon" for="name">{{'username' | translate }}</label>
+                    <input pInputText id="name" [(ngModel)]="user.username" />
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+
+            <div class="p-col-12">
+                <!-- <div class="p-inputgroup"> -->
+                    <span for="email" class="p-inputgroup-addon p-md-4">{{'email' | translate }}</span>
+                    <input pInputText  id="email" class="p-md-8" [(ngModel)]="user.email" />
+                <!-- </div> -->
+            </div>
+
+            <div class="p-g-12">
+                <div class="p-g-4">
                     <label for="email">{{'email' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-g-8">
                     <input pInputText id="email" [(ngModel)]="user.email" style="width: 100%;" />
                 </div>
             </div>
-            <div class="ui-g-12" *ngIf="isNew">
-                <div class="ui-g-4">
+            <div class="p-g-12" *ngIf="isNew">
+                <div class="p-g-4">
                     <label for="password">{{'password' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
-                    <div class="ui-inputgroup">
+                <div class="p-g-8">
+                    <div class="p-inputgroup">
                         <input pInputText id="password" #password type="password" [(ngModel)]="user.password"
                             style="width: 95%;" />
-                        <button type="button" pButton styleClass="p-button-warn" style="width: 5%;"
+                        <button pButton class="p-button-warning" style="width: 5%;"
                             (click)="password.type=password.type=='password'?'text':'password'"
                             icon="pi pi-eye"></button>
                     </div>
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-g-12">
+                <div class="p-g-4">
                     <label for="privileges">{{'roles' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-g-8">
                     <p-multiSelect [options]="roles" [(ngModel)]="user.roles"
                         defaultLabel="{{ 'select-roles' | translate }}"></p-multiSelect>
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-g-12">
+                <div class="p-g-4">
                     <label for="privileges">{{'areas' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-g-8">
                     <p-multiSelect [options]="areas" [(ngModel)]="user.areas"
                         defaultLabel="{{ 'select-areas' | translate }}" [filter]="false">
                         <ng-template let-areas pTemplate="selectedItems">
@@ -58,14 +64,14 @@
                                 {{'select-areas' | translate }}
                             </div>
                         </ng-template>
-                       
+
                         <ng-template pTemplate="item" let-area>
                             {{area.value | translate}}
                         </ng-template>
                     </p-multiSelect>
                 </div>
             </div>
-            <div class="ui-g-12">
+            <div class="p-g-12">
                 <div class="alert alert-danger" style="width: 100%; text-align: center; margin-top: 5px;" role="alert"
                     *ngIf="errorMessage">
                     <div>{{ errorMessage | translate }}</div>
@@ -73,7 +79,7 @@
             </div>
         </div>
         <p-footer>
-            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <div class="p-dialog-buttonpane p-helper-clearfix">
                 <button type="button" pButton icon="pi pi-times" (click)="delete()" label="{{ 'delete' | translate }}"
                     style="margin-right: 15px;" *ngIf="!isNew"></button>
                 <button type="button" pButton icon="pi pi-check" (click)="save()"

@@ -39,20 +39,20 @@
         showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
         <p-tabView>
             <p-tabPanel header="{{'settings' | translate }}">
-                <div class="ui-g ui-fluid" *ngIf="monitor">
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                <div class="p-grid ui-fluid" *ngIf="monitor">
+                    <div class="p-grid">
+                        <div class="p-col-4">
                             <label for="name">{{'monitor-name' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <input pInputText id="name" [(ngModel)]="monitor.name" style="width: 100%;" />
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                    <div class="p-grid">
+                        <div class="p-col-4">
                             <label for="type">{{'area' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <p-multiSelect [options]="areas" [(ngModel)]="monitor.areas" appendTo="body"
                                 defaultLabel="{{ 'select-areas' | translate }}" [filter]="false">
                                 <ng-template let-areas pTemplate="selectedItems">
@@ -68,11 +68,11 @@
                             </p-multiSelect>
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                    <div class="p-grid">
+                        <div class="p-col-4">
                             <label for="status">{{'raspberry-status' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <label
                                     style="width: 100%;">{{ monitor.status == null? 'offline':'online' | translate }}</label>
@@ -82,28 +82,28 @@
                 </div>
             </p-tabPanel>
             <p-tabPanel header="{{'advanced-settings' | translate }}">
-                <div class="ui-g ui-fluid" *ngIf="monitor">
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                <div class="p-col ui-fluid" *ngIf="monitor">
+                    <div class="p-col-12">
+                        <div class="p-col-4">
                             <label for="ipAddress">{{'ip-address' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <input pInputText id="ipAddress" [(ngModel)]="monitor.ipAddress" style="width: 100%;" />
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                    <div class="p-grid">
+                        <div class="p-col-4">
                             <label for="location">{{'monitor-location' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <input pInputText id="location" [(ngModel)]="monitor.location" style="width: 100%;" />
                         </div>
                     </div>
-                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status != null">
-                        <div class="ui-g-4">
+                    <div class="p-grid" *ngIf="!newMonitor && monitor.status != null">
+                        <div class="p-col-4">
                             <label for="serverIp">{{'server-ip-address' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <input pInputText id="serverIp" [(ngModel)]="monitor.serverIp" style="width: 80%;" />
                                 <button type="button" pButton (click)="setServerIP()"
@@ -111,11 +111,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui-g-12" *ngIf="!newMonitor && monitor.status != null">
-                        <div class="ui-g-4">
+                    <div class="p-grid" *ngIf="!newMonitor && monitor.status != null">
+                        <div class="p-col-4">
                             <label for="reboot">{{'reboot' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="width: 100%; text-align: center;">
                                 <button type="button" pButton (click)="reboot()" label="{{'reboot' | translate }}"
                                     style="width: 50%;"></button>
@@ -126,12 +126,12 @@
             </p-tabPanel>
 
             <p-tabPanel header="{{'screen-settings' | translate }}" *ngIf="monitor && monitor.status != null">
-                <div class="ui-g ui-fluid" *ngIf="monitor">
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                <div class="p-col ui-fluid" *ngIf="monitor">
+                    <div class="p-col-12">
+                        <div class="p-col-4">
                             <label for="status">{{'monitor-status' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <label *ngIf="monitor.status == true" style="width: 50%;">{{'on' | translate }}</label>
                                 <label *ngIf="monitor.status == false"
@@ -143,11 +143,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                    <div class="p-col-12">
+                        <div class="p-col-4">
                             <label for="sleeptime">{{'monitor-sleep-time' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <div style="width: 80%;">
                                     <p-calendar [(ngModel)]="monitor.sleepTime" [timeOnly]="true" inputId="sleeptime"
@@ -159,11 +159,11 @@
 
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-4">
+                    <div class="p-col-12">
+                        <div class="p-col-4">
                             <label for="waketime">{{'monitor-wake-time' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <div style="width: 80%;">
                                     <p-calendar [(ngModel)]="monitor.wakeTime" [timeOnly]="true" inputId="waketime"
@@ -178,11 +178,11 @@
             </p-tabPanel>
 
             <p-tabPanel header="{{'image-show-settings' | translate }}" *ngIf="monitor && monitor.status != null">
-                <div class="ui-g ui-fluid" *ngIf="monitor">
-                    <div class="ui-g-4">
+                <div class="p-col ui-fluid" *ngIf="monitor">
+                    <div class="p-col-4">
                         <label for="type">{{'area' | translate }}</label>
                     </div>
-                    <div class="ui-g-8">
+                    <div class="p-col-8">
                         <p-dropdown id="type" [options]="areas" [(ngModel)]="imageShowArea" required="true"
                             placeholder="Choose" appendTo="body" (onChange)="onAreaChange()">
                             <ng-template pTemplate="item" let-item>
@@ -198,11 +198,11 @@
                                 [(ngModel)]="monitor.imageShowUrl" appendTo="body"></p-dropdown>
                         </div>
                     </div>
-                    <ng-container *ngIf="hasPrivilege(['LOCK_SHOW']) && monitor.imageShow">
-                        <div class="ui-g-4">
+                    <ng-container *ngIf="authService.hasPrivileges(['LOCK_SHOW']) && monitor.imageShow">
+                        <div class="p-col-4">
                             <label for="type">{{'lock-image-show' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <p-toggleButton [(ngModel)]="monitor.imageShowLocked" onLabel="{{ 'yes' | translate}}"
                                 offLabel="{{ 'no' | translate}}"></p-toggleButton>
                         </div>
@@ -213,22 +213,22 @@
                             label="{{'start-show' | translate }}" style="margin-top: 5px;"></button>
                     </ng-container>
 
-                    <div class="ui-g-4">
+                    <div class="p-col-4">
                         <label for="type">{{'start-last-show' | translate }}</label>
                     </div>
-                    <div class="ui-g-8">
+                    <div class="p-col-8">
                         <p-toggleButton [(ngModel)]="monitor.onStartResumeLastShow" onLabel="{{ 'yes' | translate}}"
                             offLabel="{{ 'no' | translate}}" (click)="setStartResumeLastShow()"></p-toggleButton>
                     </div>
                     <ng-container *ngIf="!monitor.onStartResumeLastShow">
-                        <div class="ui-g-4">
+                        <div class="p-col-4">
                             <label for="type">{{'start-url' | translate }}</label>
                         </div>
-                        <div class="ui-g-8">
+                        <div class="p-col-8">
                             <div style="display: flex;">
                                 <input pInputText [(ngModel)]="monitor.startUrl" style="width: 80%;" />
-                                <button type="button" pButton (click)="setStartUrl()"
-                                    label="{{'change' | translate }}" style="width: 20%;"></button>
+                                <button type="button" pButton (click)="setStartUrl()" label="{{'change' | translate }}"
+                                    style="width: 20%;"></button>
                             </div>
                         </div>
                     </ng-container>
@@ -254,40 +254,60 @@
     <p-dialog header="{{'monitor-details' | translate }}" [(visible)]="addDisplayDialog" [focusOnShow]="false"
         showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
 
-        <div class="ui-g ui-fluid" *ngIf="monitor">
+        <div class="p-field p-grid">
+            <label for="firstname3" class="p-col-fixed" style="width:100px">Firstname</label>
+            <div class="p-col">
+                <input id="firstname3" type="text" pInputText>
+            </div>
+        </div>
+        <div class="p-field p-grid">
+            <label for="lastname3" class="p-col-fixed" style="width:100px">Lastname</label>
+            <div class="p-col">
+                <input id="lastname3" type="text" pInputText>
+            </div>
+        </div>
 
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+
+        <div class="p-grid ui-fluid" *ngIf="monitor">
+
+
+
+            
+
+
+
+            <div class="p-grid">
+                <div class="p-col-4">
                     <label for="ipAddress">{{'ip-address' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-col-8">
                     <input pInputText id="ipAddress" [(ngModel)]="monitor.ipAddress" style="width: 100%;" />
                 </div>
             </div>
 
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-grid">
+                <div class="p-col-4">
                     <label for="name">{{'monitor-name' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-col-8">
                     <input pInputText id="name" [(ngModel)]="monitor.name" style="width: 100%;" />
                 </div>
             </div>
 
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-grid">
+                <div class="p-col-4">
                     <label for="location">{{'monitor-location' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-col-8">
                     <input pInputText id="location" [(ngModel)]="monitor.location" style="width: 100%;" />
                 </div>
             </div>
 
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-grid">
+                <div class="p-col-4">
                     <label for="type">{{'area' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
+                <div class="p-col-8">
                     <p-multiSelect [options]="areas" [(ngModel)]="monitor.areas"
                         defaultLabel="{{ 'select-areas' | translate }}" [filter]="false" appendTo="body">
                         <ng-template let-areas pTemplate="selectedItems">

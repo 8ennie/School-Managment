@@ -2,6 +2,7 @@ package com.school.managment.Backend.service;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,14 @@ public class PDFConverterService {
 		PDFRenderer pdfRenderer = new PDFRenderer(document);
 		List<ShowPart> showParts = new ArrayList<ShowPart>();
 		for (int page = 0; page < document.getNumberOfPages(); ++page) {
-			BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(bim, "png", baos);
+			ByteArrayOutputStream baos;
+			int dpi = 300;
+			do {
+				BufferedImage bim = pdfRenderer.renderImageWithDPI(page, dpi, ImageType.RGB);
+				baos = new ByteArrayOutputStream();
+				ImageIO.write(bim, "png", baos);
+				dpi -= (50 + (50 * ((baos.size() - 2000000) / 2000000)));
+			} while (baos.size() > 2000000);
 			baos.flush();
 			byte[] imageInByte = baos.toByteArray();
 			baos.close();

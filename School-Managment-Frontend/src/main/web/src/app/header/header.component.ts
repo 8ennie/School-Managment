@@ -1,11 +1,11 @@
-import { AreaService } from './../photo-show/area.service';
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { AuthUser } from '../auth/auth-user.model';
-import { Privilege } from '../auth/privilege.model';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from './header.service';
+import { MenuItem } from 'primeng/api';
 
 
 @Component({
@@ -14,75 +14,90 @@ import { HeaderService } from './header.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  showHeader = true;
+  showHeader: boolean = true;
 
   user: AuthUser;
-  isAuthenticated = false;
-  privilege = [];
+  isAuthenticated: boolean = false;
+
   userSub: Subscription;
   headerSubscription: Subscription;
 
+  public areas: MenuItem[] = [];
+
+  public adminMenu: MenuItem[] = [];
+
+  public userMenu: MenuItem[] = [];
 
   constructor(
-    private authService: AuthService,
-    private translate: TranslateService,
-    private headerService: HeaderService,
-    private readonly areaService: AreaService,
+    public readonly authService: AuthService,
+    private readonly translate: TranslateService,
+    private readonly headerService: HeaderService,
+    public readonly router: Router,
   ) { }
-  isMenuCollapsed;
-  areas = [];
+
 
   ngOnInit() {
-    this.isAuthenticated = this.authService.isAthenticated();
-    this.user = this.authService.getUser();
-    if (this.authService.getUser()) {
-      this.privilege = this.authService.getUser().roles;
-    }
-    this.userSub = this.authService.userChanges.subscribe((user: AuthUser) => {
-      this.isAuthenticated = this.authService.isAthenticated();
-      if (user !== null) {
-        this.user = user;
-        this.privilege = this.authService.getUser().roles;
-      }
-      this.loadAreas();
+    this.loadUser();
+    this.reloadMenuesForTransaltion();
+    this.userSub = this.authService.userChanges.subscribe(() => {
+      this.loadUser();
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.reloadMenuesForTransaltion();
     });
     this.headerSubscription = this.headerService.showHeader.subscribe(hide => this.showHeader = hide);
+  }
+
+  loadUser(): void {
+    this.isAuthenticated = this.authService.isAthenticated();
+    this.user = this.authService.getUser();
     this.loadAreas();
   }
 
-  loadAreas() {
-    this.areaService.getUserAreas().then(areas => {
-      this.areas = areas;
-    });
+  loadAreas(): void {
+    if (this.user) {
+      this.areas = this.user.areas.map((a: string) => {
+        return {
+          label: this.translate.instant(a),
+          routerLink: [`photoshow/areas/${a}`],
+        }
+      });
+    }
   }
 
-  onLogout() {
+  reloadMenuesForTransaltion(): void {
+    this.loadAreas();
+    this.adminMenu = [
+      {
+        label: this.translate.instant('header.users'),
+        routerLink: ['auth/users'],
+      },
+      {
+        label: this.translate.instant('header.roles'),
+        routerLink: ['auth/roles'],
+      }
+    ];
+    this.userMenu = [
+      {
+        label: this.translate.instant('header.logout'),
+        command: () => this.onLogout(),
+        routerLink: ['auth']
+      },
+    ];
+  }
+
+  onLogout(): void {
     this.authService.logout();
     this.isAuthenticated = false;
   }
+
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-    this.headerSubscription.unsubscribe();
-  }
-
-  switchLang(lang: string) {
-    this.translate.use(lang);
-  }
-
-  getCurrentLang() {
-    return this.translate.currentLang;
-  }
-
-  getLangs() {
-    return this.translate.getLangs();
-  }
-
-  hasPrivilege(privileges: string[]): boolean {
-    for (const p of privileges) {
-      if (this.privilege.includes(p)) {
-        return true;
-      }
+    if (this.userSub) {
+      this.userSub.unsubscribe();
     }
-    return false;
+    if (this.headerSubscription) {
+      this.headerSubscription.unsubscribe();
+    }
   }
+
 }

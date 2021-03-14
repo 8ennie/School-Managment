@@ -1,3 +1,4 @@
+import { Privilege } from './../../auth/privilege.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
@@ -40,7 +41,7 @@ export class MonitorComponent implements OnInit {
         private areaService: AreaService,
         private imageShowStore: ImageShowStore,
         private messageService: MessageService,
-        private authService: AuthService,
+        public readonly authService: AuthService,
     ) {
 
     }
@@ -236,12 +237,4 @@ export class MonitorComponent implements OnInit {
         });
     }
 
-    hasPrivilege(privileges: string[]): boolean {
-        for (const p of privileges) {
-            if (!this.authService.hasPrivilege(privileges)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

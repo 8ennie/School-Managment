@@ -1,3 +1,4 @@
+import { UploadDocumentComponent } from './document/upload-document/upload-document.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -14,7 +15,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { PrimeNGModule } from './primeNG.module';
 import { AppComponent } from './app.component';
-import { AuthComponent } from './auth/auth.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { authInterceptorProviders } from './_helper/auth.interceptor';
@@ -35,16 +35,16 @@ import { ScrollingTextComponent } from './message/scrolling-text.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
 import { ImageListComponent } from './photo-show/image-list/image-list.component';
-import { UploadDocumentComponent } from './photo-show/document/upload-document/upload-document.component';
 import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-image-show/upload-image-show.component';
 import { AreaComponent } from './photo-show/area/area.component';
+import { LoginComponent } from './auth/login/login.component';
+import { DocumentListComponent } from './document/document-list/document-list.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthComponent,
     HeaderComponent,
     HomeComponent,
     InsertDirective,
@@ -65,6 +65,8 @@ import { AreaComponent } from './photo-show/area/area.component';
     UploadDocumentComponent,
     UploadImageShowComponent,
     AreaComponent,
+    LoginComponent,
+    DocumentListComponent,
   ],
   imports: [
     FormsModule,
@@ -78,9 +80,10 @@ import { AreaComponent } from './photo-show/area/area.component';
     DragDropModule,
     InputMaskModule,
     TranslateModule.forRoot({
+      defaultLanguage: 'de',
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: translationHttpLoaderFactory,
         deps: [HttpClient]
       }
     }),
@@ -92,7 +95,8 @@ import { AreaComponent } from './photo-show/area/area.component';
   providers: [
     authInterceptorProviders,
     httpErrorInterceptorProviders,
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }],
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -101,10 +105,11 @@ export class AppModule {
   ) {
     translate.addLangs(['en', 'de']);
     translate.setDefaultLang('de');
+    translate.use('de');
   }
 }
 
-export function HttpLoaderFactory(http: HttpClient) {
+export function translationHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/translations/', '.json');
 }
 

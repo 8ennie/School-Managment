@@ -27,6 +27,9 @@ import { PickListModule } from 'primeng/picklist';
 import { ListboxModule } from 'primeng/listbox';
 import { GalleriaModule } from 'primeng/galleria';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToolbarModule } from 'primeng/toolbar';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -59,6 +62,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         ListboxModule,
         GalleriaModule,
         ConfirmDialogModule,
+        ToolbarModule,
+        CardModule,
+        InputTextModule,
     ],
     exports: [
         DataViewModule,
@@ -88,6 +94,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         ListboxModule,
         GalleriaModule,
         ConfirmDialogModule,
+        ToolbarModule,
+        CardModule,
+        InputTextModule,
     ],
     providers: [MessageService]
 })

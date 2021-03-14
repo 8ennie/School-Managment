@@ -1,95 +1,41 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="showHeader">
-    <div class="container-fluid">
-        <a class="navbar-brand" [routerLink]="''">{{'header.header' | translate }}</a>
-
-        <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-            &#9776;
-        </button>
-
-        <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-            <ul ngbNav class="navbar-nav">
-
-                <li ngbNavItem ngbDropdown class="nav-item">
-                    <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
-                        *ngIf="isAuthenticated && areas.length > 0">{{'areas' | translate }}</a>
-                    <div ngbDropdownMenu>
-                        <a *ngFor="let area of areas" ngbDropdownItem routerLinkActive="active" [routerLink]="'photoshow/areas/' + area"
-                            class="dropdown-item">
-                            {{area | translate }}
-                        </a>
-                    </div>
-                </li>
-
-                <li ngbNavItem ngbDropdown class="nav-item">
-                    <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
-                        *ngIf="isAuthenticated">{{'photoshow' | translate }}</a>
-                    <div ngbDropdownMenu>
-                        <!-- <a ngbDropdownItem [routerLink]="'photoshow/list'" routerLinkActive="active"
-                            class="dropdown-item"
-                            >{{'image-show-list' | translate }}</a> -->
-                        <a ngbDropdownItem [routerLink]="'photoshow/edit/new'" routerLinkActive="active"
-                            class="dropdown-item"
-                            >{{'edit-image-show' | translate }}</a>
-
-                    </div>
-                </li>
-
-                <li ngbNavItem class="nav-item">
-                    <a [routerLink]="'photoshow/monitors'" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{exact: true}" class="nav-link"
-                        *ngIf="isAuthenticated && (hasPrivilege(['READ_MONITORS']))">{{'monitors' | translate }}</a>
-                </li>
-
-                <!-- <li ngbNavItem class="nav-item">
-                    <a [routerLink]="'photoshow/messages'" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{exact: true}" class="nav-link"
-                        *ngIf="isAuthenticated && (hasPrivilege(['WRITE_MESSAGES']))">{{'messages' | translate }}</a>
-                </li> -->
-
-
-                <li ngbNavItem ngbDropdown class="nav-item">
-                    <a (click)="false && isMenuCollapsed = true" class="nav-link" ngbDropdownToggle
-                        *ngIf="isAuthenticated && hasPrivilege(['READ_USER', 'READ_USER'])">{{'administration' | translate }}</a>
-                    <div ngbDropdownMenu>
-                        <a ngbDropdownItem [routerLink]="'auth/users'" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
-                            *ngIf="isAuthenticated && (hasPrivilege(['READ_USER']))">{{'user' | translate }}</a>
-                        <a ngbDropdownItem [routerLink]="'auth/roles'" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}" class="dropdown-item"
-                            *ngIf="isAuthenticated && (hasPrivilege(['READ_USER']))">{{'roles' | translate }}</a>
-                    </div>
-                </li>
-
-            </ul>
-
-            <ul ngbNav class="navbar-nav ml-auto">
-                <li ngbDropdown class="d-inline-block float_right" placement="bottom-right" display="dynamic"
-                    *ngIf="isAuthenticated">
-                    <a (click)="false" class="nav-link" ngbDropdownToggle>{{user.username}}</a>
-                    <div ngbDropdownMenu>
-                        <a ngbDropdownItem [routerLink]="'auth'" class="dropdown-item"
-                            (click)="onLogout()">{{'logout' | translate }}</a>
-                    </div>
-                </li>
-                <li ngbNavItem>
-                    <a ngbNavLink routerLinkActive="active" *ngIf="!isAuthenticated" [routerLink]="'auth'"
-                        (click)="isMenuCollapsed = true">{{'login' | translate }}</a>
-                </li>
-                <!-- <li ngNavItem>
-                    <div ngbDropdown>
-                        <a id="chooseLang" (click)="false" class="nav-link"
-                            ngbDropdownToggle>{{getCurrentLang() ? ('language' | translate) + ' (' + getCurrentLang() + ')': 'language' | translate }}
-                        </a>
-                        <div ngbDropdownMenu aria-labelledby="chooseLang">
-                            <ng-container *ngFor="let language of getLangs()">
-                                <a ngbDropdownItem *ngIf="language != getCurrentLang()"
-                                    (click)="switchLang(language)">{{language}}</a>
-                            </ng-container>
-                        </div>
-                    </div>
-                </li> -->
-            </ul>
-        </div>
+<p-toolbar *ngIf="showHeader">
+    <div class="p-toolbar-group-left navigation-bar-container">
+        <img src="assets/images/FCSF-Logo.png" height="40" class="image-logo">
+        <span class="title-label">{{'header.title' | translate }}</span>
+        <nav *ngIf="isAuthenticated" class="toolbar-navigation">
+            <span *ngIf="areas.length> 0">
+                <a  [class]="router.isActive('photoshow/areas', false)? 'active-link':''"
+                    (click)="areamenu.toggle($event)">{{'header.areas' | translate }}</a>
+                <p-menu #areamenu [popup]="true" [model]="areas"> </p-menu>
+            </span>
+            <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
+                <a [routerLink]="'photoshow/edit/new'" [class]="router.isActive('photoshow/edit', false)? 'active-link':''"
+                    routerLinkActive="active-link">{{'header.photoshow' | translate }}</a>
+            </span>
+            <span *ngIf="(authService.hasPrivileges(['READ_MONITORS']))">
+                <a [routerLink]="'photoshow/monitors'"
+                    routerLinkActive="active-link">{{'header.monitors' | translate }}</a>
+            </span>
+            <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
+                <a [routerLink]="'photoshow/documents'"
+                    routerLinkActive="active-link">{{'header.documents' | translate }}</a>
+            </span>
+            <span *ngIf="authService.hasPrivileges(['READ_USER', 'READ_USER'])">
+                <a [class]="router.isActive('auth', false)? 'active-link':''"
+                    (click)="adminmenu.toggle($event)">{{'header.administration' | translate }}</a>
+                <p-menu #adminmenu [popup]="true" [model]="adminMenu"> </p-menu>
+            </span>
+        </nav>
     </div>
-</nav>
+
+    <div class="p-toolbar-group-right navigation-bar-container">
+        <nav *ngIf="isAuthenticated">
+            <span>
+                <a (click)="usermenu.toggle($event)" class="user-navigation">{{user.username }}</a>
+                <p-menu #usermenu [popup]="true" [model]="userMenu"> </p-menu>
+            </span>
+        </nav>
+        <p-button *ngIf="!isAuthenticated" label="{{'header.login' | translate}}" [routerLink]="'auth'"></p-button>
+    </div>
+</p-toolbar>
 <p-toast></p-toast>

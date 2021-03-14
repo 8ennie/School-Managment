@@ -48,7 +48,7 @@ public class ImageShowController {
 			return showParts;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("PROBLEM!");
+			System.out.println("PROBLEM Iploading teh Document!");
 			e.printStackTrace();
 			return null;
 		}

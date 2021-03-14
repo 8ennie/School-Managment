@@ -1,0 +1,26 @@
+@import './../../../variables.scss';
+
+.login-card-container{
+    margin-top: 10rem;
+    width: 40%;
+}
+
+
+.logo-img {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 7px solid $primary-color;
+    margin-top: -5rem;
+}
+
+.icon-addon{
+    background-color: $secondary-color;
+    color: white;
+}
+
+.header{
+    font-size: 2em;
+    font-weight: bold;
+}
+

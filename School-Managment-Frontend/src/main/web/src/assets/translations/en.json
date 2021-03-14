@@ -1,4 +1,13 @@
 {
+
+    "header": {
+        "title":"FCSF Monitors",
+        "areas":"Areas"
+    },
+
+
+
+
     "students": "Students",
     "lessons": "Lessons",
     "teachers": "Teachers",
