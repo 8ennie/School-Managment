@@ -1,4 +1,4 @@
-import { Monitor } from './../monitor/monitor.model';
+
 import { MonitorService } from './../monitor/monitor.service';
 import { ImageShowService } from './../image-show.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { Monitor } from 'src/app/monitor/monitor.model';
 
 @Component({
   selector: 'app-edit-image-show',

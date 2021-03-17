@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Monitor } from './monitor.model';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Monitor } from 'src/app/monitor/monitor.model';
 
 @Injectable({ providedIn: 'root' })
 export class MonitorService {
@@ -35,7 +35,7 @@ export class MonitorService {
         return this.http.post<Monitor>(this.ressorceUrl, monitor).toPromise()
             .then(m => {
                 const monitorId = m._links.self.href.split('/').slice(-1)[0];
-                m.id = monitorId;
+                m.id = Number(monitorId);
                 this.authService.signUpMonitor(m).then(
                     monitorUser => console.log(monitorUser)
                 );

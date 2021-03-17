@@ -5,7 +5,8 @@ import { Observable, Subject } from 'rxjs';
 import { LocalStorageService } from '../_services/local-storage.service';
 import { AuthUser } from './auth-user.model';
 import { environment } from 'src/environments/environment';
-import { Monitor } from '../photo-show/monitor/monitor.model';
+import { Monitor } from '../monitor/monitor.model';
+
 
 const AUTH_API = environment.apiUrl + 'auth/';
 

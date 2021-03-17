@@ -154,7 +154,6 @@ export class ImageListComponent implements OnInit {
   }
 
 
-
   loadDocumentsForArea(parentNode) {
     this.documentService.getDocumentsByArea(parentNode.data.area).then(
       (res: { _embedded }) => {

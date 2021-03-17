@@ -49,7 +49,7 @@ describe('AuthService', () => {
     });
 
 
-    fit('should perform a post to /auth with email and password', () => {
+    it('should perform a post to /auth with email and password', () => {
         const email = 'email';
         const password = 'password';
 
@@ -58,11 +58,6 @@ describe('AuthService', () => {
             expect(data['token']).toBeTruthy();
         });
         httpMock.expectOne(`${environment.apiUrl}auth/signin`).flush({ token: "123", roles: ['test'] });
-    });
-
-
-    fit('should return priviliges', () => {
-        service.getPrivileges();
     });
 
 

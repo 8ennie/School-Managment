@@ -30,6 +30,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToolbarModule } from 'primeng/toolbar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
@@ -65,6 +66,7 @@ import { InputTextModule } from 'primeng/inputtext';
         ToolbarModule,
         CardModule,
         InputTextModule,
+        ProgressSpinnerModule,
     ],
     exports: [
         DataViewModule,
@@ -97,6 +99,7 @@ import { InputTextModule } from 'primeng/inputtext';
         ToolbarModule,
         CardModule,
         InputTextModule,
+        ProgressSpinnerModule,
     ],
     providers: [MessageService]
 })

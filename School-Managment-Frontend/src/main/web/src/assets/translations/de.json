@@ -23,6 +23,15 @@
             "login":"Fehler beim anmelden. Überprüfen sie den Benutzername oder dsa Password!"
         }
     },
+
+    "monitor":{
+        "list":{
+            "header": "Monitors"
+        },
+        "ditails":{
+            "header": "Monitor Details"
+        }
+    },
     "students": "Schüler",
     "lessons": "Untericht",
     "teachers": "Lehrer",

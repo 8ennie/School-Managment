@@ -1,3 +1,4 @@
+import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-photo-show.component';
@@ -28,7 +29,7 @@ const routes: Routes = [
       { path: 'documents', component: DocumentListComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_MESSAGES] } },
       { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
-      { path: 'monitors', component: MonitorComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
+      { path: 'monitors', component: MonitorListComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
       { path: 'areas/:area', component: AreaComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
       { path: 'edit/:id', component: EditImageShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'show/:id', component: PhotoShowComponent}

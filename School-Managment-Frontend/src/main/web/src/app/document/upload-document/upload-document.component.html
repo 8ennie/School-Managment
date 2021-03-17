@@ -1,12 +1,10 @@
-<p-dialog header="{{ 'upload-document' | translate }}" [(visible)]="displayDialog"
-    showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
-    <div class="p-grid p-fluid" *ngIf="document">
+<p-dialog header="{{ 'upload-document' | translate }}" [(visible)]="displayDialog" showEffect="fade" [modal]="true">
+    <div class="p-grid p-fluid" *ngIf="document" [style.display]="uploading ? 'none' : ''">
         <div class="p-col-4">
             <label for="area">{{'area' | translate }}</label>
         </div>
         <div class="p-col-8">
-            <p-dropdown id="area" [options]="areas" [(ngModel)]="document.area"
-                placeholder="Choose" appendTo="body">
+            <p-dropdown id="area" [options]="areas" [(ngModel)]="document.area" placeholder="Choose" appendTo="body">
                 <ng-template pTemplate="item" let-item>
                     {{item.value | translate}}
                 </ng-template>
@@ -19,19 +17,24 @@
             <label for="name">{{'upload-file' | translate }}</label>
         </div>
         <div class="p-col-8">
-            <p-fileUpload  mode="basic" #fileUpload accept=".pdf" [showCancelButton]="false"
-            [showUploadButton]="false" chooseLabel="{{'choose' | translate}}"  [customUpload]="true"></p-fileUpload>
+            <p-fileUpload mode="basic" #fileUpload accept=".pdf" [showCancelButton]="false" [showUploadButton]="false"
+                chooseLabel="{{'choose' | translate}}" [customUpload]="true"></p-fileUpload>
         </div>
-        <div class="alert alert-danger" style="width: 100%; text-align: center; margin-top: 5px;" role="alert"
-            *ngIf="errorMessage">
-            <div>{{ errorMessage | translate }}</div>
-        </div>
+        <p-messages *ngIf="errorMessage" severity="error" class="p-col">
+            <ng-template pTemplate>
+                <div class="p-ml-2">{{errorMessage | translate}}</div>
+            </ng-template>
+        </p-messages>
+    </div>
+    <div *ngIf="uploading" class="p-flex p-text-center ">
+        <p-progressSpinner></p-progressSpinner>
     </div>
     <p-footer>
         <div class="p-dialog-buttonpane p-helper-clearfix">
             <button type="button" pButton icon="pi pi-check" (click)="close()"
                 label="{{ 'cancel' | translate }}"></button>
-            <button type="button" pButton icon="pi pi-check" (click)="save()" label="{{ 'upload' | translate }}"></button>
+            <button type="button" pButton icon="pi pi-check" (click)="save()"
+                label="{{ 'upload' | translate }}"></button>
         </div>
     </p-footer>
 </p-dialog>

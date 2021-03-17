@@ -2,7 +2,6 @@ package com.school.managment.Backend.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -17,11 +16,9 @@ import com.school.managment.Backend.model.photoshow.ShowPart;
 import com.school.managment.Backend.payload.request.ImageShowPartRequest;
 import com.school.managment.Backend.payload.response.MessageResponse;
 import com.school.managment.Backend.service.ImageShowService;
-//import com.school.managment.Backend.model.photoshow.SubstitutionShow;
 import com.school.managment.Backend.service.ShowPartService;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api")
 public class ImageShowController {
 

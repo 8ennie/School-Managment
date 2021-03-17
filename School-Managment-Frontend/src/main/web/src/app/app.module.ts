@@ -39,6 +39,8 @@ import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-im
 import { AreaComponent } from './photo-show/area/area.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
+import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
+import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-details.component';
 
 
 
@@ -67,6 +69,8 @@ import { DocumentListComponent } from './document/document-list/document-list.co
     AreaComponent,
     LoginComponent,
     DocumentListComponent,
+    MonitorListComponent,
+    MonitorDetailsComponent,
   ],
   imports: [
     FormsModule,

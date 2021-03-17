@@ -13,8 +13,12 @@ export class UploadDocumentComponent implements OnInit {
 
   document: Document = new Document();
   errorMessage: string;
+  uploading: boolean = false;
+
   displayDialogValue = false;
-  @Output() displayDialogChange = new EventEmitter<boolean>();
+  
+  @Output() 
+  displayDialogChange = new EventEmitter<boolean>();
 
   @Input()
   set displayDialog(val) {
@@ -43,21 +47,22 @@ export class UploadDocumentComponent implements OnInit {
     });
   }
 
-  close() {
+  public close(): void {
     this.displayDialog = false;
     this.reset();
   }
 
-  reset() {
+  public reset(): void {
     this.errorMessage = null;
     this.document = new Document();
     this.fileUpload.clear();
   }
 
-  save() {
+  public save(): void {
     this.errorMessage = null;
 
     if (this.document.area && this.fileUpload.files.length !== 0) {
+      this.uploading = true;
       let doc;
       for (const file of this.fileUpload.files) {
         doc = file;
@@ -65,13 +70,14 @@ export class UploadDocumentComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', doc);
       formData.append('area', this.document.area);
-      this.documentService.uploadDocument(formData);
+      this.documentService.uploadDocument(formData).then(() => {
+        this.uploading = false;
+        this.close();
+      });
     } else {
       this.errorMessage = 'error.not-all-required-fields';
       return;
     }
-    this.close();
-
   }
 
 }

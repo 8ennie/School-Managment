@@ -3,9 +3,9 @@ import { ImageShow } from './../image-show.model';
 import { ImageShowStore } from './../image-show.store';
 import { List } from 'immutable';
 import { MonitorService } from './../monitor/monitor.service';
-import { Monitor } from './../monitor/monitor.model';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Monitor } from 'src/app/monitor/monitor.model';
 
 @Component({
   selector: 'app-area',

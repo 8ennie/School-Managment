@@ -1,11 +1,10 @@
-import { Privilege } from './../../auth/privilege.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ImageShowStore } from './../image-show.store';
 import { Component, OnInit } from '@angular/core';
-import { Monitor } from './monitor.model';
 import { MonitorService } from './monitor.service';
 import { AreaService } from '../area.service';
 import { MessageService } from 'primeng/api';
+import { Monitor } from 'src/app/monitor/monitor.model';
 
 @Component({
     selector: 'app-monitor',

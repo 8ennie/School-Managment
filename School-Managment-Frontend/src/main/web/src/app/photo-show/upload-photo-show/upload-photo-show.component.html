@@ -43,10 +43,10 @@
     <p-dialog header="{{ 'image-show-details' | translate }}" [(visible)]="displayDialog" [focusOnShow]="false"
         showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
         <div class="p-grid ui-fluid" *ngIf="imageShow">
-            <div class="ui-g-4">
+            <div class="p-g-4">
                 <label for="area">{{'area' | translate }}</label>
             </div>
-            <div class="ui-g-8">
+            <div class="p-g-8">
                 <p-dropdown id="area" [options]="areas" [(ngModel)]="imageShow.area" required="true"
                     placeholder="{{ 'choose-area' | translate }}" appendTo="body">
                     <ng-template pTemplate="item" let-item>
@@ -97,7 +97,7 @@
             </div>
         </div>
         <p-footer>
-            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <div class="p-dialog-buttonpane p-helper-clearfix">
                 <button *ngIf="!newImageShow" type="button" pButton icon="pi pi-times" (click)="delete()"
                     label="{{ 'delete' | translate }}"></button>
                 <button *ngIf="!newImageShow" type="button" pButton icon="pi pi-check" (click)="close()"

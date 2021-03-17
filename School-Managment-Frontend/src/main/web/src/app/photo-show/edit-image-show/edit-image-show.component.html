@@ -6,17 +6,17 @@
         <div class="card" style="padding: 5px 15px;">
             <h2 style="text-align: center;">{{'image-show' | translate }}</h2>
             <div style="width:100%; text-align:center;">
-                <div class="ui-g-12">
-                    <div class="ui-g-1">
+                <div class="p-g-12">
+                    <div class="p-g-1">
                         <label for="name">{{'image-show-name' | translate }}</label>
                     </div>
-                    <div class="ui-g-4">
+                    <div class="p-g-4">
                         <input pInputText id="name" [(ngModel)]="imageShow.name" required="true" style="width: 80%" />
                     </div>
-                    <div class="ui-g-1">
+                    <div class="p-g-1">
                         <label for="type">{{'area' | translate }}</label>
                     </div>
-                    <div class="ui-g-4">
+                    <div class="p-g-4">
                         <p-dropdown id="type" [options]="areas" [(ngModel)]="imageShow.area" required="true"
                             placeholder="Choose" appendTo="body" [style]="{'width':'80%'}">
                             <ng-template pTemplate="item" let-item>
