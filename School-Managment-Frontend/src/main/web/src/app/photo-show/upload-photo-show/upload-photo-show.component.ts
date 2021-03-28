@@ -1,10 +1,9 @@
 
-import { ImageShowStore } from './../image-show.store';
 import { FileUpload } from 'primeng/fileupload';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AreaService } from '../area.service';
-import { ImageShowService } from '../image-show.service';
-import { ImageShow } from '../image-show.model';
+import { AreaService } from '../../area/area.service';
+import { ImageShowService } from '../../image-show/image-show.service';
+import { ImageShow } from '../../image-show/image-show.model';
 
 @Component({
   selector: 'app-upload-photo-show',
@@ -35,22 +34,21 @@ export class UploadPhotoShowComponent implements OnInit {
   currentAreas = [];
   filterArea = [];
   constructor(
-    private imageShowStore: ImageShowStore,
     private areaService: AreaService,
   ) {
 
   }
 
   ngOnInit(): void {
-    this.imageShowStore.imageShows.subscribe(imageShows => {
-      if (imageShows.size > 0) {
-        this.load = false;
-        this.imageShows = null;
-        this.imageShows = imageShows.toArray();
-        this.updateRowGroupMetaData();
-        this.load = true;
-      }
-    });
+    // this.imageShowStore.imageShows.subscribe(imageShows => {
+    //   if (imageShows.size > 0) {
+    //     this.load = false;
+    //     this.imageShows = null;
+    //     this.imageShows = imageShows.toArray();
+    //     this.updateRowGroupMetaData();
+    //     this.load = true;
+    //   }
+    // });
     this.areaService.getUserAreas().then((areas: string[]) => {
       this.areas = areas.map(a => {
         return { label: a, value: a };
@@ -100,7 +98,7 @@ export class UploadPhotoShowComponent implements OnInit {
   }
 
   cloneShow(is: ImageShow): ImageShow {
-    const imageShow = {};
+    const imageShow = new ImageShow();
     for (const prop in is) {
       imageShow[prop] = is[prop];
     }
@@ -125,7 +123,7 @@ export class UploadPhotoShowComponent implements OnInit {
         formData.append('file', doc);
         formData.append('showName', this.imageShow.name);
         formData.append('area', this.imageShow.area);
-        this.imageShowStore.addImageShow2(formData);
+        // this.imageShowStore.addImageShow2(formData);
       } else {
         this.errorMessage = 'error.not-all-required-fields';
         return;
@@ -135,10 +133,10 @@ export class UploadPhotoShowComponent implements OnInit {
     } else {
       if (this.imageShow.name && this.imageShow.area && this.imageShow.id) {
         const changedImageShow = new ImageShow();
-        changedImageShow.id = this.imageShow.id;
+        //changedImageShow.id = this.imageShow.id;
         changedImageShow.name = this.imageShow.name;
         changedImageShow.area = this.imageShow.area;
-        this.imageShowStore.updateImageShow(changedImageShow);
+        // this.imageShowStore.updateImageShow(changedImageShow);
       } else {
         this.errorMessage = 'error.not-all-required-fields';
         return;
@@ -155,7 +153,7 @@ export class UploadPhotoShowComponent implements OnInit {
   }
 
   delete() {
-    this.imageShowStore.deleteImageShow(this.imageShow);
+    // this.imageShowStore.deleteImageShow(this.imageShow);
     this.close();
   }
 }

@@ -10,16 +10,16 @@
             </span>
             <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
                 <a [routerLink]="'photoshow/edit/new'" [class]="router.isActive('photoshow/edit', false)? 'active-link':''"
-                    routerLinkActive="active-link">{{'header.photoshow' | translate }}</a>
+                    routerLinkActive="active-link">{{'header.image-shows' | translate }}</a>
             </span>
             <span *ngIf="(authService.hasPrivileges(['READ_MONITORS']))">
                 <a [routerLink]="'photoshow/monitors'"
                     routerLinkActive="active-link">{{'header.monitors' | translate }}</a>
             </span>
-            <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
+            <!-- <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
                 <a [routerLink]="'photoshow/documents'"
                     routerLinkActive="active-link">{{'header.documents' | translate }}</a>
-            </span>
+            </span> -->
             <span *ngIf="authService.hasPrivileges(['READ_USER', 'READ_USER'])">
                 <a [class]="router.isActive('auth', false)? 'active-link':''"
                     (click)="adminmenu.toggle($event)">{{'header.administration' | translate }}</a>

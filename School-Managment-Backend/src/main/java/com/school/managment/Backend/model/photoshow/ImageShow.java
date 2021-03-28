@@ -20,6 +20,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -34,7 +35,7 @@ import lombok.NoArgsConstructor;
 @SQLDelete(sql = "UPDATE image_show SET deleted=true WHERE id=?")
 @Where(clause = "deleted = false")
 @EntityListeners(AuditingEntityListener.class)
-public class ImageShow {
+public class ImageShow extends RepresentationModel<ImageShow>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

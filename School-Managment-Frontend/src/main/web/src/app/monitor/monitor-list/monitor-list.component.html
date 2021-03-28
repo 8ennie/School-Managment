@@ -1,12 +1,9 @@
 <p-table [columns]="cols" [value]="monitors" selectionMode="single" [(selection)]="selectedMonitor" styleClass="p-m-3"
-    (onRowSelect)="onRowSelect($event)" [rows]="15">
-
-
-
+    (onRowSelect)="editMonitor($event.data)" [rows]="15">
     <ng-template pTemplate="caption">
         <div class="p-d-flex p-text-center p-jc-center">
             <h1 class="p-m-0"> {{'monitor.list.header' | translate }}</h1>
-            <p-button icon="pi pi-plus" (click)="showDialogToAdd()" class="p-ml-auto" label="{{ 'add' | translate }}">
+            <p-button icon="pi pi-plus" (click)="newMonitor()" class="p-ml-auto" label="{{ 'add' | translate }}">
             </p-button>
         </div>
     </ng-template>
@@ -28,75 +25,163 @@
                 {{monitor['location']}}
             </td>
             <td>
-                {{monitor['status'] != null ? monitor['status'] === true ? "An": "Aus" : "Offline"}}
+                {{(monitor['active'] ? (monitor['status'] != null ? monitor['status'] === true ? "monitor.list.on":
+                "monitor.list.off" : "monitor.list.offline"): "monitor.list.inactive") | translate}}
             </td>
             <td>
-                {{(monitor['imageShow'] ? monitor['imageShow'].area : 'no-area') | translate }}
+                {{(monitor['imageShow'] ? monitor['imageShow'].area : 'monitor.list.no-area') | translate }}
             </td>
         </tr>
     </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="monitorDialog" [style]="{width: '450px'}" header="{{ 'monitor.details.header' | translate }}"
-    [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="monitorDialog" header="{{ monitor?.name + '  ' + ('monitor.details.header' | translate )}}"
+    [modal]="true" styleClass="p-fluid" [draggable]="false">
     <ng-template pTemplate="content">
-        <!-- <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image"> -->
-        <div class="p-field">
-            <label for="name">{{'monitor.details.name' | translate}}</label>
-            <input type="text" pInputText id="name" [(ngModel)]="monitor.name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !monitor.name">Name is required.</small>
-        </div>
-        <!-- <div class="p-field">
-            <label for="description">Description</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3"
-                cols="20"></textarea>
-        </div>
-        <div class="p-field">
-            <label for="inventoryStatus">Inventory Status</label>
-            <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses"
-                placeholder="Select">
-                <ng-template let-option pTemplate="item">
-                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                </ng-template>
-            </p-dropdown>
-        </div> -->
+        <p-tabView styleClass="dialog">
+            <p-tabPanel header="{{'monitor.details.settings' | translate }}">
+                <div class="p-fluid">
+                    <div class="p-field p-grid">
+                        <label for="name" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                            {{'monitor.details.name' | translate}}
+                        </label>
+                        <div class="p-col-12 p-md-10">
+                            <input type="text" pInputText id="name" [(ngModel)]="monitor.name" required autofocus />
+                            <small class="p-error" *ngIf="submitted && !monitor.name">Name is required.</small>
+                        </div>
+                    </div>
+                    <div class="p-field p-grid">
+                        <label for="areas" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                            {{'monitor.details.area' | translate }}
+                        </label>
+                        <div class="p-col-12 p-md-10">
+                            <p-multiSelect id="areas" [options]="areas" [(ngModel)]="monitor.areas" appendTo="body"
+                                defaultLabel="{{ 'select-areas' | translate }}" [filter]="false">
 
-        <!-- <div class="p-field">
-            <label class="p-mb-3">{{}}</label>
-            <div class="p-formgrid p-grid">
-                <div class="p-field-radiobutton p-col-6">
-                    <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.category"></p-radioButton>
-                    <label for="category1">Accessories</label>
-                </div>
-                <div class="p-field-radiobutton p-col-6">
-                    <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.category"></p-radioButton>
-                    <label for="category2">Clothing</label>
-                </div>
-                <div class="p-field-radiobutton p-col-6">
-                    <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.category"></p-radioButton>
-                    <label for="category3">Electronics</label>
-                </div>
-                <div class="p-field-radiobutton p-col-6">
-                    <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.category"></p-radioButton>
-                    <label for="category4">Fitness</label>
-                </div>
-            </div>
-        </div>
+                                <ng-template let-areas pTemplate="selectedItems">
+                                    <div class="multiselect-values">
+                                        <span *ngFor="let area of areas">
+                                            {{area | translate}}
+                                        </span>
+                                    </div>
+                                    <div *ngIf="!areas || areas.length === 0">
+                                        {{'monitor.details.select-areas' | translate }}
+                                    </div>
+                                </ng-template>
 
-        <div class="p-formgrid p-grid">
-            <div class="p-field p-col">
-                <label for="price">Price</label>
-                <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-            </div>
-            <div class="p-field p-col">
-                <label for="quantity">Quantity</label>
-                <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
-            </div>
-        </div> -->
+                                <ng-template pTemplate="item" let-area>
+                                    {{area.value | translate}}
+                                </ng-template>
+                            </p-multiSelect>
+                        </div>
+                    </div>
+                    <div class="p-field p-grid">
+                        <label for="active" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                            {{'monitor.details.active' | translate }}
+                        </label>
+                        <div class="p-col-12 p-md-10">
+                            <p-toggleButton [(ngModel)]="monitor.active" id="active"
+                                onLabel="{{'monitor.details.active'| translate}}"
+                                offLabel="{{'monitor.details.inactive'| translate}}" onIcon="pi pi-check"
+                                offIcon="pi pi-times">
+                            </p-toggleButton>
+                        </div>
+                    </div>
+                    <div class="p-field p-grid" *ngIf="monitor.active && monitor.status">
+                        <label for="status" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                            {{'monitor.details.raspberry-status' | translate }}
+                        </label>
+                        <div class="p-col-12 p-md-10">
+                            <div class="p-text-center" id="status">
+                                {{ monitor.status == null? 'offline':'online' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="{{'monitor.details.admin' | translate }}">
+                <div class="p-field p-grid">
+                    <label for="ipaddress" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.ipaddress' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <input type="text" pInputText id="ipaddress" [(ngModel)]="monitor.ipAddress" autofocus />
+                    </div>
+                </div>
+                <div class="p-field p-grid">
+                    <label for="location" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.location' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <input type="text" pInputText id="location" [(ngModel)]="monitor.location" />
+                    </div>
+                </div>
+                <div class="p-field p-grid" *ngIf="monitor.status != null">
+                    <label for="reboot" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.location' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <p-button type="button" (click)="rebootMonitor()"
+                            label="{{'monitor.details.reboot' | translate }}" id="reboot"></p-button>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <!-- <p-tabPanel header="{{'monitr.details.screen-settings' | translate }}">
+                <div class="p-field p-grid">
+                    <label for="screen-status" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.screen-status' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <span>{{monitor.status}}</span>
+                    </div>
+                </div>
+            </p-tabPanel> -->
+            <p-tabPanel header="{{'monitor.details.image-show.settings' | translate }}"
+                *ngIf="monitor && monitor.status != null">
+                <div class="p-field p-grid">
+                    <label for="image-show-area" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.image-show.area' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <p-dropdown id="type" [options]="areas" required="true"
+                            placeholder="{{'monitor.details.image-show.choose-area' | translate}}" appendTo="body"
+                            (onChange)="onAreaChange($event.value)" id="image-show"
+                            [ngModel]="(monitor.imageShow?.area)? (monitor.imageShow.area): (null)">
+                            <ng-template pTemplate="item" let-item>
+                                {{item.label | translate}}
+                            </ng-template>
+                            <ng-template pTemplate="selectedItem" let-item>
+                                {{item.label | translate}}
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="p-field p-grid">
+                    <label for="image-shows" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.image-show.image-shows' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <p-dropdown *ngIf="monitor && imageShows?.length > 0" [options]="imageShows"
+                            placeholder="{{'monitor.details.image-show.choose-image-show' | translate}}"
+                            [(ngModel)]="monitor.imageShowUrl" appendTo="body" id="image-shows"></p-dropdown>
+                        <div class="p-text-center" *ngIf="!imageShows || imageShows?.length < 1">
+                            {{'monitor.details.image-show.no-image-shows'|translate}}
+                        </div>
+                        <!-- <button *ngIf="monitor.imageShowUrl != oldImageShowUrl" type="button" pButton (click)="loginAndStartShow()"
+                            label="{{'monitor.details.image-show.start-show' | translate }}" ></button> -->
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
     </ng-template>
 
-    <!-- <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
-    </ng-template> -->
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="{{'monitor.details.cancel' | translate}}" icon="pi pi-times"
+            class="p-button-text p-button-warning" (click)="hideDialog()"></button>
+        <button pButton pRipple label="{{'monitor.details.delete' | translate}}" icon="pi pi-trash"
+            class="p-button-text p-button-danger" (click)="deleteMonitor()"></button>
+        <button pButton pRipple label="{{'monitor.details.save' | translate}}" icon="pi pi-check"
+            class="p-button-text p-button-success" (click)="saveMonitor()"></button>
+    </ng-template>
 </p-dialog>

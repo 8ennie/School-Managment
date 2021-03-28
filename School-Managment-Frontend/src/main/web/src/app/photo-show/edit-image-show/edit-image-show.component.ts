@@ -1,11 +1,9 @@
-
-import { MonitorService } from './../monitor/monitor.service';
-import { ImageShowService } from './../image-show.service';
+import { MonitorService } from './../../monitor/monitor.service';
+import { ImageShowService } from '../../image-show/image-show.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ImageShow } from './../image-show.model';
+import { ImageShow } from '../../image-show/image-show.model';
 import { PhotoShowService } from './../photo-show.service';
-import { AreaService } from './../area.service';
-import { ImageShowStore } from './../image-show.store';
+import { AreaService } from '../../area/area.service';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
@@ -32,7 +30,7 @@ export class EditImageShowComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly imageShowService: ImageShowService,
     private readonly router: Router,
-    private readonly imageShowStore: ImageShowStore,
+    // private readonly imageShowStore: ImageShowStore,
     private readonly monitorService: MonitorService,
     private readonly messageService: MessageService,
   ) { }
@@ -63,15 +61,15 @@ export class EditImageShowComponent implements OnInit {
       this.imageShow.showParts = [];
     } else {
       this.imageShowService.getImageShow(this.id).then(imageShow => {
-        this.monitorService.getMonitorsByShowId(this.id).then((monitors: { _embedded }) => {
-          this.monitorUsingShow = monitors._embedded.monitors;
+        this.monitorService.getMonitorsByShowId(this.id).then((monitors: Monitor[]) => {
+          this.monitorUsingShow = monitors;
         });
-        this.imageShow = imageShow;
-        this.photoShowService.getShowShowParts(this.id).then((showParts: any) => {
-          if (showParts) {
-            this.imageShow.showParts = (showParts._embedded.imageShowShowParts).sort((n1, n2) => n1.position - n2.position);
-          }
-        });
+        // this.imageShow = imageShow;
+        // this.photoShowService.getShowShowParts(this.id).then((showParts: any) => {
+        //   if (showParts) {
+        //     this.imageShow.showParts = (showParts._embedded.imageShowShowParts).sort((n1, n2) => n1.position - n2.position);
+        //   }
+        // });
       });
     }
   }
@@ -89,26 +87,26 @@ export class EditImageShowComponent implements OnInit {
     if (this.id != 'new') {
       const showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
-      this.imageShowStore.updateImageShow(this.imageShow).then(() => {
-        this.imageShowService.updateImageShowParts(this.id, showParts).then(
-          () => {
-            this.loadImageShow();
-          }
-        );
-      });
+      // this.imageShowStore.updateImageShow(this.imageShow).then(() => {
+      //   this.imageShowService.updateImageShowParts(this.id, showParts).then(
+      //     () => {
+      //       this.loadImageShow();
+      //     }
+      //   );
+      // });
     } else {
       const showParts = this.imageShow.showParts;
       this.imageShow.showParts = null;
-      this.imageShowStore.addImageShow(this.imageShow).then((imageShow: { _links }) => {
-        const imageShowId = imageShow._links.self.href.split('/').pop();
-        this.imageShowService.saveImageShowParts(imageShowId, showParts).then(
-          () => {
-            this.id = imageShowId;
-            this.router.navigate(['photoshow', 'edit', imageShowId]);
-            this.loadImageShow();
-          }
-        );
-      });
+      // this.imageShowStore.addImageShow(this.imageShow).then((imageShow: { _links }) => {
+      //   const imageShowId = imageShow._links.self.href.split('/').pop();
+      //   this.imageShowService.saveImageShowParts(imageShowId, showParts).then(
+      //     () => {
+      //       this.id = imageShowId;
+      //       this.router.navigate(['photoshow', 'edit', imageShowId]);
+      //       this.loadImageShow();
+      //     }
+      //   );
+      // });
     }
     if (this.monitorUsingShow.length > 0 && this.updateMonitors) {
       this.monitorUsingShow.forEach(monitor => {

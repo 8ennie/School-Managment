@@ -2,34 +2,64 @@
     "header": {
         "title": "FCSF Monitore",
         "areas": "Bereiche",
-        "photoshow": "Präsentationen",
+        "image-shows": "Präsentationen",
         "monitors": "Monitore",
         "administration": "Administrarion",
         "users": "Benutzer",
         "roles": "Rollen",
-        "login":"Anmelden",
-        "logout":"Abmelden",
-        "documents":"Documente"
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "documents": "Documente"
     },
-
-    "login":{
-        "header":"Anmelden",
-        "username":"Benutzername",
-        "password":"Password",
-        "login-button":"Anmelden",
-        "username-required":"Benutzername Erforderlich!",
-        "password-required":"Password Erorderlich!",
+    "login": {
+        "header": "Anmelden",
+        "username": "Benutzername",
+        "password": "Password",
+        "login-button": "Anmelden",
+        "username-required": "Benutzername Erforderlich!",
+        "password-required": "Password Erorderlich!",
         "error": {
-            "login":"Fehler beim anmelden. Überprüfen sie den Benutzername oder dsa Password!"
+            "login": "Fehler beim anmelden. Überprüfen sie den Benutzername oder dsa Password!"
         }
     },
-
-    "monitor":{
-        "list":{
-            "header": "Monitors"
+    "monitor": {
+        "details": {
+            "header": "Monitor Details",
+            "name": "Name",
+            "area": "Bereich",
+            "active": "Aktiv",
+            "inactive": "Inaktiv",
+            "settings": "Einsetllungen",
+            "admin": "Administration",
+            "cancel": "Abbrechen",
+            "delete": "Löschen",
+            "save": "Speichern",
+            "ipaddress": "IP Adresse",
+            "location": "Ort",
+            "select-areas": "Wähle Bereiche",
+            "reboot": "Neu Starten",
+            "image-show": {
+                "settings":"Präsentations Einsetllungen",
+                "choose-area": "Bereich wählen",
+                "area": "Bereich",
+                "image-shows":"Präsentationen",
+                "choose-image-show":"Präsentaions Wählen",
+                "no-image-shows":"Keine Präsentationen gefunden"
+            }
         },
-        "ditails":{
-            "header": "Monitor Details"
+        "list": {
+            "header": "Monitors",
+            "name": "Name",
+            "location": "Ort",
+            "active": "Aktiv",
+            "status": "Status",
+            "area": "Bereich",
+            "inactive": "Inaktiv",
+            "offline": "Offline",
+            "online": "Online",
+            "no-area": "Kein Bereich zugeordnet",
+            "on": "An",
+            "off": "Aus"
         }
     },
     "students": "Schüler",

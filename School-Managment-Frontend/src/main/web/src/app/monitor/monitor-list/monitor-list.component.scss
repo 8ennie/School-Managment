@@ -1,0 +1,11 @@
+
+
+.multiselect-values{
+    > *:before {
+        content: ' | ';
+    }
+    > *:first-child:before {
+        content: '';
+    }
+}
+

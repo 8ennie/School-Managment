@@ -1,5 +1,5 @@
 import { AuthUser } from './../auth/auth-user.model';
-import { AreaService } from './../photo-show/area.service';
+import { AreaService } from '../area/area.service';
 import { Privilege } from './../auth/privilege.model';
 import { AuthGuard } from './../auth/auth.guard';
 import { FormsModule } from '@angular/forms';

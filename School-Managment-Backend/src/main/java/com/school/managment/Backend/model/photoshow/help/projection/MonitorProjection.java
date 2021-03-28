@@ -27,4 +27,6 @@ public interface MonitorProjection {
 	
 	Set<Area> getAreas();
 	
+	boolean getActive();
+	
 }

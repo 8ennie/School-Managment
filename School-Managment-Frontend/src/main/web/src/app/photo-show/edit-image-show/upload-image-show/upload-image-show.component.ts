@@ -1,6 +1,6 @@
-import { ImageShowStore } from './../../image-show.store';
-import { ImageShow } from './../../image-show.model';
-import { AreaService } from './../../area.service';
+import { ImageShowService } from './../../../image-show/image-show.service';
+import { ImageShow } from '../../../image-show/image-show.model';
+import { AreaService } from '../../../area/area.service';
 import { FileUpload } from 'primeng/fileupload';
 import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 
@@ -39,8 +39,9 @@ export class UploadImageShowComponent implements OnInit {
   areas = [];
 
   constructor(
-    private readonly imageShowStore: ImageShowStore,
+    // private readonly imageShowStore: ImageShowStore,
     private readonly areaService: AreaService,
+    private readonly imageShowService: ImageShowService,
   ) { }
 
   ngOnInit(): void {
@@ -80,11 +81,17 @@ export class UploadImageShowComponent implements OnInit {
       formData.append('file', doc);
       formData.append('showName', this.imageShow.name);
       formData.append('area', this.imageShow.area);
-      this.imageShowStore.addImageShow2(formData).then(() => {
-        this.uploading = false;
-        this.close();
-      }
-      );
+      this.imageShowService.uploadImageShow(formData)
+        .then((im) => {
+          //console.log(im);
+          this.uploading = false;
+          this.close();
+        });
+      // this.imageShowStore.addImageShow2(formData).then(() => {
+      //   this.uploading = false;
+      //   this.close();
+      // }
+      // );
     } else {
       this.errorMessage = 'error.not-all-required-fields';
       return;

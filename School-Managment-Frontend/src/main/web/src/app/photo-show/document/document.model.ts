@@ -1,8 +1,8 @@
-export class Document {
+// export class Document {
 
-    area?: string;
-    id?;
-    fileName?: string;
+//     area?: string;
+//     id?;
+//     fileName?: string;
 
-    _links?;
-}
+//     _links?;
+// }

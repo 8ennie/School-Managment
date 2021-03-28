@@ -84,7 +84,7 @@ export class AuthService {
     return false;
   }
 
-  signUpMonitor(monitor: Monitor) {
-    return this.http.post(AUTH_API + 'signup/monitor', monitor).toPromise();
+  signUpMonitor(monitorId:number) {
+    return this.http.post(AUTH_API + 'signup/monitor', monitorId).toPromise();
   }
 }

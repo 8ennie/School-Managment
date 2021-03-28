@@ -68,7 +68,7 @@
                             </p-multiSelect>
                         </div>
                     </div>
-                    <div class="p-grid">
+                    <div class="p-grid" *ngIf="monitor.active">
                         <div class="p-col-4">
                             <label for="status">{{'raspberry-status' | translate }}</label>
                         </div>
@@ -177,7 +177,7 @@
                 </div>
             </p-tabPanel>
 
-            <p-tabPanel header="{{'image-show-settings' | translate }}" *ngIf="monitor && monitor.status != null">
+            <p-tabPanel header="{{'photo-show.settings' | translate }}" *ngIf="monitor && monitor.status != null">
                 <div class="p-col ui-fluid" *ngIf="monitor">
                     <div class="p-col-4">
                         <label for="type">{{'area' | translate }}</label>

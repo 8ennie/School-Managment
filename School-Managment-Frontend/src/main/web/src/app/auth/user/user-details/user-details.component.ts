@@ -1,4 +1,4 @@
-import { AreaService } from './../../../photo-show/area.service';
+import { AreaService } from '../../../area/area.service';
 import { RoleStore } from './../../role/role.store';
 import { UserStore } from './../user.store';
 import { UserService } from './../user.service';

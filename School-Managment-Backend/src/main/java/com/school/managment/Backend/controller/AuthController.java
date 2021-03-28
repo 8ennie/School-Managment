@@ -113,9 +113,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup/monitor")
-	public ResponseEntity<?> registerMonitor(@RequestBody Monitor monitor) {
-		Long monitorId = monitor.getId();
-		User user = new User("Monitor(" + monitorId + ")", "monitor" + "." + monitorId + "@fcsf.de",
+	public ResponseEntity<?> registerMonitor(@RequestBody Long monitorId) {
+		User user = new User("Monitor(" + monitorId + ")", null,
 				encoder.encode("Monitor(" + monitorId + ")"));
 
 		Role monitorRole = roleRepository.findByName(ERole.ROLE_MONITOR.name()).get();

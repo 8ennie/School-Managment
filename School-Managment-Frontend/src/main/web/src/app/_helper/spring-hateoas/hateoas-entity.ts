@@ -32,4 +32,5 @@ export class HateoasEntity implements IHateoasEntity {
             href: string;
         };
     };
+
 }

@@ -6,6 +6,7 @@ public enum EPrivilege {
 	WRITE_IMAGE_SHOW,
 	
 	READ_MONITORS,
+	READ_ALL_MONITORS,
 	WRITE_MONITORS,
 	
 	READ_USER,

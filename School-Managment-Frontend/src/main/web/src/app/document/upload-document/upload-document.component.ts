@@ -1,4 +1,4 @@
-import { AreaService } from './../../photo-show/area.service';
+import { AreaService } from '../../area/area.service';
 import { DocumentService } from './../document.service';
 import { FileUpload } from 'primeng/fileupload';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';

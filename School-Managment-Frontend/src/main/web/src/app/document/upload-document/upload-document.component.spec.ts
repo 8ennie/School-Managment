@@ -1,4 +1,4 @@
-import { AreaService } from './../../photo-show/area.service';
+import { AreaService } from '../../area/area.service';
 import { Observable, of } from 'rxjs';
 import { TranslateService, TranslationChangeEvent, LangChangeEvent, DefaultLangChangeEvent, TranslateModule } from '@ngx-translate/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

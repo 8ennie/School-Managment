@@ -86,7 +86,7 @@ export class DocumentService implements OnDestroy {
   // }
 
   public deleteDocument(document: Document): Promise<void> {
-    return this.http.delete<void>(API_URL + '/' + document.id).toPromise();
+    return this.http.delete<void>(document.resourceUrl).toPromise();
   }
 
   getImageShowParts(documentId) {

@@ -22,7 +22,6 @@ import { InsertDirective } from './_directives/insert-point.directive';
 import { httpErrorInterceptorProviders } from './_helper/http-error.interceptor';
 import { PhotoShowComponent } from './photo-show/photo-show.component';
 import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-photo-show.component';
-import { MonitorComponent } from './photo-show/monitor/monitor.component';
 import { UserListComponent } from './auth/user/user-list/user-list.component';
 import { UserDetailsComponent } from './auth/user/user-details/user-details.component';
 import { UserComponent } from './auth/user/user.component';
@@ -41,6 +40,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
 import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-details.component';
+import { ShowComponent } from './image-show/show/show.component';
+import { EditShowComponent } from './image-show/edit-show/edit-show.component';
 
 
 
@@ -52,7 +53,6 @@ import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-detai
     InsertDirective,
     PhotoShowComponent,
     UploadPhotoShowComponent,
-    MonitorComponent,
     UserListComponent,
     UserDetailsComponent,
     UserComponent,
@@ -71,6 +71,8 @@ import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-detai
     DocumentListComponent,
     MonitorListComponent,
     MonitorDetailsComponent,
+    ShowComponent,
+    EditShowComponent,
   ],
   imports: [
     FormsModule,

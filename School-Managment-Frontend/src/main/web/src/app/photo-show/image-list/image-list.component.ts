@@ -1,14 +1,14 @@
 
-import { ImageShow } from './../image-show.model';
-import { DocumentService } from './../document/document.service';
+import { ImageShow } from '../../image-show/image-show.model';
 import { List } from 'immutable';
-import { AreaService } from './../area.service';
+import { AreaService } from '../../area/area.service';
 import { PhotoShowService } from './../photo-show.service';
 import { TreeNode, MessageService } from 'primeng/api';
-import { ImageShowService } from './../image-show.service';
+import { ImageShowService } from '../../image-show/image-show.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Document } from '../document/document.model';
 import { ConfirmationService } from 'primeng/api';
+import { Document } from 'src/app/document/document.model';
+import { DocumentService } from 'src/app/document/document.service';
 
 @Component({
   selector: 'app-image-list',
@@ -155,42 +155,38 @@ export class ImageListComponent implements OnInit {
 
 
   loadDocumentsForArea(parentNode) {
-    this.documentService.getDocumentsByArea(parentNode.data.area).then(
-      (res: { _embedded }) => {
-        return List(res._embedded.documents);
-      },
-      err => console.log('Error retrieving ImageShowes')
-    ).then((documents: List<Document>) => {
-      for (let i = 0; i < documents.size; i++) {
-        const document = documents.get(i);
-        const node = {
-          label: document.fileName,
-          type: 'DOCUMENT',
-          data: {
-            id: document.id,
-          },
-          leaf: false
-        };
-        if (parentNode.children) {
-          parentNode.children.push(node);
-        } else {
-          parentNode.children = [node];
+    this.documentService.getDocumentsByArea(parentNode.data.area)
+      .then((documents: Document[]) => {
+        for (let i = 0; i < documents.length; i++) {
+          const document = documents[i];
+          const node = {
+            label: document.filename,
+            type: 'DOCUMENT',
+            data: {
+              resourceUrl: document.resourceUrl,
+            },
+            leaf: false
+          };
+          if (parentNode.children) {
+            parentNode.children.push(node);
+          } else {
+            parentNode.children = [node];
+          }
         }
-      }
-      this.treeNodes = [...this.treeNodes];
-    });
+        this.treeNodes = [...this.treeNodes];
+      });
   }
 
 
   loadImageShowForArea(parentNode) {
     this.imageShowService.getImageShowByArea(parentNode.data.area).then(
-      (res: { _embedded }) => {
-        return List(res._embedded.imageShows);
+      (res) => {
+        return res;
       },
       err => console.log('Error retrieving ImageShowes')
-    ).then((filterdImageShows: List<ImageShow>) => {
-      for (let i = 0; i < filterdImageShows.size; i++) {
-        const imageShow = filterdImageShows.get(i);
+    ).then((filterdImageShows: ImageShow[]) => {
+      for (let i = 0; i < filterdImageShows.length; i++) {
+        const imageShow = filterdImageShows[i];
         const node = {
           label: imageShow.name,
           type: 'IMAGE_SHOW',
@@ -198,7 +194,7 @@ export class ImageListComponent implements OnInit {
             name: imageShow.name,
             area: imageShow.area,
             count: imageShow.imageCount,
-            id: imageShow.id,
+            resourceUrl: imageShow.resourceUrl,
           },
           leaf: false
         };
@@ -265,7 +261,7 @@ export class ImageListComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.imageShowService.deleteImageShow(node.data.id).then((res: { message }) => {
+        this.imageShowService.deleteImageShow(node.data.id).then((res: { message: string }) => {
           console.log(res);
           if (res.message == 'SUCCSESS') {
             this.messageService.add({ severity: 'success', summary: 'Deleted Successfully!', detail: 'The Image Show was Deleted' });
@@ -284,35 +280,31 @@ export class ImageListComponent implements OnInit {
 
   searchDocs(value: string) {
     this.loadAreas(this.treeNodes[0]);
-    this.documentService.getDocumentsByFileNameContains(value).then(
-      (res: { _embedded }) => {
-        return List(res._embedded.documents);
-      },
-      err => console.log('Error retrieving Documents')
-    ).then((documents: List<Document>) => {
-      for (let i = 0; i < documents.size; i++) {
-        const document = documents.get(i);
-        const node = {
-          label: document.fileName,
-          type: 'DOCUMENT',
-          data: {
-            id: document.id,
-          },
-          leaf: false
-        };
-        const areaNode = this.treeNodes[0].children.filter(node => node.type == 'DOCUMENTS_AREA' && node.data.area == document.area)[0];
-        if (areaNode) {
-          if (areaNode.children) {
-            areaNode.children.push(node);
-          } else {
-            areaNode.children = [node];
+    this.documentService.getDocumentsByFileNameContains(value)
+      .then((documents: Document[]) => {
+        for (let i = 0; i < documents.length; i++) {
+          const document: Document = documents[i];
+          const node = {
+            label: document.filename,
+            type: 'DOCUMENT',
+            data: {
+              resourceUrl: document.resourceUrl,
+            },
+            leaf: false
+          };
+          const areaNode = this.treeNodes[0].children.filter(node => node.type == 'DOCUMENTS_AREA' && node.data.area == document.area)[0];
+          if (areaNode) {
+            if (areaNode.children) {
+              areaNode.children.push(node);
+            } else {
+              areaNode.children = [node];
+            }
           }
-        }
 
-      }
-      this.treeNodes[0].children = this.treeNodes[0].children.filter(n => n.children || n.type != 'DOCUMENTS_AREA');
-      this.treeNodes = [...this.treeNodes];
-    });
+        }
+        this.treeNodes[0].children = this.treeNodes[0].children.filter(n => n.children || n.type != 'DOCUMENTS_AREA');
+        this.treeNodes = [...this.treeNodes];
+      });
   }
 
 
@@ -330,7 +322,7 @@ export class ImageListComponent implements OnInit {
           label: imageShow.name,
           type: 'IMAGE_SHOW',
           data: {
-            id: imageShow.id,
+            resourceUrl: imageShow.resourceUrl,
           },
           leaf: false
         };
@@ -365,7 +357,7 @@ export class ImageListComponent implements OnInit {
     }
   }
 
-  returnFalse(){
+  returnFalse() {
     return false;
   }
 
