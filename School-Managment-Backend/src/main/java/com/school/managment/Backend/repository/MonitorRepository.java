@@ -10,7 +10,7 @@ import com.school.managment.Backend.model.photoshow.Area;
 import com.school.managment.Backend.model.photoshow.Monitor;
 import com.school.managment.Backend.model.photoshow.help.projection.MonitorProjection;
 
-@RepositoryRestResource()
+@RepositoryRestResource(excerptProjection = MonitorProjection.class)
 public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 
 	public List<Monitor> findByAreas(Area area);

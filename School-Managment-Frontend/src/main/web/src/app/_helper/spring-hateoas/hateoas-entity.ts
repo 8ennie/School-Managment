@@ -6,7 +6,9 @@ export interface IHateoasEntity {
             readonly href: string;
             readonly templated?: true;
         }
-    }
+    };
+
+    readonly _embedded?: any;
 }
 
 export class HateoasEntity implements IHateoasEntity {
@@ -32,5 +34,7 @@ export class HateoasEntity implements IHateoasEntity {
             href: string;
         };
     };
+
+    public _embedded: any;
 
 }

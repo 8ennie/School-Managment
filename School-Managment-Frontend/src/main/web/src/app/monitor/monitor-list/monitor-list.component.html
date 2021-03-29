@@ -143,10 +143,10 @@
                         {{'monitor.details.image-show.area' | translate }}
                     </label>
                     <div class="p-col-12 p-md-10">
-                        <p-dropdown id="type" [options]="areas" required="true"
+                        <p-dropdown [options]="areas" required
                             placeholder="{{'monitor.details.image-show.choose-area' | translate}}" appendTo="body"
                             (onChange)="onAreaChange($event.value)" id="image-show"
-                            [ngModel]="(monitor.imageShow?.area)? (monitor.imageShow.area): (null)">
+                            [ngModel]="area">
                             <ng-template pTemplate="item" let-item>
                                 {{item.label | translate}}
                             </ng-template>
@@ -167,8 +167,6 @@
                         <div class="p-text-center" *ngIf="!imageShows || imageShows?.length < 1">
                             {{'monitor.details.image-show.no-image-shows'|translate}}
                         </div>
-                        <!-- <button *ngIf="monitor.imageShowUrl != oldImageShowUrl" type="button" pButton (click)="loginAndStartShow()"
-                            label="{{'monitor.details.image-show.start-show' | translate }}" ></button> -->
                     </div>
                 </div>
             </p-tabPanel>

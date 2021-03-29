@@ -37,6 +37,7 @@ export class MonitorListComponent implements OnInit {
   imageShows: { label: any; value: any; }[];
 
   oldImageShowUrl: string;
+  area: string;
 
 
   constructor(
@@ -63,7 +64,7 @@ export class MonitorListComponent implements OnInit {
       .then((monitors: Monitor[]) => {
         this.monitors = monitors;
         console.log(monitors);
-        
+
         return monitors;
       })
       .then((monitors: Monitor[]) => {
@@ -100,8 +101,6 @@ export class MonitorListComponent implements OnInit {
   }
 
   public editMonitor(monitor: Monitor): void {
-    console.log(monitor);
-    
     if (monitor.active) {
       this.pingMonitor(monitor);
     }
@@ -118,6 +117,7 @@ export class MonitorListComponent implements OnInit {
   public newMonitor(): void {
     this.monitor = new Monitor();
     this.monitorDialog = true;
+    this.area = null;
   }
 
   public rebootMonitor(): void {
@@ -134,7 +134,6 @@ export class MonitorListComponent implements OnInit {
 
   public saveMonitor(): void {
     const monitors = [...this.monitors];
-
     if (!this.monitor.resourceUrl) {
       this.monitorService.saveMonitor(this.monitor).then((m: Monitor) => {
         if (m.active) {
@@ -149,7 +148,6 @@ export class MonitorListComponent implements OnInit {
         if (m.active) {
           this.pingMonitor(m);
           console.log(m);
-          
           if (m.imageShowUrl != this.oldImageShowUrl) {
             this.loginAndStartShow();
           }
@@ -158,18 +156,7 @@ export class MonitorListComponent implements OnInit {
         this.monitors = monitors;
         this.monitorDialog = false;
       });
-      // if (closeDialog) {
-      //   this.displayDialog = false;
-      //   this.monitors = monitors;
-      //   this.monitor = null;
-      // }
     }
-    // if (this.oldShowUrl !== this.monitor.imageShowUrl) {
-    //   this.monitor.imageShow = this.monitor.imageShowUrl;
-    //   this.loginAndStartShow(false);
-    // } else {
-    //   this.monitor.imageShow = this.monitor.imageShowUrl;
-    // }
   }
 
   public deleteMonitor(): void {
@@ -181,11 +168,14 @@ export class MonitorListComponent implements OnInit {
   }
 
   public onAreaChange(area: string): void {
-    this.imageShowServie.getImageShowByArea(area).then(
-      (imageShow: ImageShow[]) => {
-        this.imageShows = imageShow.map((imageShow: ImageShow) => { return { label: imageShow.name, value: imageShow.resourceUrl } });
-      }
-    );
+    if (this.area != area) {
+      this.area = area;
+      this.imageShowServie.getImageShowByArea(area).then(
+        (imageShow: ImageShow[]) => {
+          this.imageShows = imageShow.map((imageShow: ImageShow) => { return { label: imageShow.name, value: imageShow.resourceUrl } });
+        }
+      );
+    }
   }
 
   public loginAndStartShow(save: boolean = true): void {

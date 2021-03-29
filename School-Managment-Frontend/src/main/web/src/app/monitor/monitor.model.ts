@@ -42,6 +42,9 @@ export class Monitor extends HateoasEntity implements MonitorHateoas {
         if (this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href) {
             return this.imageShow?._links.self.href.replace('{?projection}', '');
         } else {
+            if (this._embedded?.imageShow?._links?.self?.href) {
+                return this._embedded?.imageShow?._links?.self?.href?.replace('{?projection}', '');
+            }
             return this.imageShow;
         }
     }
@@ -50,7 +53,7 @@ export class Monitor extends HateoasEntity implements MonitorHateoas {
         this.imageShow = url;
     }
 
-    public set id(id: number){
+    public set id(id: number) {
         this._id = id;
     }
 

@@ -92,7 +92,7 @@ export class MonitorService {
         return this.http.patch<EmbeddedMonitorHateoas>(monitor.resourceUrl, monitor)
             .pipe(
                 map((monitorHateoas: EmbeddedMonitorHateoas): Monitor => {
-                    return Object.assign(new Monitor(), monitorHateoas)
+                    return Object.assign(new Monitor(), monitorHateoas);
                 })
             )
             .toPromise();
