@@ -1,0 +1,16 @@
+.grid-container {
+    display: grid;
+    gap: .5rem;
+
+    grid-template-areas: 
+            "image-list edit-show edit-show edit-show";
+
+
+    .image-list {
+        grid-area: image-list;
+    }
+
+    .edit-show {
+        grid-area: edit-show;
+    }
+}

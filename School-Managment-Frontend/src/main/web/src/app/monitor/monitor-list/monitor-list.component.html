@@ -87,13 +87,13 @@
                             </p-toggleButton>
                         </div>
                     </div>
-                    <div class="p-field p-grid" *ngIf="monitor.active && monitor.status">
+                    <div class="p-field p-grid" *ngIf="monitor.active && monitor.status != null">
                         <label for="status" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
                             {{'monitor.details.raspberry-status' | translate }}
                         </label>
                         <div class="p-col-12 p-md-10">
                             <div class="p-text-center" id="status">
-                                {{ monitor.status == null? 'offline':'online' | translate }}
+                                {{ monitor.status == null? 'monitor.details.offline':'monitor.details.online' | translate }}
                             </div>
                         </div>
                     </div>
@@ -145,8 +145,7 @@
                     <div class="p-col-12 p-md-10">
                         <p-dropdown [options]="areas" required
                             placeholder="{{'monitor.details.image-show.choose-area' | translate}}" appendTo="body"
-                            (onChange)="onAreaChange($event.value)" id="image-show"
-                            [ngModel]="area">
+                            (onChange)="onAreaChange($event.value)" id="image-show" [ngModel]="area">
                             <ng-template pTemplate="item" let-item>
                                 {{item.label | translate}}
                             </ng-template>
@@ -169,6 +168,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="p-field p-grid" *ngIf="monitor.imageShowUrl">
+                    <label for="start-last-show" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.image-show.start-last-show' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <p-toggleButton [(ngModel)]="monitor.onStartResumeLastShow" onLabel="{{ 'yes' | translate}}"
+                            offLabel="{{ 'no' | translate}}" (click)="setStartResumeLastShow()" onIcon="pi pi-check"
+                            offIcon="pi pi-times"></p-toggleButton>
+                    </div>
+                </div>
+                <div class="p-field p-grid" *ngIf="!monitor.onStartResumeLastShow">
+                    <label for="start-url" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                        {{'monitor.details.image-show.start-url' | translate }}
+                    </label>
+                    <div class="p-col-12 p-md-10">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText id="start-url" [(ngModel)]="monitor.startUrl"
+                                placeholder="monitor.details.image-show.start-url" />
+                            <p-button type="button" pRipple label="{{'monitor.details.image-show.change' | translate }}" (click)="setStartUrl()">
+                            </p-button>
+                        </div>
+                    </div>
+                </div>
+
             </p-tabPanel>
         </p-tabView>
 

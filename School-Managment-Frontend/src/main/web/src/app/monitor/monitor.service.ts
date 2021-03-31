@@ -102,6 +102,31 @@ export class MonitorService {
         return this.http.delete<void>(monitor.resourceUrl).toPromise();
     }
 
+
+    public setStartUrl(monitor: Monitor): Promise<string> {
+        const formData = new FormData();
+        formData.append('startUrl', monitor.startUrl.toString());
+        return this.http.post('http://' + monitor.ipAddress + '/settings/startUrl', formData, { responseType: 'text' }).toPromise();
+    }
+
+    public setStartResumeLastShow(monitor: Monitor): Promise<boolean> {
+        const formData = new FormData();
+        formData.append('resumeLastShow', monitor.onStartResumeLastShow ? 'true' : 'false');
+        return this.http.post<boolean>('http://' + monitor.ipAddress + '/settings/onStartResumeLastShow', formData).toPromise();
+    }
+
+    public loginAndStartShow(monitor: Monitor): Promise<void> {
+        const formData = new FormData();
+        formData.append('monitorId', monitor.id.toString());
+        if (monitor.imageShow?.id) {
+            formData.append('showId', monitor.imageShow.id.toString());
+        } else {
+            const imageShowId: string = monitor.imageShowUrl.split('/').slice(-1)[0];
+            formData.append('showId', imageShowId);
+        }
+        return this.http.post<void>('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise();
+    }
+
     loginForShow(monitor: Monitor) {
         const formData = new FormData();
         formData.append('monitorId', monitor.id.toString());
@@ -113,17 +138,7 @@ export class MonitorService {
 
 
 
-    loginAndStartShow(monitor: Monitor) {
-        const formData = new FormData();
-        formData.append('monitorId', monitor.id.toString());
-        if (monitor.imageShow?.id) {
-            formData.append('showId', monitor.imageShow.id.toString());
-        }
-        return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise().then(
-            () => {
-                console.log('Starting');
-            });
-    }
+
 
     monitorScreen(monitor: Monitor, state: boolean) {
         return this.http.post('http://' + monitor.ipAddress + '/screen/changeStatus?status=' + state, '').toPromise().then(
@@ -167,25 +182,7 @@ export class MonitorService {
             });
     }
 
-    setStartUrl(monitor: Monitor) {
-        const formData = new FormData();
-        formData.append('resumeLastShow', monitor.startUrl);
-        return this.http.post('http://' + monitor.ipAddress + '/settings/startUrl', formData).toPromise().then(
-            (serverIP) => {
-                console.log(serverIP);
-                return serverIP;
-            });
-    }
 
-    setStartResumeLastShow(monitor: Monitor) {
-        const formData = new FormData();
-        formData.append('resumeLastShow', monitor.onStartResumeLastShow ? 'true' : 'false');
-        return this.http.post('http://' + monitor.ipAddress + '/settings/onStartResumeLastShow', formData).toPromise().then(
-            (serverIP) => {
-                console.log(serverIP);
-                return serverIP;
-            });
-    }
 
     loginAndShowSubstitution(monitor: Monitor) {
         const formData = new FormData();

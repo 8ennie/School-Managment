@@ -33,7 +33,7 @@ import { MessageComponent } from './message/message.component';
 import { ScrollingTextComponent } from './message/scrolling-text.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
-import { ImageListComponent } from './photo-show/image-list/image-list.component';
+import { ImageListComponent } from './image-show/image-list/image-list.component';
 import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-image-show/upload-image-show.component';
 import { AreaComponent } from './photo-show/area/area.component';
 import { LoginComponent } from './auth/login/login.component';

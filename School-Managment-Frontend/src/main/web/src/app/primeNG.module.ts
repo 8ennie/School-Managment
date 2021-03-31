@@ -31,8 +31,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -67,6 +66,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         CardModule,
         InputTextModule,
         ProgressSpinnerModule,
+        AutoCompleteModule,
     ],
     exports: [
         DataViewModule,
@@ -100,6 +100,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         CardModule,
         InputTextModule,
         ProgressSpinnerModule,
+        AutoCompleteModule,
     ],
     providers: [MessageService]
 })

@@ -75,8 +75,8 @@ export class ImageShowService {
             ).toPromise();
     }
 
-    public deleteImageShow(imageShow: ImageShow): Promise<{ message: string }> {
-        return this.http.delete<{ message: string }>(imageShow.resourceUrl).toPromise();
+    public deleteImageShow(imageShowUrl: string): Promise<{ message: string }> {
+        return this.http.delete<{ message: string }>(API_URL + '/delete/' + imageShowUrl.split('/').slice(-1)[0]).toPromise();
     }
 
     public getImageShowByArea(area: string): Promise<ImageShow[]> {
@@ -113,8 +113,15 @@ export class ImageShowService {
         return this.http.post(API_URL + '/showParts', imageShowPartRequest).toPromise();
     }
 
-    getImageShowsByNameContains(name: string) {
-        return this.http.get(API_URL + '/search/findByNameContains?name=' + name + '&&projection=imageShowProjection').toPromise();
+    public getImageShowsByNameContains(name: string): Promise<ImageShow[]> {
+        return this.http.get<HateoasCollection<EmbeddedImageShowHateoas>>(API_URL + '/search/findByNameContains?name=' + name + '&&projection=imageShowProjection').pipe(
+            map(
+                (imageShowHateoasCollection: HateoasCollection<EmbeddedImageShowHateoas>): ImageShow[] => {
+                    const imageShowHateoasArray: ImageShowHateoas[] = imageShowHateoasCollection._embedded.imageShows;
+                    return imageShowHateoasArray.map((im: ImageShowHateoas): ImageShow => Object.assign(new ImageShow(), im));
+                }
+            )
+        ).toPromise();
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {

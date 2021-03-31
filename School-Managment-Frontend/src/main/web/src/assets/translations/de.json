@@ -38,13 +38,19 @@
             "location": "Ort",
             "select-areas": "Wähle Bereiche",
             "reboot": "Neu Starten",
+            "raspberry-status": "Raspberry Status",
+            "offline": "Offline",
+            "online": "Online",
             "image-show": {
-                "settings":"Präsentations Einsetllungen",
+                "settings": "Präsentations Einsetllungen",
                 "choose-area": "Bereich wählen",
                 "area": "Bereich",
-                "image-shows":"Präsentationen",
-                "choose-image-show":"Präsentaions Wählen",
-                "no-image-shows":"Keine Präsentationen gefunden"
+                "image-shows": "Präsentationen",
+                "choose-image-show": "Präsentaions Wählen",
+                "no-image-shows": "Keine Präsentationen gefunden",
+                "start-last-show": "Bei neusstart alte Präsentation Laden",
+                "change": "Ändern",
+                "start-url": "Start URL"
             }
         },
         "list": {
@@ -60,6 +66,18 @@
             "no-area": "Kein Bereich zugeordnet",
             "on": "An",
             "off": "Aus"
+        }
+    },
+    "image-list": {
+        "document": {
+            "search": "Suchen",
+            "name":"Document Name",
+            "no-documents":"Keine Documente Gefunden"
+        },
+        "image-show": {
+            "search": "Suchen",
+            "name":"Präsentations Name",
+            "no-image-shows":"Keine Präsentation Gefunden"
         }
     },
     "students": "Schüler",

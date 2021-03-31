@@ -1,4 +1,4 @@
-import { DocumentService } from './../photo-show/document/document.service';
+import { DocumentService } from './document.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Document } from './document.model';
@@ -18,13 +18,13 @@ describe('DocumentService', () => {
             ]
         });
 
-        httpMock = TestBed.get(HttpTestingController);
-        service = TestBed.get(DocumentService);
+        httpMock = TestBed.inject(HttpTestingController);
+        service = TestBed.inject(DocumentService);
 
         testDokuments1 = ((): Document[] => {
             let document1 = new Document();
             document1.filename = "Test1.pdf";
-            document1.id = 1;
+            document1.resourceUrl = "testUrl/1";
             return [document1];
         })();
 

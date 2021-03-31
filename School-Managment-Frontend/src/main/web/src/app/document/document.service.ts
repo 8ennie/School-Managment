@@ -1,3 +1,4 @@
+import { ImageShow } from './../image-show/image-show.model';
 import { Embeddeds, HateoasCollection } from './../_helper/spring-hateoas/hateoas-collection';
 import { Document, DocumentHateoas } from './document.model';
 import { Injectable, OnDestroy } from '@angular/core';
@@ -87,11 +88,6 @@ export class DocumentService implements OnDestroy {
 
   public deleteDocument(document: Document): Promise<void> {
     return this.http.delete<void>(document.resourceUrl).toPromise();
-  }
-
-  getImageShowParts(documentId) {
-    const showPartURL = environment.apiUrl + 'showParts/search/findByParentDocument?parentDocument=' + environment.apiUrl + 'documents/' + documentId;
-    return this.http.get(showPartURL).toPromise();
   }
 
   public getDocumentsByArea(area: string): Promise<Document[]> {

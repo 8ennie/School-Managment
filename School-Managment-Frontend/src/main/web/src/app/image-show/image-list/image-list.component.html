@@ -1,0 +1,89 @@
+<p-tree [value]="treeNodes" (onNodeExpand)="onNodeExpand($event)" class="image-tree" #nodes cdkDropList
+    cdkDropListConnectedTo="imageShowParts" [cdkDropListEnterPredicate]="returnFalse">
+
+    <ng-template let-node pTemplate="default">
+        <span>{{node.label | translate }}</span>
+    </ng-template>
+
+    <ng-template let-node pTemplate="PICTURE">
+        <div cdkDrag [cdkDragData]="node.data">
+            <img [src]="getImage(node.data.showPartImage)" height="100px" class="image">
+        </div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="DOCUMENTS">
+        <div class="p-grid p-ai-center p-m-auto">
+            <span>{{node.label | translate}}</span>
+            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
+                (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (click)="uploadDocument = true"
+                styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
+                icon="pi pi-search" (click)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
+        </div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="SEARCH_DOCUMENTS">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">{{'image-list.document.search' | translate }}</span>
+            <!-- <input type="text" pInputText #search_doc placeholder="{{'image-list.document.name' | translate }}" />
+            <p-button type="button" pRipple icon="pi pi-search" (click)="searchDocs(search_doc.value)"></p-button> -->
+            <p-autoComplete (completeMethod)="searchDocuments($event)" minLength=3 [suggestions]="filteredDocuments"
+                placeholder="{{'image-list.document.name' | translate }}" scrollHeight=0>
+            </p-autoComplete>
+        </div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="DOCUMENTS_AREA">
+        <span>{{node.label | translate }}</span>
+        <div *ngIf="node.expanded && node.children?.length == 0"> ({{'image-list.document.no-documents' | translate
+            }})</div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="DOCUMENT">
+        <span>{{node.label | translate }}</span>
+    </ng-template>
+
+    <ng-template let-node pTemplate="IMAGE_SHOWS">
+        <div class="p-grid p-ai-center p-m-auto">
+            <span>{{node.label | translate}}</span>
+            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
+                (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (click)="uploadImageShow = true"
+                styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
+                icon="pi pi-search" (click)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="node.expanded" pRipple icon="pi pi-pencil" (click)="editImageShows = !editImageShows"
+                styleClass="p-button-sm p-button-text"></p-button>
+        </div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="SEARCH_IMAGE_SHOWS">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">{{'image-list.image-show.search' | translate }}</span>
+            <p-autoComplete (completeMethod)="searchImageShows($event)" minLength=3 [suggestions]="filteredImageShows"
+                placeholder="{{'image-list.image-show.name' | translate }}" scrollHeight=0>
+            </p-autoComplete>
+        </div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="IMAGE_SHOWS_AREA">
+        <span>{{node.label | translate }}</span>
+        <div *ngIf="node.expanded && node.children?.length == 0"> ({{'image-list.image-show.no-image-shows' | translate
+            }})</div>
+    </ng-template>
+
+    <ng-template let-node pTemplate="IMAGE_SHOW">
+        <div class="p-grid p-ai-center p-m-auto">
+            <span>{{node.label | translate }}</span>
+            <p-button *ngIf="editImageShows" pRipple icon="pi pi-pencil" (click)="editImageShow(node)"
+                styleClass="p-button-sm p-button-text"></p-button>
+            <p-button *ngIf="editImageShows" pRipple icon="pi pi-trash" (click)="deleteImageShow(node)"
+                styleClass="p-button-sm p-button-text"></p-button>
+        </div>
+    </ng-template>
+
+</p-tree>
+<p-confirmDialog></p-confirmDialog>
+<app-upload-document [(displayDialog)]="uploadDocument" *ngIf="uploadDocument"></app-upload-document>
+<app-upload-image-show [(displayDialog)]="uploadImageShow" *ngIf="uploadImageShow"></app-upload-image-show>

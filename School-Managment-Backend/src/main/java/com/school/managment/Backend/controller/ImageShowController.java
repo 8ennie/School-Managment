@@ -74,9 +74,9 @@ public class ImageShowController {
 		}
 	}
 
-	@DeleteMapping("/imageShows/delete/{imageShowid}")
-	public ResponseEntity<?> deleteImageShow(@PathVariable("imageShowid") Long imageShowid) {
-		if (!imageShowService.deleteImageShow(imageShowid)) {
+	@DeleteMapping("/imageShows/delete/{imageShowId}")
+	public ResponseEntity<?> deleteImageShow(@PathVariable("imageShowId") Long imageShowId) {
+		if (!imageShowService.deleteImageShow(imageShowId)) {
 			return ResponseEntity.ok(new MessageResponse("IMAGE_SHOW_IN_USE"));
 		} else {
 			return ResponseEntity.ok(new MessageResponse("SUCCSESS"));

@@ -52,8 +52,6 @@ export class MonitorListComponent implements OnInit {
   }
 
   private loadDate(): void {
-    console.log("Load Data");
-
     this.areaService.getAllAreas().then((areas: []) => {
       this.areas = areas.map(a => {
         return { label: a, value: a };
@@ -63,8 +61,6 @@ export class MonitorListComponent implements OnInit {
     this.monitorService.getAllMonitors()
       .then((monitors: Monitor[]) => {
         this.monitors = monitors;
-        console.log(monitors);
-
         return monitors;
       })
       .then((monitors: Monitor[]) => {
@@ -147,9 +143,8 @@ export class MonitorListComponent implements OnInit {
       this.monitorService.updateMonitor(this.monitor).then((m: Monitor) => {
         if (m.active) {
           this.pingMonitor(m);
-          console.log(m);
           if (m.imageShowUrl != this.oldImageShowUrl) {
-            this.loginAndStartShow();
+            this.loginAndStartShow(m);
           }
         }
         monitors[monitors.findIndex(m => m.resourceUrl == this.monitor.resourceUrl)] = (m as Monitor);
@@ -178,8 +173,22 @@ export class MonitorListComponent implements OnInit {
     }
   }
 
-  public loginAndStartShow(save: boolean = true): void {
-    this.monitorService.loginAndStartShow(this.monitor);
+  public loginAndStartShow(monitor: Monitor = this.monitor): void {
+    this.monitorService.loginAndStartShow(monitor).then(() => {
+      this.messageService.add({ severity: 'success', summary: 'Monitor Changed ImageShow Successfully!' });
+    });
+  }
+
+  public setStartResumeLastShow(): void {
+    this.monitorService.setStartResumeLastShow(this.monitor).then((startResumeLastShow: boolean) => {
+      this.messageService.add({ severity: 'success', summary: startResumeLastShow ? 'Monitor will resume last Show on Startup!' : 'Monitor will start Start URL on Startup!' });
+    });
+  }
+
+  public setStartUrl(): void {
+    this.monitorService.setStartUrl(this.monitor).then(() => {
+      this.messageService.add({ severity: 'success', summary: 'Monitor Start URl was changed Successfully!' });
+    });
   }
 
 }
