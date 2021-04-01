@@ -15,5 +15,7 @@ export class ShowPart extends HateoasEntity implements ShowPartHateoas {
     public position: number;
     public active: boolean;
     public showPartId?: number;
-    public showPartImage: string;   
+    public showPartImage: string;
+
+    public changed?: boolean;
 }

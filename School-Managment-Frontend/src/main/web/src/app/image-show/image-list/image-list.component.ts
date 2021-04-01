@@ -71,7 +71,7 @@ export class ImageListComponent implements OnInit {
   }
 
   @Output()
-  showEdited = new EventEmitter<string>();
+  onImageShowEdited = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.treeNodes = [
@@ -183,13 +183,13 @@ export class ImageListComponent implements OnInit {
   }
 
   private loadShowPartsFromImageShow(parentNode: TreeNode): void {
-    this.showPartService.getShowShowPartsFromImageShow(parentNode.data.resourceUrl).then((showParts: ShowPart[]) => {
+    this.showPartService.getShowPartsFromImageShow(parentNode.data.resourceUrl).then((showParts: ShowPart[]) => {
       parentNode.children = showParts.map((showPart: ShowPart): TreeNode => {
         return {
           type: 'PICTURE',
           data: {
-            showPartImage: showPart.showPartImage,
             showPartId: showPart.showPartId,
+            showPartImage: showPart.showPartImage,
             new: true
           },
           leaf: true
@@ -215,7 +215,7 @@ export class ImageListComponent implements OnInit {
   }
 
   public editImageShow(node: TreeNode): void {
-    this.showEdited.emit(node.data.resourceUrl);
+    this.onImageShowEdited.emit(node.data.resourceUrl);
   }
 
   public deleteImageShow(node: TreeNode): void {

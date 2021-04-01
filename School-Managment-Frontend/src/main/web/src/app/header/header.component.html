@@ -9,7 +9,7 @@
                 <p-menu #areamenu [popup]="true" [model]="areas"> </p-menu>
             </span>
             <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
-                <a [routerLink]="'photoshow/edit/new'" [class]="router.isActive('photoshow/edit', false)? 'active-link':''"
+                <a [routerLink]="'photoshow/edit'" [class]="router.isActive('photoshow/edit', false)? 'active-link':''"
                     routerLinkActive="active-link">{{'header.image-shows' | translate }}</a>
             </span>
             <span *ngIf="(authService.hasPrivileges(['READ_MONITORS']))">

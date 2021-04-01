@@ -30,6 +30,12 @@ a {
     background-color: rgba($secondary-color, .25);
 }
 
+.p-card.image-card{
+    background-color: rgba($secondary-color, .05);
+    min-height: 250px;
+    overflow: auto;
+}
+
 .p-button{
     background-color: $secondary-color;
 }

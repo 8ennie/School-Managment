@@ -3,8 +3,8 @@
     gap: .5rem;
 
     grid-template-areas: 
-            "image-list edit-show edit-show edit-show";
-
+            "image-list edit-show";
+    grid-template-columns: repeat(3, minmax(500px, 1fr));
 
     .image-list {
         grid-area: image-list;
@@ -12,5 +12,6 @@
 
     .edit-show {
         grid-area: edit-show;
+        width: 100%;
     }
 }

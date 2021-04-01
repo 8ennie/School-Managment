@@ -1,0 +1,76 @@
+<div class="p-card p-fluid p-p-2 p-m-auto">
+    <h2 class="p-text-center">{{'image-show' | translate }}</h2>
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">{{'edit-show-panel.name' | translate }}</span>
+                <input type="text" pInputText [(ngModel)]="imageShow.name"
+                    placeholder=" {{'edit-show-panel.choose-name' | translate }}" />
+            </div>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">{{'edit-show-panel.area' | translate }}</span>
+                <p-dropdown id="type" [options]="areas" [(ngModel)]="imageShow.area"
+                    placeholder="{{'edit-show-panel.choose-area' | translate }}" appendTo="body" class="area-dropdown">
+                    <ng-template pTemplate="item" let-item>
+                        {{item.value | translate}}
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-item>
+                        {{item.value | translate}}
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="p-field p-col-12">
+            <p-card id="imageShowParts" cdkDropList cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="onDrop($event)" header="{{'edit-show-panel.images' | translate}}"
+                styleClass="image-card">
+
+                <ng-template pTemplate="content">
+                    <div class="p-d-flex">
+                        <div class="example-box" *ngFor="let showPart of imageShow.showParts; index as i;" cdkDrag
+                            cdkDropList [cdkDragData]="showPart">
+
+                            <div class="p-fluid">
+                                <div class="p-field">
+                                    <div class="p-card" [style]="showPart.active? null : {opacity: 0.5}">
+                                        <img [src]="getImage(showPart.showPartImage)" height="200px">
+                                    </div>
+                                </div>
+                                <div class="p-field p-d-flex p-jc-evenly">
+                                    <!-- <p-button pRipple type="button" icon="pi pi-search" styleClass="p-button-rounded"
+                                        (click)="removeShowPart(i)" ></p-button> -->
+                                    <p-button *ngIf="!showPart.active" pRipple type="button" icon="pi pi-eye-slash"
+                                        styleClass="p-button-warning p-button-rounded" (click)="setShowPartActive(showPart, true)">
+                                    </p-button>
+                                    <p-button *ngIf="showPart.active" pRipple type="button" icon="pi pi-eye"
+                                        styleClass="p-button-success p-button-rounded" (click)="setShowPartActive(showPart, false)">
+                                    </p-button>
+                                    <p-button pRipple type="button" icon="pi pi-times"
+                                        styleClass="p-button-danger p-button-rounded" (click)="removeShowPart(i)">
+                                    </p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+        <div class="p-field p-col-12">
+            <div class="p-d-flex p-jc-evenly">
+                <p-button label="{{ 'edit-show-panel.save' | translate}}" pRipple type="button"
+                    styleClass="p-button-success" (click)="save()"></p-button>
+                <p-button label="{{ 'edit-show-panel.delete' | translate}}" pRipple type="button"
+                    styleClass="p-button-danger" (click)="delete()" *ngIf="imageShowResourceUrl"></p-button>
+                <div class="p-inputgroup update-monitor-button" *ngIf="monitorUsingShow">
+                    <span class="p-inputgroup-addon">{{'edit-show-panel.update-monitors' | translate}}</span>
+                    <p-toggleButton [(ngModel)]="updateMonitors" onLabel="{{ 'edit-show-panel.yes' | translate}}"
+                        onIcon="pi pi-check" offIcon="pi pi-times" offLabel="{{ 'edit-show-panel.no' | translate}}">
+                    </p-toggleButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

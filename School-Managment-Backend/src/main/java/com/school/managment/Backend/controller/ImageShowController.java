@@ -19,7 +19,6 @@ import com.school.managment.Backend.model.photoshow.ImageShow;
 import com.school.managment.Backend.model.photoshow.ShowPart;
 import com.school.managment.Backend.payload.request.ImageShowPartRequest;
 import com.school.managment.Backend.payload.response.MessageResponse;
-import com.school.managment.Backend.repository.ImageShowRepository;
 import com.school.managment.Backend.service.ImageShowService;
 import com.school.managment.Backend.service.ShowPartService;
 
@@ -35,13 +34,14 @@ public class ImageShowController {
 
 	@Autowired
 	private ImageShowService imageShowService;
-	
+
 	@PostMapping(value = "/upload/show", produces = MediaTypes.HAL_JSON_VALUE)
 	public HttpEntity<EntityModel<ImageShow>> uploadImageShow(@RequestParam("file") MultipartFile file,
 			@RequestParam("showName") String showName, Area area) throws IOException {
 		ImageShow imageShow = showPartService.saveImageShow(file, showName, area);
 		EntityModel<ImageShow> imagesShowModel = new EntityModel<ImageShow>(imageShow);
-		imagesShowModel.add(linkTo(methodOn(ImageShowController.class).uploadImageShow(null, showName, area)).withSelfRel());
+		imagesShowModel
+				.add(linkTo(methodOn(ImageShowController.class).uploadImageShow(null, showName, area)).withSelfRel());
 		System.out.println("Sending back Image Show!");
 		return new ResponseEntity<>(imagesShowModel, HttpStatus.OK);
 	}
@@ -63,15 +63,21 @@ public class ImageShowController {
 	}
 
 	@PostMapping("/imageShows/showParts")
-	public ImageShow saveImageShow(@Valid @RequestBody ImageShowPartRequest imageShowPartRequest) {
+	public HttpEntity<EntityModel<ImageShow>> saveImageShow(
+			@Valid @RequestBody ImageShowPartRequest imageShowPartRequest) {
+		ImageShow imageShow = null;
 		if (!imageShowPartRequest.isUpdate()) {
-			return showPartService.saveShowParts(imageShowPartRequest.getImageShowParts(),
+			imageShow = showPartService.saveShowParts(imageShowPartRequest.getImageShowParts(),
 					imageShowPartRequest.getImageShowId());
 		} else {
 			System.out.println(imageShowPartRequest);
-			return showPartService.updateShowParts(imageShowPartRequest.getImageShowParts(),
+			imageShow = showPartService.updateShowParts(imageShowPartRequest.getImageShowParts(),
 					imageShowPartRequest.getImageShowId());
 		}
+		EntityModel<ImageShow> imagesShowModel = new EntityModel<ImageShow>(imageShow);
+		imagesShowModel
+				.add(linkTo(methodOn(ImageShowController.class).saveImageShow(imageShowPartRequest)).withSelfRel());
+		return new ResponseEntity<>(imagesShowModel, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/imageShows/delete/{imageShowId}")

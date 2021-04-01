@@ -71,14 +71,26 @@
     "image-list": {
         "document": {
             "search": "Suchen",
-            "name":"Document Name",
-            "no-documents":"Keine Documente Gefunden"
+            "name": "Document Name",
+            "no-documents": "Keine Documente Gefunden"
         },
         "image-show": {
             "search": "Suchen",
-            "name":"Präsentations Name",
-            "no-image-shows":"Keine Präsentation Gefunden"
+            "name": "Präsentations Name",
+            "no-image-shows": "Keine Präsentation Gefunden"
         }
+    },
+    "edit-show-panel": {
+        "name": "Name",
+        "choose-area": "Bereich wählen",
+        "area": "Bereich",
+        "choose-name": "Name wählen",
+        "images": "Bilder",
+        "no": "Nein",
+        "yes": "Ja",
+        "update-monitors": "Update Monitore",
+        "save": "Speichern",
+        "delete": "Löschen"
     },
     "students": "Schüler",
     "lessons": "Untericht",

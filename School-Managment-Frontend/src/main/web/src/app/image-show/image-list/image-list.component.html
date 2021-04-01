@@ -26,8 +26,6 @@
     <ng-template let-node pTemplate="SEARCH_DOCUMENTS">
         <div class="p-inputgroup">
             <span class="p-inputgroup-addon">{{'image-list.document.search' | translate }}</span>
-            <!-- <input type="text" pInputText #search_doc placeholder="{{'image-list.document.name' | translate }}" />
-            <p-button type="button" pRipple icon="pi pi-search" (click)="searchDocs(search_doc.value)"></p-button> -->
             <p-autoComplete (completeMethod)="searchDocuments($event)" minLength=3 [suggestions]="filteredDocuments"
                 placeholder="{{'image-list.document.name' | translate }}" scrollHeight=0>
             </p-autoComplete>

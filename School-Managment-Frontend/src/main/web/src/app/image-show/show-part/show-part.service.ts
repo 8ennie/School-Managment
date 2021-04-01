@@ -1,7 +1,9 @@
+import { ImageShow } from 'src/app/image-show/image-show.model';
+import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { ShowPart, ShowPartHateoas } from './show-part.model';
 import { Embeddeds, HateoasCollection } from './../../_helper/spring-hateoas/hateoas-collection';
-import { environment } from './../../../environments/environment';
+
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -20,7 +22,7 @@ export class ShowPartService {
 
   constructor(private readonly http: HttpClient) { }
 
-  public getShowShowPartsFromImageShow(imageShowUrl: string): Promise<ShowPart[]> {
+  public getShowPartsFromImageShow(imageShowUrl: string): Promise<ShowPart[]> {
     const showPartURL = API_URL + '/search/findByImageShow?imageShow=' + imageShowUrl + '&projection=imageShowPartProjection';
     return this.http.get<HateoasCollection<EmbeddedShowPartHateoas>>(showPartURL)
       .pipe(
@@ -31,5 +33,23 @@ export class ShowPartService {
           })
       )
       .toPromise();
+  }
+
+  public updateShowPartsForImageShow(showParts: ShowPart[], imageShowUrl: string): Promise<ImageShow> {
+    const imageShowPartRequest = {
+      update: true,
+      imageShowParts: showParts,
+      imageShowId: imageShowUrl.split('/').slice(-1)[0]
+    };
+    return this.http.post<ImageShow>(environment.apiUrl + 'imageShows' + '/showParts', imageShowPartRequest).toPromise();
+  }
+
+  public saveShowPartsForImageShow(showParts: ShowPart[], imageShowUrl: string): Promise<ImageShow> {
+    const imageShowPartRequest = {
+      update: false,
+      imageShowParts: showParts,
+      imageShowId: imageShowUrl.split('/').slice(-1)[0]
+    };
+    return this.http.post<ImageShow>(environment.apiUrl + 'imageShows' + '/showParts', imageShowPartRequest).toPromise();
   }
 }

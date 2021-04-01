@@ -1,7 +1,8 @@
-<div class="grid-container">
-    <app-image-list class="image-list"></app-image-list>
-    <div class="edit-image">
-        <p>edit-show works!</p>
+<div class="p-grid p-p-3">
+    <div class="p-col-12 p-md-4">
+        <app-image-list (onImageShowEdited)="editImageShow($event)"></app-image-list>
     </div>
-
+    <div class="p-col-12 p-md-8">
+        <app-edit-show-panel [imageShowResourceUrl]="imageShowResourceUrl" (imageShowSaved)="onImageShowSaved($event)"></app-edit-show-panel>
+    </div>
 </div>

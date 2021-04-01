@@ -36,8 +36,8 @@ export class ImageShowService {
             .toPromise();
     }
 
-    public getImageShow(id: string): Promise<ImageShow> {
-        return this.http.get<EmbeddedImageShowHateoas>(API_URL + '/' + id + '?projection=imageShowProjection')
+    public getImageShow(resourceUrl: string): Promise<ImageShow> {
+        return this.http.get<EmbeddedImageShowHateoas>(resourceUrl + '?projection=imageShowProjection')
             .pipe(
                 map((imageShowHateoas: EmbeddedImageShowHateoas): ImageShow => Object.assign(new ImageShow(), imageShowHateoas))
             )
@@ -89,28 +89,6 @@ export class ImageShowService {
                     }
                 )
             ).toPromise();
-    }
-
-    saveImageShowParts(imageShowId, imageShowParts) {
-        const imageShowPartRequest = {
-            update: false,
-            imageShowParts: imageShowParts.map(isp => {
-                return { showPartId: isp.showPartId, active: isp.active };
-            }),
-            imageShowId
-        };
-        return this.http.post(API_URL + '/showParts', imageShowPartRequest).toPromise();
-    }
-
-    updateImageShowParts(imageShowId, imageShowParts) {
-        const imageShowPartRequest = {
-            update: true,
-            imageShowParts: imageShowParts.map(isp => {
-                return { showPartId: isp.showPartId, active: isp.active, imageShowShowPartId: isp.id ? isp.id : null };
-            }),
-            imageShowId
-        };
-        return this.http.post(API_URL + '/showParts', imageShowPartRequest).toPromise();
     }
 
     public getImageShowsByNameContains(name: string): Promise<ImageShow[]> {

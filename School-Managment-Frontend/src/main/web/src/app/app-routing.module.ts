@@ -31,7 +31,7 @@ const routes: Routes = [
       { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'monitors', component: MonitorListComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
       { path: 'areas/:area', component: AreaComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_IMAGE_SHOW] } },
-      { path: 'edit/:id', component: EditShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
+      { path: 'edit', component: EditShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
       { path: 'show/:id', component: PhotoShowComponent}
     ]
   },

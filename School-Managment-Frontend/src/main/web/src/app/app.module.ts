@@ -42,6 +42,7 @@ import { MonitorListComponent } from './monitor/monitor-list/monitor-list.compon
 import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-details.component';
 import { ShowComponent } from './image-show/show/show.component';
 import { EditShowComponent } from './image-show/edit-show/edit-show.component';
+import { EditShowPanelComponent } from './image-show/edit-show-panel/edit-show-panel.component';
 
 
 
@@ -73,6 +74,7 @@ import { EditShowComponent } from './image-show/edit-show/edit-show.component';
     MonitorDetailsComponent,
     ShowComponent,
     EditShowComponent,
+    EditShowPanelComponent,
   ],
   imports: [
     FormsModule,
