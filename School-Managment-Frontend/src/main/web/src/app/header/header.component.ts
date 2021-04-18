@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.translate.onLangChange.subscribe(() => {
       this.reloadMenuesForTransaltion();
     });
-    this.headerSubscription = this.headerService.showHeader.subscribe(hide => this.showHeader = hide);
+    this.headerSubscription = this.headerService.showHeaderSubject.subscribe(hide => this.showHeader = hide);
   }
 
   loadUser(): void {

@@ -13,11 +13,11 @@ export class EditShowComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly activeRoute: ActivatedRoute,
+    private readonly activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.activeRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(params => {
       this.imageShowResourceUrl = params.imageShowRessource;
     });
   }
@@ -25,7 +25,7 @@ export class EditShowComponent implements OnInit {
   public editImageShow(resourceUrl: string): void {
     this.router.navigate([], {
       queryParams: { imageShowRessource: resourceUrl },
-      relativeTo: this.activeRoute
+      relativeTo: this.activatedRoute,
     });
   }
 

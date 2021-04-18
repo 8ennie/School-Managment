@@ -26,7 +26,7 @@ export class PhotoShowComponent implements OnInit {
     this.route.params.subscribe((parms: Params) => {
       this.id = parms['id'];
     });
-    this.headerService.showHeader.next(false);
+    this.headerService.showHeader;
 
     if (this.id == 'sub') {
       this.showService.getCurrentSubstitutionShow().then((showParts: any) => {

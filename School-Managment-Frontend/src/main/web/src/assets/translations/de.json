@@ -23,6 +23,11 @@
         }
     },
     "monitor": {
+        "card":{
+            "no-show-loaded":"Keine Präsentation Geladen",
+            "no-show-loaded-text":"-",
+            "image-show":"Präsentation"
+        },
         "details": {
             "header": "Monitor Details",
             "name": "Name",

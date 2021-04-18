@@ -1,0 +1,40 @@
+<p-card styleClass="p-m-2">
+  <ng-template pTemplate="header">
+    <div class="p-text-center">{{ monitor.name }}</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+    <div>
+      <div
+        class="no-image-show p-grid p-ai-center vertical-container p-jc-center"
+      >
+        <div>
+          <div class="no-image-show-text" *ngIf="!monitor.imageShowUrl">
+            {{ "monitor.card.no-show-loaded" | translate }}
+          </div>
+
+          <app-show
+            *ngIf="monitor.imageShowUrl"
+            [preview]="true"
+            [imageShowResorceUrl]="monitor.imageShowUrl"
+            [height]="150"
+          ></app-show>
+        </div>
+      </div>
+    </div>
+    <div class="p-mt-2 p-inputgroup">
+      <span class="p-inputgroup-addon">{{
+        "monitor.card.image-show" | translate
+      }}</span>
+      <input
+        class="p-text-center"
+        type="text"
+        pInputText
+        [disabled]="true"
+        [ngModel]="monitor.imageShow ? monitor.imageShow.name : null"
+        placeholder="{{ 'monitor.card.no-show-loaded-text' | translate }}"
+      />
+      <p-button type="button" pRipple icon="pi pi-pencil"></p-button>
+    </div>
+  </ng-template>
+</p-card>

@@ -76,10 +76,10 @@ export class EditImageShowComponent implements OnInit {
 
   onDrop(event) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(this.imageShow.showParts, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.imageShow.showParts as string[], event.previousIndex, event.currentIndex);
     } else {
       this.imageShow.showParts.push({ ...event.item.data, active: true });
-      moveItemInArray(this.imageShow.showParts, (this.imageShow.showParts.length - 1), event.currentIndex);
+      moveItemInArray(this.imageShow.showParts as string[], (this.imageShow.showParts.length - 1), event.currentIndex);
     }
   }
 

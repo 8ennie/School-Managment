@@ -35,7 +35,6 @@ import { SendMessageComponent } from './message/send-message/send-message.compon
 import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
 import { ImageListComponent } from './image-show/image-list/image-list.component';
 import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-image-show/upload-image-show.component';
-import { AreaComponent } from './photo-show/area/area.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
@@ -43,6 +42,10 @@ import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-detai
 import { ShowComponent } from './image-show/show/show.component';
 import { EditShowComponent } from './image-show/edit-show/edit-show.component';
 import { EditShowPanelComponent } from './image-show/edit-show-panel/edit-show-panel.component';
+import { AreaComponent } from './area/area/area.component';
+import { MonitorDashboardComponent } from './monitor/monitor-dashboard/monitor-dashboard.component';
+import { MonitorCardComponent } from './monitor/monitor-dashboard/monitor-card/monitor-card.component';
+import { ShowListComponent } from './image-show/show-list/show-list.component';
 
 
 
@@ -75,6 +78,9 @@ import { EditShowPanelComponent } from './image-show/edit-show-panel/edit-show-p
     ShowComponent,
     EditShowComponent,
     EditShowPanelComponent,
+    MonitorDashboardComponent,
+    MonitorCardComponent,
+    ShowListComponent,
   ],
   imports: [
     FormsModule,
