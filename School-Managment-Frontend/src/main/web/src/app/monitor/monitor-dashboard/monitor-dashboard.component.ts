@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import {
   Component,
   Input,
@@ -5,7 +6,6 @@ import {
   OnInit,
   SimpleChanges,
 } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
 import { Monitor } from "../monitor.model";
 import { MonitorService } from "../monitor.service";
 
@@ -15,12 +15,15 @@ import { MonitorService } from "../monitor.service";
   styleUrls: ["./monitor-dashboard.component.scss"],
 })
 export class MonitorDashboardComponent implements OnInit, OnChanges {
-  monitors: Monitor[];
+  monitors: Monitor[] = [];
 
   @Input()
   public area: string;
 
-  constructor(private readonly monitorService: MonitorService) {}
+  constructor(
+    private readonly monitorService: MonitorService,
+    private readonly authService: AuthService,
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.area) {
@@ -32,5 +35,13 @@ export class MonitorDashboardComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.area == null) {
+      this.monitorService.getAllActiveMonitors().then(
+        (monitors: Monitor[]) => {
+          this.monitors = monitors;
+        }
+      );
+    }
+  }
 }

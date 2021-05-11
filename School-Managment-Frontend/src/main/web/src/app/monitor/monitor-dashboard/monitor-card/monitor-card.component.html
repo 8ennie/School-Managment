@@ -1,40 +1,90 @@
-<p-card styleClass="p-m-2">
+<p-card styleClass="p-m-2 monitor-card" pDroppable="imageShow" (onDrop)="onDrop()">
   <ng-template pTemplate="header">
-    <div class="p-text-center">{{ monitor.name }}</div>
+    <div class="p-fluid p-text-center">
+      <span class="monitor-header">{{ monitor.name }}</span>
+      <p-tag *ngIf="!area && monitor.imageShow?.area" class="monitor-tag" [value]="monitor.imageShow?.area | translate">
+      </p-tag>
+      <p-tag *ngIf="area && monitor.imageShow?.area" class="monitor-tag" icon="pi pi-desktop"
+        [severity]="monitor.imageShow.area != area ? 'warning': 'success'"
+        [value]="monitor.imageShow?.area | translate">
+      </p-tag>
+      <p-tag *ngIf="monitor.imageShowLocked" class="monitor-tag" icon="pi pi-exclamation-circle" severity="danger"
+        [value]="'monitor.card.locked' | translate"></p-tag>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="body">
-    <div>
-      <div
-        class="no-image-show p-grid p-ai-center vertical-container p-jc-center"
-      >
+    <div *ngIf="loading" class="p-flex p-text-center loading">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <div *ngIf="!loading">
+
+      <div class="no-image-show p-grid p-ai-center vertical-container p-jc-center">
         <div>
-          <div class="no-image-show-text" *ngIf="!monitor.imageShowUrl">
-            {{ "monitor.card.no-show-loaded" | translate }}
+
+          <div class="no-image-show-text" *ngIf="displayText">
+            {{ displayText | translate }}
           </div>
 
-          <app-show
-            *ngIf="monitor.imageShowUrl"
-            [preview]="true"
-            [imageShowResorceUrl]="monitor.imageShowUrl"
-            [height]="150"
-          ></app-show>
+          <app-show *ngIf="monitor.imageShowUrl && !displayText" [preview]="true"
+            [imageShowResorceUrl]="monitor.imageShowUrl" [height]="150"></app-show>
         </div>
       </div>
     </div>
     <div class="p-mt-2 p-inputgroup">
       <span class="p-inputgroup-addon">{{
         "monitor.card.image-show" | translate
-      }}</span>
-      <input
-        class="p-text-center"
-        type="text"
-        pInputText
-        [disabled]="true"
+        }}</span>
+      <input class="p-text-center" type="text" pInputText [disabled]="true"
         [ngModel]="monitor.imageShow ? monitor.imageShow.name : null"
-        placeholder="{{ 'monitor.card.no-show-loaded-text' | translate }}"
-      />
-      <p-button type="button" pRipple icon="pi pi-pencil"></p-button>
+        placeholder="{{ 'monitor.card.no-show-loaded-text' | translate }}" />
+      <p-button *ngIf="!offline" type="button" pRipple icon="pi pi-pencil" (click)="changeImageShowDialog = true">
+      </p-button>
     </div>
   </ng-template>
 </p-card>
+<p-confirmDialog></p-confirmDialog>
+<p-dialog header="{{ 'monitor.card.monitor-offline-notification-header' | translate }}"
+  [(visible)]="monitorOfflineNotification">
+  {{ 'monitor.card.monitor-offline-notification' | translate }}
+</p-dialog>
+<p-dialog header="{{ 'monitor.card.update-image-show.header' | translate }}" [(visible)]="changeImageShowDialog"
+  showEffect="fade" [modal]="true">
+
+  <div class="p-fluid" *ngIf="monitor">
+
+    <div class="p-grid p-field  p-jc-center">
+      <label for="area" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+        {{ "monitor.card.update-image-show.area" | translate }}
+      </label>
+      <div class="p-col-12 p-md-10 p-text-center">
+        <span id="area">
+          {{area | translate}}
+        </span>
+      </div>
+    </div>
+
+    <div class="p-field p-grid">
+      <label for="image-shows" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+        {{ "monitor.card.update-image-show.image-shows" | translate }}
+      </label>
+      <div class="p-col-12 p-md-10">
+        <p-autoComplete [(ngModel)]="imageShow" id="image-shows" dataKey="resourceUrl" [suggestions]="imageShows"
+          (completeMethod)="searchImageShows($event)" forceSelection="true" appendTo="body" field="name" placeholder="{{
+            'monitor.card.update-image-show.search-image-show' | translate
+          }}" emptyMessage=" {{ 'monitor.card.update-image-show.no-image-shows' | translate }}" minLength=3>
+        </p-autoComplete>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="p-dialog-buttonpane p-helper-clearfix">
+      <button type="button" pButton icon="pi pi-check" (click)="close()"
+        label="{{ 'monitor.card.update-image-show.cancel' | translate }}"></button>
+      <button type="button" pButton icon="pi pi-check" (click)="updateImageShow()"
+        label="{{ 'monitor.card.update-image-show.update' | translate }}"></button>
+    </div>
+  </p-footer>
+
+</p-dialog>

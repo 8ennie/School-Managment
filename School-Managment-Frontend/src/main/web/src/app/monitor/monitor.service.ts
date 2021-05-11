@@ -61,6 +61,19 @@ export class MonitorService {
             .toPromise();
     }
 
+    public getAllActiveMonitors(): Promise<Monitor[]> {
+        return this.http.get<HateoasCollection<EmbeddedMonitorHateoas>>(API_URL + '/search/findByActiveTrue')
+            .pipe(
+                map(
+                    (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
+                        const monitortHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
+                        return monitortHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                    }
+                )
+            )
+            .toPromise();
+    }
+
     public getMonitorsByShowId(id: string): Promise<Monitor[]> {
         return this.http.get<HateoasCollection<EmbeddedMonitorHateoas>>(API_URL + '/search/findByImageShowId?id=' + id)
             .pipe(
@@ -147,11 +160,38 @@ export class MonitorService {
             });
     }
 
-    getMonitorStatus(monitor: Monitor) {
+    private getMonitorStatus(monitor: Monitor): Promise<MonitorStatus> {
         return this.http.get('http://' + monitor.ipAddress + '/status').toPromise().then(
             (status: (MonitorStatus)) => {
                 return status;
             });
+    }
+
+    private setMonitorId(monitor: Monitor): Promise<number> {
+        const formData = new FormData();
+        formData.append('monitorId', monitor.id.toString());
+        return this.http.post<number>('http://' + monitor.ipAddress + '/settings/monitorId', formData).toPromise();
+    }
+
+    public pingMonitor(monitor: Monitor): Promise<Monitor> {
+        return this.getMonitorStatus(monitor).then(
+            status => {
+                if (!status.monitorId || status.monitorId != monitor.id) {
+                    this.setMonitorId(monitor);
+                }
+                monitor.currentUrl = status.url;
+                monitor.status = status.screenStatus;
+                monitor.serverIp = status.serverIp;
+                monitor.wakeTime = new Date(new Date().toDateString() + ' ' + status.wakeTime);
+                monitor.sleepTime = new Date(new Date().toDateString() + ' ' + status.sleepTime);
+                monitor.onStartResumeLastShow = status.onStartResumeLastShow;
+                monitor.startUrl = status.startUrl;
+                return monitor;
+            }
+        ).catch(() => {
+            monitor.status = null;
+            return monitor;
+        });
     }
 
     setServerIP(monitor: Monitor) {
@@ -190,10 +230,10 @@ export class MonitorService {
         return this.http.post('http://' + monitor.ipAddress + '/show/loginAndShowSubstitution', formData).toPromise();
     }
 
-    reboot(monitor: Monitor) {
+    public reboot(monitor: Monitor): Promise<boolean> {
         const formData = new FormData();
         formData.append('reboot', 'true');
-        return this.http.post('http://' + monitor.ipAddress + '/settings/reboot', formData).toPromise();
+        return this.http.post<boolean>('http://' + monitor.ipAddress + '/settings/reboot', formData).toPromise();
     }
 
 }
@@ -205,4 +245,6 @@ interface MonitorStatus {
     sleepTime: string;
     onStartResumeLastShow: boolean;
     startUrl: string;
+    url: string;
+    monitorId: number;
 }

@@ -15,9 +15,9 @@ export class UploadDocumentComponent implements OnInit {
   errorMessage: string;
   uploading: boolean = false;
 
-  displayDialogValue = false;
-  
-  @Output() 
+  displayDialogValue: boolean = false;
+
+  @Output()
   displayDialogChange = new EventEmitter<boolean>();
 
   @Input()
@@ -58,7 +58,7 @@ export class UploadDocumentComponent implements OnInit {
     this.fileUpload.clear();
   }
 
-  public save(): void {
+  public upload(): void {
     this.errorMessage = null;
 
     if (this.document.area && this.fileUpload.files.length !== 0) {

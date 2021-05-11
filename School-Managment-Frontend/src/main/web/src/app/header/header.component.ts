@@ -28,6 +28,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public userMenu: MenuItem[] = [];
 
+  public monitorMenu: MenuItem[] = [];
+
   constructor(
     public readonly authService: AuthService,
     private readonly translate: TranslateService,
@@ -84,6 +86,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         routerLink: ['auth']
       },
     ];
+    this.monitorMenu = [
+      {
+        label: this.translate.instant('header.list'),
+        routerLink: ['photoshow/monitors'],
+        routerLinkActiveOptions: { exact: true },
+      },
+      {
+        label: this.translate.instant('header.dashboard'),
+        routerLink: ['photoshow/monitors/dashboard'],
+      },
+    ]
   }
 
   onLogout(): void {

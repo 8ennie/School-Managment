@@ -1,0 +1,7 @@
+@import './../../../variables.scss';
+
+.area-heading{
+    font-weight: 500;
+    color: $secondary-color;
+    background-color:  rgba($secondary-color, .25);
+}

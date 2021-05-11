@@ -1,17 +1,22 @@
 <div style="text-align: center; margin: 15px;">
-    <h3 >{{'roles' | translate }}</h3>
-    <p-table [value]="roles" selectionMode="single" [(selection)]="selectedRole"
-        (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+    <p-table [value]="roles" selectionMode="single" [(selection)]="selectedRole" (onRowSelect)="onRowSelect($event)"
+        [paginator]="true" [rows]="15">
+        <!-- <ng-template pTemplate="caption">
+            <div class="p-d-flex p-text-center p-jc-center">
+                <h1 class="p-m-0">{{'roles' | translate }}</h1>
+            </div>
+        </ng-template> -->
         <ng-template pTemplate="header">
             <tr>
-                <th>{{'role' | translate }}</th>
-                <th>{{'privileges' | translate }}</th>
+                <th>{{'auth.role-list.role-name' | translate }}</th>
+                <th>{{'auth.role-list.role-privileges' | translate }}</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-role>
             <tr [pSelectableRow]="role">
                 <td>{{role.name}}</td>
-                <td>{{role.privileges.length ?(role.privileges.length  > 4 ? role.privileges.length  : getPrivileges(role)): 'no-privileges' | translate}}</td>
+                <td class="rights-cell">{{role.privileges.length ?(role.privileges.length > 4 ? role.privileges.length :
+                    getPrivileges(role)): 'no-privileges' | translate}}</td>
             </tr>
         </ng-template>
     </p-table>

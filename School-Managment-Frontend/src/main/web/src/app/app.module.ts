@@ -42,10 +42,11 @@ import { MonitorDetailsComponent } from './monitor/monitor-details/monitor-detai
 import { ShowComponent } from './image-show/show/show.component';
 import { EditShowComponent } from './image-show/edit-show/edit-show.component';
 import { EditShowPanelComponent } from './image-show/edit-show-panel/edit-show-panel.component';
-import { AreaComponent } from './area/area/area.component';
+import { AreaOverviewComponent } from './area/area-overview/area-overview.component';
 import { MonitorDashboardComponent } from './monitor/monitor-dashboard/monitor-dashboard.component';
 import { MonitorCardComponent } from './monitor/monitor-dashboard/monitor-card/monitor-card.component';
 import { ShowListComponent } from './image-show/show-list/show-list.component';
+import { UploadShowComponent } from './image-show/upload-show/upload-show.component';
 
 
 
@@ -70,7 +71,7 @@ import { ShowListComponent } from './image-show/show-list/show-list.component';
     ImageListComponent,
     UploadDocumentComponent,
     UploadImageShowComponent,
-    AreaComponent,
+    AreaOverviewComponent,
     LoginComponent,
     DocumentListComponent,
     MonitorListComponent,
@@ -81,6 +82,7 @@ import { ShowListComponent } from './image-show/show-list/show-list.component';
     MonitorDashboardComponent,
     MonitorCardComponent,
     ShowListComponent,
+    UploadShowComponent,
   ],
   imports: [
     FormsModule,

@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 
 @Component({
-  selector: "app-area",
-  templateUrl: "./area.component.html",
-  styleUrls: ["./area.component.scss"],
+  selector: "app-area-overview",
+  templateUrl: "./area-overview.component.html",
+  styleUrls: ["./area-overview.component.scss"],
 })
-export class AreaComponent implements OnInit {
+export class AreaOverviewComponent implements OnInit {
   public area: string;
   constructor(private readonly activatedRoute: ActivatedRoute) {}
 

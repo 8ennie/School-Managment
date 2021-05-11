@@ -18,6 +18,7 @@ export interface MonitorHateoas extends IHateoasEntity {
     readonly wakeTime?: Date;
     readonly onStartResumeLastShow?: boolean;
     readonly startUrl: string;
+    readonly currentUrl?: string;
 }
 
 
@@ -37,6 +38,7 @@ export class Monitor extends HateoasEntity implements MonitorHateoas {
     wakeTime?: Date;
     onStartResumeLastShow?: boolean;
     startUrl: string;
+    currentUrl?:string;
 
     get imageShowUrl(): string | undefined {
         if (this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href) {

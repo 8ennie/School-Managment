@@ -18,7 +18,7 @@ export class RoleDetailsComponent implements OnInit {
           this.errorMessage = '';
           this.role = role;
           this.role.name = this.role.name.substring(5, this.role.name.length);
-          this.roleService.getPrivileges(role).then((privileges: {_embedded}) => {
+          this.roleService.getPrivileges(role).then((privileges: { _embedded }) => {
             this.role.privileges = privileges._embedded.privileges.map(p => p._links.self.href);
           });
         }
@@ -38,8 +38,8 @@ export class RoleDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roleService.getAllPrivileges().then((privileges: {_embedded}) => {
-      this.privileges = privileges._embedded.privileges.map(p => ({label: p.name, value: p._links.self.href}));
+    this.roleService.getAllPrivileges().then((privileges: { _embedded }) => {
+      this.privileges = privileges._embedded.privileges.map(p => ({ label: p.name, value: p._links.self.href }));
     });
   }
   save() {

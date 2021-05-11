@@ -1,32 +1,33 @@
-<div style="text-align: center; margin: 15px;">
+<!-- <div style="text-align: center; margin: 15px;">
     <div style="display: flex; justify-content: center; position: relative;">
         <h3>{{'role' | translate }}</h3>
         <button type="button" pButton icon="pi pi-plus" (click)="newRole()" label="{{ 'add' | translate }}"
             style="position: absolute; right: 15px;"></button>
     </div>
     <div class="card" style="margin: 15px;" *ngIf="role">
-        <div class="ui-g ui-fluid">
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+        <div class="p-g p-fluid">
+            <div class="p-g-12">
+                <div class="p-g-4">
                     <label for="name">{{'name' | translate }}</label>
                 </div>
                 <div class="p-col-8" style="width: 100%;">
-                    <div class="ui-inputgroup">
-                        <span class="ui-inputgroup-addon" style="width: 15%;">ROLE_</span>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon" style="width: 15%;">ROLE_</span>
                         <input type="text" [(ngModel)]="role.name" pInputText
                             style="width: 85%; text-transform: uppercase;">
                     </div>
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
+            <div class="p-g-12">
+                <div class="p-g-4">
                     <label for="privileges">{{'privileges' | translate }}</label>
                 </div>
-                <div class="ui-g-8">
-                    <p-multiSelect [options]="privileges" [(ngModel)]="role.privileges" defaultLabel="{{ 'select-privileges' | translate }}"></p-multiSelect>
+                <div class="p-g-8">
+                    <p-multiSelect [options]="privileges" [(ngModel)]="role.privileges"
+                        defaultLabel="{{ 'select-privileges' | translate }}"></p-multiSelect>
                 </div>
             </div>
-            <div class="ui-g-12">
+            <div class="p-g-12">
                 <div class="alert alert-danger" style="width: 100%; text-align: center; margin-top: 5px;" role="alert"
                     *ngIf="errorMessage">
                     <div>{{ errorMessage | translate }}</div>
@@ -35,12 +36,51 @@
 
         </div>
         <p-footer>
-            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <div class="p-dialog-buttonpane p-helper-clearfix">
                 <button type="button" pButton icon="pi pi-times" (click)="delete()" label="{{ 'delete' | translate }}"
                     style="margin-right: 15px;" *ngIf="!isNew"></button>
                 <button type="button" pButton icon="pi pi-check" (click)="save()"
                     label="{{ 'save' | translate }}"></button>
             </div>
         </p-footer>
+    </div>
+</div> -->
+
+<div class="p-card p-fluid p-p-2 p-m-auto">
+    <div class="p-d-flex">
+        <h2 class="p-ml-auto"> {{'auth.role-details.heading' | translate }} </h2>
+        <p-button class="p-ml-auto" type="button" icon="pi pi-plus" (click)="newRole()"
+            label="{{ 'auth.role-details.add' | translate }}">
+        </p-button>
+    </div>
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-grid p-col-12 p-md-6">
+            <label for="name" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "monitor.details.name" | translate }}
+            </label>
+            <div class="p-inputgroup p-col-12 p-md-10" id="name">
+                <span class="p-inputgroup-addon">{{'auth.role-details.role-prefix' | translate }}</span>
+                <input type="text" pInputText [(ngModel)]="role.name"
+                    placeholder=" {{'auth.role-details.choose-name' | translate }}" class="name-input" />
+            </div>
+        </div>
+        <div class="p-field p-grid p-col-12 p-md-6">
+            <label for="privileges" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.role-details.privileges" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10">
+                <p-multiSelect [options]="privileges" [(ngModel)]="role.privileges"
+                    defaultLabel="{{ 'auth.role-details.choose-privileges' | translate }}"></p-multiSelect>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-field p-col-12">
+        <div class="p-d-flex p-jc-evenly">
+            <p-button type="button" icon="pi pi-times" (click)="delete()" pRipple label="{{ 'auth.role-details.delete' | translate }}"
+                *ngIf="!isNew" styleClass="p-button-danger"></p-button>
+            <p-button pRipple type="button" icon="pi pi-check" styleClass="p-button-success" (click)="save()" label="{{ 'auth.role-details.save' | translate }}">
+            </p-button>
+        </div>
     </div>
 </div>

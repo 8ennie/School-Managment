@@ -1,20 +1,9 @@
-<p-table
-  [columns]="cols"
-  [value]="imageShows"
-  selectionMode="single"
-  [(selection)]="imageShow"
-  styleClass="p-m-2"
-  [rows]="15"
->
+<p-table [columns]="cols" [value]="imageShows" selectionMode="single" [(selection)]="imageShow" styleClass="p-m-2"
+  [rows]="15" >
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-text-center p-jc-center">
       <h1 class="p-m-0">{{ "image-show.list.header" | translate }}</h1>
-      <p-button
-        icon="pi pi-plus"
-        (click)="newShow()"
-        class="p-ml-auto"
-        label="{{ 'image-show.list.add' | translate }}"
-      >
+      <p-button icon="pi pi-plus" (click)="newShow()" class="p-ml-auto" label="{{ 'image-show.list.add' | translate }}">
       </p-button>
     </div>
   </ng-template>
@@ -27,34 +16,13 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-monitor>
-    <tr [pSelectableRow]="monitor">
-      <td>
-        {{ monitor["name"] }}
-      </td>
-      <td>
-        {{ monitor["location"] }}
-      </td>
-      <td>
-        {{
-          (monitor["active"]
-            ? monitor["status"] != null
-              ? monitor["status"] === true
-                ? "monitor.list.on"
-                : "monitor.list.off"
-              : "monitor.list.offline"
-            : "monitor.list.inactive"
-          ) | translate
-        }}
-      </td>
-      <td>
-        {{
-          (monitor["imageShow"]
-            ? monitor["imageShow"].area
-            : "monitor.list.no-area"
-          ) | translate
-        }}
+  <ng-template pTemplate="body" let-imageShow let-columns="columns">
+    <tr [pSelectableRow]="imageShow" pDraggable="imageShow" (onDragStart)="dragStart(imageShow)">
+      <td *ngFor="let col of columns">
+        {{ imageShow[col.field] }}
       </td>
     </tr>
   </ng-template>
 </p-table>
+
+<app-upload-show [(displayDialog)]="uploadImageShow" *ngIf="uploadImageShow" [area]="area"></app-upload-show>

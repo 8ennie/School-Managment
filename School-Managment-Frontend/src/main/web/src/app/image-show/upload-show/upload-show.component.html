@@ -1,33 +1,40 @@
-<p-dialog header="{{ 'document.upload.header' | translate }}" [(visible)]="displayDialog" showEffect="fade"
+<p-dialog header="{{ 'image-show.upload.header' | translate }}" [(visible)]="displayDialog" showEffect="fade"
     [modal]="true">
-    <div class="p-fluid" *ngIf="document" [style.display]="uploading ? 'none' : ''">
+    <div class="p-fluid" *ngIf="imageShow" [style.display]="uploading ? 'none' : ''">
 
-        <div class="p-grid p-field  p-jc-center">
-            <label for="area" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
-                {{ "document.upload.area" | translate }}
+
+        <div class="p-grid p-field">
+            <label for="name" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "image-show.upload.name" | translate }}
             </label>
             <div class="p-col-12 p-md-10">
-                <p-dropdown id="area" [options]="areas" [(ngModel)]="document.area"
-                    placeholder="{{'document.upload.choose-area' | translate}}" appendTo="body">
+                <input type="text" pInputText id="name" [(ngModel)]="imageShow.name" />
+            </div>
+        </div>
+        <div class="p-grid p-field" *ngIf="!area">
+            <label for="area" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "image-show.upload.area" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10">
+                <p-dropdown id="area" [options]="areas" [(ngModel)]="imageShow.area"
+                    placeholder="{{'image-show.upload.choose-area' | translate}}" appendTo="body">
                     <ng-template pTemplate="item" let-item>
+                        {{item.value | translate}}
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-item>
                         {{item.value | translate}}
                     </ng-template>
                 </p-dropdown>
             </div>
         </div>
 
-
         <div class="p-grid p-field">
             <label for="file" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
-                {{ "document.upload.file" | translate }}
+                {{ "image-show.upload.area" | translate }}
             </label>
             <div class="p-col-12 p-md-10">
                 <p-fileUpload mode="basic" #fileUpload accept=".pdf" [showCancelButton]="false"
-                    [showUploadButton]="false" chooseLabel="{{'document.upload.choose-file' | translate}}"
-                    [customUpload]="true">
-                    <ng-template let-file pTemplate="file">
-                        <div>Custom UI to display a file</div>
-                    </ng-template>
+                    [showUploadButton]="false" chooseLabel="{{'choose' | translate}}" [customUpload]="true">
                 </p-fileUpload>
             </div>
         </div>
@@ -43,9 +50,9 @@
     <p-footer>
         <div class="p-dialog-buttonpane p-helper-clearfix">
             <button type="button" pButton icon="pi pi-check" (click)="close()"
-                label="{{ 'document.upload.cancel' | translate }}"></button>
+                label="{{ 'cancel' | translate }}"></button>
             <button type="button" pButton icon="pi pi-check" (click)="upload()"
-                label="{{ 'document.upload.upload' | translate }}"></button>
+                label="{{ 'upload' | translate }}"></button>
         </div>
     </p-footer>
 </p-dialog>

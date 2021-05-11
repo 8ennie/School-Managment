@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
         console.log(err);
         this.message = 'login.error.login';
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: err.error?.message });
-        this.createLoginForm();
+        this.loginForm = this.createLoginForm(this.loginForm.value.username);
       }
     );
   }

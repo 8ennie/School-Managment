@@ -23,4 +23,6 @@ public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 	
 	public List<Monitor> findByActiveFalse();
 	
+	public List<Monitor> findByActiveTrue();
+	
 }

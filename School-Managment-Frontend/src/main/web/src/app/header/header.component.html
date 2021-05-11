@@ -4,7 +4,7 @@
         <span class="title-label">{{'header.title' | translate }}</span>
         <nav *ngIf="isAuthenticated" class="toolbar-navigation">
             <span *ngIf="areas.length> 0">
-                <a  [class]="router.isActive('photoshow/areas', false)? 'active-link':''"
+                <a [class]="router.isActive('photoshow/areas', false)? 'active-link':''"
                     (click)="areamenu.toggle($event)">{{'header.areas' | translate }}</a>
                 <p-menu #areamenu [popup]="true" [model]="areas"> </p-menu>
             </span>
@@ -13,8 +13,11 @@
                     routerLinkActive="active-link">{{'header.image-shows' | translate }}</a>
             </span>
             <span *ngIf="(authService.hasPrivileges(['READ_MONITORS']))">
-                <a [routerLink]="'photoshow/monitors'"
-                    routerLinkActive="active-link">{{'header.monitors' | translate }}</a>
+                <!-- <a [routerLink]="'photoshow/monitors'" routerLinkActive="active-link">{{'header.monitors' | translate
+                    }}</a> -->
+                <a [class]="router.isActive('photoshow/monitors', false)? 'active-link':''"
+                    (click)="monitormenu.toggle($event)">{{'header.monitors' | translate }}</a>
+                <p-menu #monitormenu [popup]="true" [model]="monitorMenu"> </p-menu>
             </span>
             <!-- <span *ngIf="(authService.hasPrivileges(['WRITE_IMAGE_SHOW']))">
                 <a [routerLink]="'photoshow/documents'"

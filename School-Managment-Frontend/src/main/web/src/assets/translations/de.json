@@ -4,12 +4,32 @@
         "areas": "Bereiche",
         "image-shows": "Präsentationen",
         "monitors": "Monitore",
+        "dashboard":"Dashboard",
+        "list":"List",
         "administration": "Administrarion",
         "users": "Benutzer",
         "roles": "Rollen",
         "login": "Anmelden",
         "logout": "Abmelden",
         "documents": "Documente"
+    },
+    "auth":{
+        "role-details":{
+            "heading":"Rolle",
+            "choose-name":"Name wählen",
+            "name":"Name",
+            "choose-privileges":"Rechte Wählen",
+            "privileges":"Rechte",
+            "add":"Hintufügen",
+            "role-prefix":"ROLE_",
+            "save":"Speichern",
+            "delete":"Löschen"
+        },
+        "role-list":{
+            "heading":"Rollen",
+            "role-name":"Rollen Name",
+            "role-privileges":"Rechte"
+        }
     },
     "login": {
         "header": "Anmelden",
@@ -23,10 +43,23 @@
         }
     },
     "monitor": {
-        "card":{
-            "no-show-loaded":"Keine Präsentation Geladen",
-            "no-show-loaded-text":"-",
-            "image-show":"Präsentation"
+        "card": {
+            "no-show-loaded": "Keine Präsentation Geladen",
+            "no-show-loaded-text": "-",
+            "image-show": "Präsentation",
+            "offline":"Offline",
+            "monitor-offline-notification-header":"Monitor Offline",
+            "monitor-offline-notification":"Der Monitor kann nicht mit der Präsentation Updated werden da er Offline ist.",
+            "locked":"Gesperrt",
+            "update-image-show":{
+                "header":"Präsentation ändern",
+                "area":"Bereich",
+                "cancel":"Abbrechen",
+                "update":"Aktualisiren",
+                "no-image-shows":"Keine Präsentationen gefunden",
+                "search-image-show":"Nach Präsentation suchen",
+                "image-shows":"Präsentationen"
+            }
         },
         "details": {
             "header": "Monitor Details",
@@ -86,6 +119,7 @@
         }
     },
     "edit-show-panel": {
+        "header":"Präsentaion Bearbeiten",
         "name": "Name",
         "choose-area": "Bereich wählen",
         "area": "Bereich",
@@ -96,6 +130,35 @@
         "update-monitors": "Update Monitore",
         "save": "Speichern",
         "delete": "Löschen"
+    },
+    "image-show": {
+        "list": {
+            "header": "Präsentaionen",
+            "add": "Hintufügen",
+            "name": "Präsentations Name",
+            "count": "Anzahl"
+        },
+        "upload":{
+            "header": "Präsentation Hochladen",
+            "choose-area": "Bereich Wählen",
+            "area": "Bereich",
+            "choose-file":"Ordner Wählen",
+            "file": "Ordner",
+            "name":"Name", 
+            "upload":"Hochladen",
+            "cancel":"Abbrechen"
+        }
+    },
+    "document": {
+        "upload": {
+            "header": "Document Hochladen",
+            "choose-area": "Bereich Wählen",
+            "area": "Bereich",
+            "choose-file":"Ordner Wählen",
+            "file": "Ordner",
+            "upload":"Hochladen",
+            "cancel":"Abbrechen"
+        }
     },
     "students": "Schüler",
     "lessons": "Untericht",
@@ -167,7 +230,6 @@
     "image-show-type": "Präsentaions Type",
     "SUBSTITUTION": "Vertretungsplan",
     "ADVERTISEMENT": "Werbung",
-    "image-show": "Präsentation",
     "settings": "Einsetllungen",
     "advanced-settings": "Erweiterte Einsetllungen",
     "raspberry-status": "Raspberry Status",

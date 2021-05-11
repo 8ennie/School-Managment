@@ -159,6 +159,31 @@ export class ImageShowService {
       .toPromise();
   }
 
+  public getImageShowsByAreaAndNameContains(area: string, name: string): Promise<ImageShow[]> {
+    return this.http
+      .get<HateoasCollection<EmbeddedImageShowHateoas>>(
+        API_URL +
+          "/search/findByAreaAndNameContains?" + "area=" + area +"&name=" +
+          name +
+          "&&projection=imageShowProjection"
+      )
+      .pipe(
+        map(
+          (
+            imageShowHateoasCollection: HateoasCollection<EmbeddedImageShowHateoas>
+          ): ImageShow[] => {
+            const imageShowHateoasArray: ImageShowHateoas[] =
+              imageShowHateoasCollection._embedded.imageShows;
+            return imageShowHateoasArray.map(
+              (im: ImageShowHateoas): ImageShow =>
+                Object.assign(new ImageShow(), im)
+            );
+          }
+        )
+      )
+      .toPromise();
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error("An error occurred:", error.error.message);

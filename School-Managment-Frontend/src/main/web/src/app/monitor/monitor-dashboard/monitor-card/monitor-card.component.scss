@@ -5,5 +5,18 @@
 }
 
 .no-image-show-text {
-    transform: rotate(-35deg);
+  transform: rotate(-35deg);
+}
+
+.monitor-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.loading{
+  height: 142px;
+}
+
+.monitor-tag{
+  float: right;
 }

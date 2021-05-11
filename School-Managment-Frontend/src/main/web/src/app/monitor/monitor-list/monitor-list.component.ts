@@ -66,26 +66,15 @@ export class MonitorListComponent implements OnInit {
       .then((monitors: Monitor[]) => {
         monitors.forEach((m: Monitor) => {
           if (m.active) {
-            this.pingMonitor(m);
+            this.monitorService.pingMonitor(m).then((m: Monitor) => {
+              //Monitor that was Updated
+            });
           }
         });
       });
   }
 
-  private pingMonitor(monitor: Monitor): void {
-    this.monitorService.getMonitorStatus(monitor).then(
-      status => {
-        monitor.status = status.screenStatus;
-        monitor.serverIp = status.serverIp;
-        monitor.wakeTime = new Date(new Date().toDateString() + ' ' + status.wakeTime);
-        monitor.sleepTime = new Date(new Date().toDateString() + ' ' + status.sleepTime);
-        monitor.onStartResumeLastShow = status.onStartResumeLastShow;
-        monitor.startUrl = status.startUrl;
-      }
-    ).catch(error => {
-      monitor.status = null;
-    });
-  }
+
 
 
   private cloneMonitor(c: Monitor): Monitor {
@@ -98,7 +87,7 @@ export class MonitorListComponent implements OnInit {
 
   public editMonitor(monitor: Monitor): void {
     if (monitor.active) {
-      this.pingMonitor(monitor);
+      this.monitorService.pingMonitor(monitor);
     }
     this.monitor = this.cloneMonitor(monitor);
     if (this.monitor.imageShow) {
@@ -133,7 +122,7 @@ export class MonitorListComponent implements OnInit {
     if (!this.monitor.resourceUrl) {
       this.monitorService.saveMonitor(this.monitor).then((m: Monitor) => {
         if (m.active) {
-          this.pingMonitor(m);
+          this.monitorService.pingMonitor(m);
         }
         this.monitorDialog = false;
         monitors.push(m);
@@ -142,7 +131,7 @@ export class MonitorListComponent implements OnInit {
     } else {
       this.monitorService.updateMonitor(this.monitor).then((m: Monitor) => {
         if (m.active) {
-          this.pingMonitor(m);
+          this.monitorService.pingMonitor(m);
           if (m.imageShowUrl != this.oldImageShowUrl) {
             this.loginAndStartShow(m);
           }

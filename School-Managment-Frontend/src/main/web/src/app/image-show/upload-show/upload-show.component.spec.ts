@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AreaComponent } from './area.component';
+import { UploadShowComponent } from './upload-show.component';
 
-describe('AreaComponent', () => {
-  let component: AreaComponent;
-  let fixture: ComponentFixture<AreaComponent>;
+describe('UploadShowComponent', () => {
+  let component: UploadShowComponent;
+  let fixture: ComponentFixture<UploadShowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AreaComponent ]
+      declarations: [ UploadShowComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AreaComponent);
+    fixture = TestBed.createComponent(UploadShowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
