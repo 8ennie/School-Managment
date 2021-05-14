@@ -1,11 +1,10 @@
-import { Privilege } from './privilege.model';
+import { Privileges } from './privilege.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { LocalStorageService } from '../_services/local-storage.service';
 import { AuthUser } from './auth-user.model';
 import { environment } from 'src/environments/environment';
-import { Monitor } from '../monitor/monitor.model';
 
 
 const AUTH_API = environment.apiUrl + 'auth/';
@@ -62,7 +61,7 @@ export class AuthService {
     return this.localStorage.getUser();
   }
 
-  getPrivileges(): Privilege[] {
+  getPrivileges(): Privileges[] {
     return this.getUser().privileges;
   }
 
@@ -70,14 +69,14 @@ export class AuthService {
     this.userChanges.next(this.getUser());
   }
 
-  hasPrivilege(privilege: Privilege | string): boolean {
-    return this.getPrivileges().includes(Privilege[privilege]);
+  hasPrivilege(privilege: Privileges | string): boolean {
+    return this.getPrivileges().includes(Privileges[privilege]);
   }
 
-  hasPrivileges(privileges: Privilege[] | string[]): boolean {
+  hasPrivileges(privileges: Privileges[] | string[]): boolean {
     const userPrivilages = this.getUser().privileges;
     for (const p of privileges) {
-      if (userPrivilages.includes(Privilege[p])) {
+      if (userPrivilages.includes(Privileges[p])) {
         return true;
       }
     }

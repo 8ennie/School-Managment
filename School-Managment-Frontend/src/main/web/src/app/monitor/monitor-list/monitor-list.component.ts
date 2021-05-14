@@ -1,5 +1,5 @@
 import { ImageShowService } from './../../image-show/image-show.service';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 
 import { MonitorService } from './../monitor.service';
 import { Component, OnInit } from '@angular/core';
@@ -32,9 +32,9 @@ export class MonitorListComponent implements OnInit {
 
   submitted: boolean;
 
-  areas: { label: any; value: any; }[];
+  areas: SelectItem[];
 
-  imageShows: { label: any; value: any; }[];
+  imageShows: SelectItem[];
 
   oldImageShowUrl: string;
   area: string;

@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { RoleStore } from './../role.store';
-import { RoleService } from './../role.service';
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Privilege } from './../../privilege.model';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { Role } from '../role.model';
 
 @Component({
@@ -8,36 +9,39 @@ import { Role } from '../role.model';
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss']
 })
-export class RoleListComponent implements OnInit {
+export class RoleListComponent implements OnInit, OnDestroy {
 
   constructor(
-    private roleStore: RoleStore
+    private readonly roleStore: RoleStore,
   ) { }
 
-  @Output() roleSelected = new EventEmitter<string>();
+
+  @Output()
+  roleSelected = new EventEmitter<string>();
+
+  private roleSubscription: Subscription;
 
   roles: Role[] = [];
   selectedRole: Role;
 
   ngOnInit(): void {
-    // this.roleStore.getRoles().then((roles: {_embedded}) => {
-    //   console.log(roles);
-    //   this.roles = roles._embedded.roles;
-    // });
-
-    this.roleStore.roles.subscribe(
-      roles => {
-        this.roles = roles.toArray();
-      }
-    );
+    this.roleSubscription = this.roleStore.roles.subscribe((roles: Role[]) => {
+      this.roles = roles;
+    });
+  }
+  ngOnDestroy(): void {
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
+    }
   }
 
-  onRowSelect(event) {
+
+  public onRowSelect(event: { data: Role }): void {
     this.selectedRole = event.data;
-    this.roleSelected.emit(this.selectedRole.id);
+    this.roleSelected.emit(this.selectedRole.resourceUrl);
   }
 
-  getPrivileges(role) {
-    return role.privileges.map(r => r.name);
+  public getPrivileges(role: Role): Privilege[] {
+    return (role.privileges as Privilege[]).map((p: any) => p.name);
   }
 }

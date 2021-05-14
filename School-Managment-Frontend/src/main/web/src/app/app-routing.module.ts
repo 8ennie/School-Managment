@@ -10,7 +10,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
-import { Privilege } from './auth/privilege.model';
+import { Privileges } from './auth/privilege.model';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { AreaOverviewComponent } from './area/area-overview/area-overview.component';
 import { ShowComponent } from './image-show/show/show.component';
@@ -20,20 +20,20 @@ const routes: Routes = [
   {
     path: 'auth', children: [
       { path: '', component: LoginComponent },
-      { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_USER] } },
-      { path: 'roles', component: RoleComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_USER] } },
+      { path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_USER] } },
+      { path: 'roles', component: RoleComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_USER] } },
     ]
   },
   {
     path: 'photoshow', children: [
-      { path: 'documents', component: DocumentListComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
-      { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_MESSAGES] } },
-      { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
-      { path: 'monitors', component: MonitorListComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
-      { path: 'monitors/dashboard', component: MonitorDashboardComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_MONITORS] } },
-      { path: 'areas/:area', component: AreaOverviewComponent, canActivate: [AuthGuard], data: { roles: [Privilege.READ_IMAGE_SHOW] } },
-      { path: 'edit', component: EditShowComponent, canActivate: [AuthGuard], data: { roles: [Privilege.WRITE_IMAGE_SHOW] } },
-      { path: 'show/:id', component: ShowComponent}
+      { path: 'documents', component: DocumentListComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_IMAGE_SHOW] } },
+      { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_MESSAGES] } },
+      { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_IMAGE_SHOW] } },
+      { path: 'monitors', component: MonitorListComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_MONITORS] } },
+      { path: 'monitors/dashboard', component: MonitorDashboardComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_MONITORS] } },
+      { path: 'areas/:area', component: AreaOverviewComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_IMAGE_SHOW] } },
+      { path: 'edit', component: EditShowComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_IMAGE_SHOW] } },
+      { path: 'show/:id', component: ShowComponent }
     ]
   },
 ];

@@ -1,11 +1,11 @@
-import { Privilege } from './privilege.model';
+import { Privileges } from './privilege.model';
 
 export class AuthUser {
     constructor(
         public username: string,
         public email: string,
         public id: string,
-        public privileges: Privilege[],
+        public privileges: Privileges[],
         public areas: string[],
         private _token: string,
         private _tokenExpirationDate: Date

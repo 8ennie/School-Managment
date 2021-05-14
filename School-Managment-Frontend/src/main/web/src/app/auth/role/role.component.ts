@@ -1,4 +1,3 @@
-import { RoleStore } from './role.store';
 
 import { Component, OnInit } from '@angular/core';
 import { Role } from './role.model';
@@ -13,13 +12,13 @@ export class RoleComponent implements OnInit {
 
   constructor() { }
 
-  roleID: Role;
+  roleResourceUrl: string;
 
   ngOnInit(): void {
   }
 
-  roleSelected(event) {
-    this.roleID = event;
+  roleSelected(roleResourceUrl: string) {
+    this.roleResourceUrl = roleResourceUrl;
   }
 
 }

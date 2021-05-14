@@ -2,76 +2,73 @@ import { RoleService } from './role.service';
 import { Role } from './role.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { List } from 'immutable';
-
 
 @Injectable({ providedIn: 'root' })
 export class RoleStore {
-    private _roles: BehaviorSubject<List<Role>> = new BehaviorSubject(List([]));
+    private _roles: BehaviorSubject<Role[]> = new BehaviorSubject([]);
 
-    public readonly roles: Observable<List<Role>> = this._roles.asObservable();
+    public readonly roles: Observable<Role[]> = this._roles.asObservable();
 
-    constructor(private roleService: RoleService) {
+    constructor(
+        private readonly roleService: RoleService,
+    ) {
         this.loadInitialData();
     }
 
-    loadInitialData() {
+    private loadInitialData(): void {
         this.roleService.getAllRoles()
             .then(
-                (res: { _embedded }) => {
-                    const roles = res._embedded.roles;
-                    this._roles.next(List(roles));
+                (res: Role[]) => {
+                    this._roles.next([...res]);
                 },
                 err => console.log('Error retrieving Roles')
             );
     }
 
+    public getRole(resourceUrl: string): Promise<Role> {
+        return this.roleService.getRole(resourceUrl);
+    }
 
-    addRole(newRole: Role) {
+    public addRole(newRole: Role): Promise<Role | void> {
         const obs = this.roleService.saveRole(newRole);
-
         obs.then(
             res => {
                 if (res) {
-                    const id: number = res._links.self.href.split('/').pop();
-                    this.roleService.getRole(id.toString()).then((role: Role) => {
-                        console.log(role);
-
-                        this._roles.next(this._roles.getValue().push(role));
-                    });
+                    this.roleService.getRole(res.resourceUrl)
+                        .then((role: Role) => {
+                            return this._roles.next([...this._roles.getValue(), role]);
+                        });
                 }
             });
-
         return obs;
     }
 
-    deleteRole(deleted: Role) {
+    public deleteRole(deleted: Role): Promise<void> {
         const obs = this.roleService.deleteRole(deleted);
         obs.then(
             res => {
-                const roles: List<Role> = this._roles.getValue();
-                const index = roles.findIndex((role) => role.id === deleted.id);
-                this._roles.next(roles.delete(index));
+                const roles: Role[] = this._roles.getValue();
+                const index = roles.findIndex((role) => role.resourceUrl === deleted.resourceUrl);
+                this._roles.next(roles.splice(index, 1));
             }
         );
-
         return obs;
     }
 
-    updateRole(updateRole: Role) {
+    public updateRole(updateRole: Role): Promise<Role> {
         const obs = this.roleService.updateRole(updateRole);
 
         obs.then(
             (res: Role) => {
-                const id: number = res._links.self.href.split('/').pop();
-                this.roleService.getRole(id.toString()).then((role: Role) => {
-                    const roles: List<Role> = this._roles.getValue();
-                    const index = roles.findIndex((r) => r.id === updateRole.id);
-                    this._roles.next(roles.update(index, () => role));
-                });
+                this.roleService.getRole(res.resourceUrl)
+                    .then((role: Role) => {
+                        const roles: Role[] = this._roles.getValue();
+                        const index = roles.findIndex((r) => r.resourceUrl === updateRole.resourceUrl);
+                        roles[index] = role;
+                        this._roles.next(roles);
+                    });
             }
         );
-
         return obs;
     }
 }

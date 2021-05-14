@@ -62,7 +62,7 @@ export class ImageShowService {
 
   public saveImageShow(imageShow: ImageShow): Promise<ImageShow> {
     return this.http
-      .post<EmbeddedImageShowHateoas>(API_URL, imageShow)
+      .patch<EmbeddedImageShowHateoas>(API_URL, imageShow)
       .pipe(
         map(
           (imageShowHateoas: EmbeddedImageShowHateoas): ImageShow =>

@@ -1,5 +1,6 @@
+import { Role } from './../../role/role.model';
+import { RoleService } from './../../role/role.service';
 import { AreaService } from '../../../area/area.service';
-import { RoleStore } from './../../role/role.store';
 import { UserStore } from './../user.store';
 import { UserService } from './../user.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -34,16 +35,16 @@ export class UserDetailsComponent implements OnInit {
   areas = [];
 
   constructor(
-    private userService: UserService,
-    private userStore: UserStore,
-    private roleStore: RoleStore,
+    private readonly userService: UserService,
+    private readonly roleService: RoleService,
+    private readonly userStore: UserStore,
     private readonly areaService: AreaService,
   ) { }
 
   ngOnInit(): void {
-    this.roleStore.roles.subscribe(
-      roles => {
-        this.roles = roles.toArray().map(r => {
+    this.roleService.getAllRoles().then(
+      (roles: Role[]) => {
+        this.roles = roles.map(r => {
           return { label: r.name, value: r._links.self.href };
         });
       }

@@ -1,4 +1,6 @@
-export enum Privilege {
+import { HateoasEntity, IHateoasEntity } from 'src/app/_helper/spring-hateoas/hateoas-entity';
+
+export enum Privileges {
   READ_IMAGE_SHOW = 'READ_IMAGE_SHOW',
   WRITE_IMAGE_SHOW = 'WRITE_IMAGE_SHOW',
 
@@ -20,4 +22,12 @@ export enum Privilege {
   CHANGE_SHOW = 'CHANGE_SHOW',
   LOCK_SHOW = 'LOCK_SHOW',
   REBOOT_PI = 'REBOOT_PI',
+}
+
+export interface PrivilegeHateoas extends IHateoasEntity {
+  readonly name: Privileges;
+}
+
+export class Privilege extends HateoasEntity implements PrivilegeHateoas {
+  name: Privileges;
 }
