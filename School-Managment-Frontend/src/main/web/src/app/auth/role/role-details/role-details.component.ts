@@ -20,12 +20,6 @@ export class RoleDetailsComponent implements OnInit, OnChanges {
   @Output()
   roleDeleted = new EventEmitter<Role>();
 
-  @Output()
-  roleAdded = new EventEmitter<Role>();
-
-  @Output()
-  roleChanged = new EventEmitter<Role>();
-
   privileges: SelectItem[] = [];
   role: Role = new Role();
   isNew = true;

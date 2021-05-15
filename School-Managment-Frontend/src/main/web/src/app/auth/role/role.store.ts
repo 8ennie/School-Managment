@@ -66,6 +66,7 @@ export class RoleStore {
                         const index = roles.findIndex((r) => r.resourceUrl === updateRole.resourceUrl);
                         roles[index] = role;
                         this._roles.next(roles);
+                        return res;
                     });
             }
         );

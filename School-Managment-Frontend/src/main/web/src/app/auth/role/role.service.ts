@@ -1,3 +1,4 @@
+import { User } from './../user/user.model';
 import { Privilege } from './../privilege.model';
 import { HateoasCollection, Embeddeds } from './../../_helper/spring-hateoas/hateoas-collection';
 import { catchError, map } from 'rxjs/operators';
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
 const API_URL = environment.apiUrl + 'roles';
 
 interface EmbeddedRoleHateoas extends Embeddeds<RoleHateoas> {
-    monitors: RoleHateoas[];
+    roles: RoleHateoas[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -102,6 +103,18 @@ export class RoleService {
         }
         return throwError(
             'Something bad happened; please try again later.');
+    }
+
+    public getRolesForUser(user: User): Promise<Role[]> {
+        return this.http.get<HateoasCollection<EmbeddedRoleHateoas>>(user.resourceUrl + '/roles')
+            .pipe(
+                map(
+                    (roleHateoasCollection: HateoasCollection<EmbeddedRoleHateoas>): Role[] => {
+                        const roleHateoasArray: RoleHateoas[] = roleHateoasCollection._embedded.roles;
+                        this.roles = roleHateoasArray.map((r: RoleHateoas): Role => Object.assign(new Role(), r));
+                        return this.roles;
+                    }
+                )).toPromise();
     }
 
 }

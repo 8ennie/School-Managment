@@ -3,7 +3,7 @@ import { RoleService } from './../../role/role.service';
 import { AreaService } from '../../../area/area.service';
 import { UserStore } from './../user.store';
 import { UserService } from './../user.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from '../user.model';
 
 @Component({
@@ -11,23 +11,10 @@ import { User } from '../user.model';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss']
 })
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent implements OnInit, OnChanges {
 
-  @Input() set userId(value: string) {
-    if (value !== undefined) {
-      this.userService.getUser(value).then(
-        (user: User) => {
-          this.isNew = false;
-          this.errorMessage = '';
-          this.user = user;
-          this.userService.getRoles(this.user).then((roles: { _embedded }) => {
-            this.user.roles = roles._embedded.roles.map(r => r._links.self.href);
-          });
+  @Input() userResourceUrl: string;
 
-        }
-      );
-    }
-  }
   user: User = new User();
   isNew = true;
   errorMessage: string;
@@ -40,6 +27,26 @@ export class UserDetailsComponent implements OnInit {
     private readonly userStore: UserStore,
     private readonly areaService: AreaService,
   ) { }
+
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.userResourceUrl) {
+      if (this.userResourceUrl) {
+        this.userService.getUser(this.userResourceUrl).then(
+          (user: User) => {
+            this.isNew = false;
+            this.errorMessage = '';
+            this.user = user;
+            this.roleService.getRolesForUser(this.user).then((roles: Role[]) => {
+              this.user.roles = roles.map(r => r.resourceUrl);
+            });
+
+          }
+        );
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.roleService.getAllRoles().then(
@@ -56,7 +63,7 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  save() {
+  public save(): void {
     this.errorMessage = '';
     if (!this.user.username || this.user.username == '') {
       this.errorMessage = 'error.not-all-required-fields';
@@ -91,14 +98,14 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  delete() {
+  public delete(): void {
     this.userStore.deleteUser(this.user).then(d => this.newUser());
   }
 
-  newUser() {
+  public newUser(): void {
     this.user = new User();
     this.isNew = true;
-    this.userId = null;
+    this.userResourceUrl = null;
   }
 
 }

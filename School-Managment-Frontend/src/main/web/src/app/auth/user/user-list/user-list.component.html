@@ -1,18 +1,21 @@
-<div style="text-align: center; margin: 15px;">
-    <h3 >Benutzer Liste</h3>
-    <p-table [value]="useres" selectionMode="single" [(selection)]="selectedUser"
-        (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+<div class="p-m-2">
+    <p-table [value]="filteredUsers" selectionMode="single" [(selection)]="selectedUser" (onRowSelect)="onRowSelect($event)"
+        [paginator]="true" [rows]="15">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-text-center p-jc-center">
+                <h1 class="p-m-0">{{'auth.user-list.heading' | translate }}</h1>
+            </div>
+            <p-checkbox [(ngModel)]="showMonitors" label="{{'auth.user-list.show-monitors' | translate }}" (onChange)="showMonitorAccounts($event)"></p-checkbox>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Roles</th>
+                <th>{{'auth.user-list.user-name' | translate }}</th>
+                <th>{{'auth.user-list.user-roles' | translate }}</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
             <tr [pSelectableRow]="user">
                 <td>{{user.username}}</td>
-                <td>{{user.email}}</td>
                 <td>{{getRoles(user)}}</td>
             </tr>
         </ng-template>

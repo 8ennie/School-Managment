@@ -1,90 +1,90 @@
-<div style="text-align: center; margin: 15px;">
-    <div style="display: flex; justify-content: center; position: relative;">
-        <h3>{{'user' | translate }}</h3>
-        <button type="button" pButton icon="pi pi-plus" (click)="newUser()" label="{{ 'add' | translate }}"
-            style="position: absolute; right: 15px;"></button>
+<div class="p-card p-fluid p-m-2 p-p-2">
+    <div class="p-d-flex">
+        <h2 class="p-ml-auto"> {{'auth.user-details.heading' | translate }} </h2>
+        <p-button class="p-ml-auto" type="button" icon="pi pi-plus" (click)="newUser()"
+            label="{{ 'auth.user-details.add' | translate }}">
+        </p-button>
     </div>
-    <div class="card" style="margin: 15px;" *ngIf="user">
-        <div class="p-grid">
-            <div class="p-col-12">
-                <div class="p-inputgroup">
-                    <label class="p-inputgroup-addon" for="name">{{'username' | translate }}</label>
-                    <input pInputText id="name" [(ngModel)]="user.username" />
-                </div>
-            </div>
 
-            <div class="p-col-12">
-                <!-- <div class="p-inputgroup"> -->
-                    <span for="email" class="p-inputgroup-addon p-md-4">{{'email' | translate }}</span>
-                    <input pInputText  id="email" class="p-md-8" [(ngModel)]="user.email" />
-                <!-- </div> -->
-            </div>
 
-            <div class="p-g-12">
-                <div class="p-g-4">
-                    <label for="email">{{'email' | translate }}</label>
-                </div>
-                <div class="p-g-8">
-                    <input pInputText id="email" [(ngModel)]="user.email" style="width: 100%;" />
-                </div>
-            </div>
-            <div class="p-g-12" *ngIf="isNew">
-                <div class="p-g-4">
-                    <label for="password">{{'password' | translate }}</label>
-                </div>
-                <div class="p-g-8">
-                    <div class="p-inputgroup">
-                        <input pInputText id="password" #password type="password" [(ngModel)]="user.password"
-                            style="width: 95%;" />
-                        <button pButton class="p-button-warning" style="width: 5%;"
-                            (click)="password.type=password.type=='password'?'text':'password'"
-                            icon="pi pi-eye"></button>
-                    </div>
-                </div>
-            </div>
-            <div class="p-g-12">
-                <div class="p-g-4">
-                    <label for="privileges">{{'roles' | translate }}</label>
-                </div>
-                <div class="p-g-8">
-                    <p-multiSelect [options]="roles" [(ngModel)]="user.roles"
-                        defaultLabel="{{ 'select-roles' | translate }}"></p-multiSelect>
-                </div>
-            </div>
-            <div class="p-g-12">
-                <div class="p-g-4">
-                    <label for="privileges">{{'areas' | translate }}</label>
-                </div>
-                <div class="p-g-8">
-                    <p-multiSelect [options]="areas" [(ngModel)]="user.areas"
-                        defaultLabel="{{ 'select-areas' | translate }}" [filter]="false">
-                        <ng-template let-areas pTemplate="selectedItems">
-                            <span *ngFor="let area of areas"> {{area | translate}} </span>
-                            <div *ngIf="!areas || areas.length === 0">
-                                {{'select-areas' | translate }}
-                            </div>
-                        </ng-template>
 
-                        <ng-template pTemplate="item" let-area>
-                            {{area.value | translate}}
-                        </ng-template>
-                    </p-multiSelect>
-                </div>
-            </div>
-            <div class="p-g-12">
-                <div class="alert alert-danger" style="width: 100%; text-align: center; margin-top: 5px;" role="alert"
-                    *ngIf="errorMessage">
-                    <div>{{ errorMessage | translate }}</div>
-                </div>
+    <div class="p-fluid p-grid">
+        <div class="p-field p-grid p-col-12">
+            <label for="name" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.user-details.username" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10" id="name">
+                <input type="text" pInputText [(ngModel)]="user.username"
+                    placeholder=" {{'auth.user-details.choose-username' | translate }}" />
             </div>
         </div>
-        <p-footer>
-            <div class="p-dialog-buttonpane p-helper-clearfix">
-                <button type="button" pButton icon="pi pi-times" (click)="delete()" label="{{ 'delete' | translate }}"
-                    style="margin-right: 15px;" *ngIf="!isNew"></button>
-                <button type="button" pButton icon="pi pi-check" (click)="save()"
-                    label="{{ 'save' | translate }}"></button>
+
+        <div class="p-field p-grid p-col-12">
+            <label for="email" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.user-details.email" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10" id="email">
+                <input type="text" pInputText [(ngModel)]="user.email"
+                    placeholder=" {{'auth.user-details.choose-email' | translate }}" />
             </div>
-        </p-footer>
+        </div>
+
+        <div class="p-field p-grid p-col-12" *ngIf="isNew">
+            <label for="password" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.user-details.password" | translate }}
+            </label>
+            <div class="p-inputgroup p-col-12 p-md-10" id="password">
+                <input #password pInputText id="password" type="password" [(ngModel)]="user.password"
+                    placeholder=" {{'auth.user-details.choose-password' | translate }}" />
+                <p-button styleClass="p-button-warning" icon="pi pi-eye"
+                    (click)="password.type=password.type=='password'?'text':'password'"></p-button>
+            </div>
+        </div>
+
+        <div class="p-field p-grid p-col-12">
+            <label for="roles" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.user-details.roles" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10" id="roles">
+                <p-multiSelect [options]="roles" [(ngModel)]="user.roles"
+                    defaultLabel="{{ 'auth.user-details.choose-roles' | translate }}"></p-multiSelect>
+            </div>
+        </div>
+
+        <div class="p-field p-grid p-col-12">
+            <label for="roles" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{ "auth.user-details.areas" | translate }}
+            </label>
+            <div class="p-col-12 p-md-10" id="roles">
+                <p-multiSelect [options]="areas" [(ngModel)]="user.areas"
+                    defaultLabel="{{ 'auth.user-details.choose-areas' | translate }}" [filter]="false">
+                    <ng-template let-areas pTemplate="selectedItems">
+                        <span *ngFor="let area of areas"> {{area | translate}} </span>
+                        <div *ngIf="!areas || areas.length === 0">
+                            {{'auth.user-details.choose-areas' | translate }}
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="item" let-area>
+                        {{area.value | translate}}
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+        </div>
+        <p-message *ngIf="errorMessage" class="p-field p-grid p-col-12 p-jc-center" severity="error"
+            text="{{ errorMessage | translate }}">
+        </p-message>
+
+
+        <div class="p-field p-col-12">
+            <div class="p-d-flex p-jc-evenly">
+                <p-button type="button" icon="pi pi-times" (click)="delete()" pRipple
+                    label="{{ 'auth.user-details.delete' | translate }}" *ngIf="!isNew" styleClass="p-button-danger">
+                </p-button>
+                <p-button pRipple type="button" icon="pi pi-check" styleClass="p-button-success" (click)="save()"
+                    label="{{ 'auth.user-details.save' | translate }}">
+                </p-button>
+            </div>
+        </div>
     </div>
 </div>

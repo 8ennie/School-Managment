@@ -1,4 +1,4 @@
-<div class="p-card p-fluid p-p-2 p-m-auto">
+<div class="p-card p-fluid p-p-2 p-m-2">
     <div class="p-d-flex">
         <h2 class="p-ml-auto"> {{'auth.role-details.heading' | translate }} </h2>
         <p-button class="p-ml-auto" type="button" icon="pi pi-plus" (click)="newRole()"
@@ -29,9 +29,11 @@
 
     <div class="p-field p-col-12">
         <div class="p-d-flex p-jc-evenly">
-            <p-button type="button" icon="pi pi-times" (click)="delete()" pRipple label="{{ 'auth.role-details.delete' | translate }}"
-                *ngIf="!isNew" styleClass="p-button-danger"></p-button>
-            <p-button pRipple type="button" icon="pi pi-check" styleClass="p-button-success" (click)="save()" label="{{ 'auth.role-details.save' | translate }}">
+            <p-button type="button" icon="pi pi-times" (click)="delete()" pRipple
+                label="{{ 'auth.role-details.delete' | translate }}" *ngIf="!isNew" styleClass="p-button-danger">
+            </p-button>
+            <p-button pRipple type="button" icon="pi pi-check" styleClass="p-button-success" (click)="save()"
+                label="{{ 'auth.role-details.save' | translate }}">
             </p-button>
         </div>
     </div>

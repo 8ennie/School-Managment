@@ -1,5 +1,7 @@
+import { Subscription } from 'rxjs';
+import { Role } from './../../role/role.model';
 import { UserStore } from './../user.store';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { User } from '../user.model';
 
 @Component({
@@ -7,30 +9,51 @@ import { User } from '../user.model';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
 
-  @Output() userSelected = new EventEmitter<string>();
+  @Output() selectedUserResourceUrl = new EventEmitter<string>();
 
-  useres: User[];
+  allUseres: User[];
+
+  filteredUsers: User[];
   selectedUser: User;
+  showMonitors: boolean;
+
+  private userSubscription: Subscription;
 
   constructor(
     private userStore: UserStore,
   ) { }
 
+
   ngOnInit(): void {
-    this.userStore.users.subscribe(users => {
-      this.useres = users.toArray();
+    this.userSubscription = this.userStore.users.subscribe((users: User[]) => {
+      this.allUseres = users;
+      this.filteredUsers = users.filter(u => !u.username.includes("Monitor"));
     });
   }
 
-
-  onRowSelect(event) {
-    this.selectedUser = event.data;
-    this.userSelected.emit(this.selectedUser.id);
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
-  getRoles(user) {
-    return user.roles.map(r => r.name);
+  showMonitorAccounts(event: { checked: boolean }) {
+    if (event.checked) {
+      this.filteredUsers = this.allUseres;
+    } else {
+      this.filteredUsers = this.allUseres.filter(u => !u.username.includes("Monitor"));
+    }
+  }
+
+
+  public onRowSelect(event: { data: User }): void {
+    this.selectedUser = event.data;
+    this.selectedUserResourceUrl.emit(this.selectedUser.resourceUrl);
+  }
+
+  public getRoles(user: User): string[] {
+    return (user.roles as Role[]).map(r => r.name);
   }
 }

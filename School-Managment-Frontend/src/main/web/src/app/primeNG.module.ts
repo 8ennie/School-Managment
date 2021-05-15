@@ -34,6 +34,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
+import { MessageModule } from 'primeng/message';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { TagModule } from 'primeng/tag';
         AutoCompleteModule,
         BadgeModule,
         TagModule,
+        MessageModule,
     ],
     exports: [
         DataViewModule,
@@ -107,6 +109,7 @@ import { TagModule } from 'primeng/tag';
         AutoCompleteModule,
         BadgeModule,
         TagModule,
+        MessageModule,
     ],
     providers: [MessageService]
 })

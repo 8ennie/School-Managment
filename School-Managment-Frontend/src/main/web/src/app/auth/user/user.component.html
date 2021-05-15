@@ -1,11 +1,11 @@
-<div class="card" style="margin: 15px; text-align: center;">
+<div class="p-m-2">
     <div class="p-grid" >
-        <div class="p-col">
-            <app-user-list (userSelected)="userSelected($event)"></app-user-list>
+        <div class="p-col-6">
+            <app-user-list (selectedUserResourceUrl)="userSelected($event)"></app-user-list>
         </div>
     
-        <div class="p-col">
-            <app-user-details [userId]="userID"></app-user-details>
+        <div class="p-col-6">
+            <app-user-details [userResourceUrl]="userResourceUrl"></app-user-details>
         </div>
     </div>
 </div>

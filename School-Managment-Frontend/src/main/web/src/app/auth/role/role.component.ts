@@ -17,7 +17,7 @@ export class RoleComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  roleSelected(roleResourceUrl: string) {
+  public roleSelected(roleResourceUrl: string): void {
     this.roleResourceUrl = roleResourceUrl;
   }
 

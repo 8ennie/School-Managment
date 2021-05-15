@@ -4,8 +4,8 @@
         "areas": "Bereiche",
         "image-shows": "Präsentationen",
         "monitors": "Monitore",
-        "dashboard":"Dashboard",
-        "list":"List",
+        "dashboard": "Dashboard",
+        "list": "List",
         "administration": "Administrarion",
         "users": "Benutzer",
         "roles": "Rollen",
@@ -13,22 +13,44 @@
         "logout": "Abmelden",
         "documents": "Documente"
     },
-    "auth":{
-        "role-details":{
-            "heading":"Rolle",
-            "choose-name":"Name wählen",
-            "name":"Name",
-            "choose-privileges":"Rechte Wählen",
-            "privileges":"Rechte",
+    "auth": {
+        "role-details": {
+            "heading": "Rolle",
+            "choose-name": "Name wählen",
+            "name": "Name",
+            "choose-privileges": "Rechte Wählen",
+            "privileges": "Rechte",
+            "add": "Hintufügen",
+            "role-prefix": "ROLE_",
+            "save": "Speichern",
+            "delete": "Löschen"
+        },
+        "role-list": {
+            "heading": "Rollen",
+            "role-name": "Rollen Name",
+            "role-privileges": "Rechte"
+        },
+        "user-details": {
+            "heading": "Users",
             "add":"Hintufügen",
-            "role-prefix":"ROLE_",
+            "username":"Benutzername",
+            "choose-username":"Benutzername wählen",
+            "choose-email":"Email wählen",
+            "email":"Email",
+            "password":"Password",
+            "choose-password":"Password wählen",
+            "roles":"Rollen",
+            "choose-roles":"Rollen wählen",
+            "areas":"Bereiche",
+            "choose-areas":"Bereiche wählen",
             "save":"Speichern",
             "delete":"Löschen"
         },
-        "role-list":{
-            "heading":"Rollen",
-            "role-name":"Rollen Name",
-            "role-privileges":"Rechte"
+        "user-list": {
+            "heading": "Users",
+            "user-name":"Benutzername",
+            "user-roles":"Rollen",
+            "show-monitors":"Monitore Accounts Anzeigen"
         }
     },
     "login": {
@@ -47,18 +69,18 @@
             "no-show-loaded": "Keine Präsentation Geladen",
             "no-show-loaded-text": "-",
             "image-show": "Präsentation",
-            "offline":"Offline",
-            "monitor-offline-notification-header":"Monitor Offline",
-            "monitor-offline-notification":"Der Monitor kann nicht mit der Präsentation Updated werden da er Offline ist.",
-            "locked":"Gesperrt",
-            "update-image-show":{
-                "header":"Präsentation ändern",
-                "area":"Bereich",
-                "cancel":"Abbrechen",
-                "update":"Aktualisiren",
-                "no-image-shows":"Keine Präsentationen gefunden",
-                "search-image-show":"Nach Präsentation suchen",
-                "image-shows":"Präsentationen"
+            "offline": "Offline",
+            "monitor-offline-notification-header": "Monitor Offline",
+            "monitor-offline-notification": "Der Monitor kann nicht mit der Präsentation Updated werden da er Offline ist.",
+            "locked": "Gesperrt",
+            "update-image-show": {
+                "header": "Präsentation ändern",
+                "area": "Bereich",
+                "cancel": "Abbrechen",
+                "update": "Aktualisiren",
+                "no-image-shows": "Keine Präsentationen gefunden",
+                "search-image-show": "Nach Präsentation suchen",
+                "image-shows": "Präsentationen"
             }
         },
         "details": {
@@ -119,7 +141,7 @@
         }
     },
     "edit-show-panel": {
-        "header":"Präsentaion Bearbeiten",
+        "header": "Präsentaion Bearbeiten",
         "name": "Name",
         "choose-area": "Bereich wählen",
         "area": "Bereich",
@@ -138,15 +160,15 @@
             "name": "Präsentations Name",
             "count": "Anzahl"
         },
-        "upload":{
+        "upload": {
             "header": "Präsentation Hochladen",
             "choose-area": "Bereich Wählen",
             "area": "Bereich",
-            "choose-file":"Ordner Wählen",
+            "choose-file": "Ordner Wählen",
             "file": "Ordner",
-            "name":"Name", 
-            "upload":"Hochladen",
-            "cancel":"Abbrechen"
+            "name": "Name",
+            "upload": "Hochladen",
+            "cancel": "Abbrechen"
         }
     },
     "document": {
@@ -154,10 +176,10 @@
             "header": "Document Hochladen",
             "choose-area": "Bereich Wählen",
             "area": "Bereich",
-            "choose-file":"Ordner Wählen",
+            "choose-file": "Ordner Wählen",
             "file": "Ordner",
-            "upload":"Hochladen",
-            "cancel":"Abbrechen"
+            "upload": "Hochladen",
+            "cancel": "Abbrechen"
         }
     },
     "students": "Schüler",
