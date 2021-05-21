@@ -1,5 +1,6 @@
-<p-table [columns]="cols" [value]="imageShows" selectionMode="single" [(selection)]="imageShow" styleClass="p-m-2"
-  [rows]="15" >
+<p-table [value]="imageShows" selectionMode="single" [(selection)]="imageShow" styleClass="p-m-2" [rows]="loadRows"
+  [loading]="loading" [totalRecords]="totalImagShows" [paginator]="true" [lazy]="true"
+  (onLazyLoad)="loadImageShows($event)">
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-text-center p-jc-center">
       <h1 class="p-m-0">{{ "image-show.list.header" | translate }}</h1>
@@ -9,20 +10,40 @@
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-        {{ col.header | translate }}
-        <p-sortIcon [field]="col.field"></p-sortIcon>
+
+      <th pSortableColumn="name">
+        {{ "image-show.list.name" | translate }}
+        <p-sortIcon field="name"></p-sortIcon>
       </th>
+      <th>
+        {{ "image-show.list.count" | translate }}
+      </th>
+      <th pSortableColumn="createdAt">
+        {{ "image-show.list.created-at" | translate }}
+        <p-sortIcon field="createdAt"></p-sortIcon>
+      </th>
+      <th style="width: 4rem"></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-imageShow let-columns="columns">
     <tr [pSelectableRow]="imageShow" pDraggable="imageShow" (onDragStart)="dragStart(imageShow)">
-      <td *ngFor="let col of columns">
-        {{ imageShow[col.field] }}
+
+      <td>
+        {{ imageShow["name"] }}
+      </td>
+      <td>
+        {{ imageShow["imageCount"] }}
+      </td>
+      <td>
+        {{ imageShow["createdAt"] | date}}
+      </td>
+      <td>
+        <button pButton type="button" icon="pi pi-pencil" class="p-button-secondary buttons" (click)="editImageShow(imageShow)" ></button>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
-<app-upload-show [(displayDialog)]="uploadImageShow" *ngIf="uploadImageShow" [area]="area"></app-upload-show>
+<app-upload-show [(displayDialog)]="uploadImageShow" *ngIf="uploadImageShow" [area]="area"
+  (uploadedImageShow)="onUploadedImageShow($event)"></app-upload-show>

@@ -49,7 +49,7 @@ export class ShowComponent implements OnInit {
           this.showPartService
             .getShowPartsFromImageShow(imageShow.resourceUrl)
             .then((showParts: ShowPart[]) => {
-              this.showParts = showParts;
+              this.showParts = showParts.filter(sp => sp.active);
             });
         });
     }

@@ -1,6 +1,5 @@
 package com.school.managment.Backend.model.photoshow.help.projection;
 
-
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +17,12 @@ public interface ImageShowProjection {
 	String getName();
 
 	Area getArea();
-	
+
 	Date getDate();
 	
-	 @Value("#{target.getShowParts().size()}")
-	 int getImageCount();
+	Date getCreatedAt();
+
+	@Value("#{target.getShowParts().size()}")
+	int getImageCount();
 
 }

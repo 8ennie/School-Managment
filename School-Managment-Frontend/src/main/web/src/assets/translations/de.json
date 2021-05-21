@@ -158,7 +158,8 @@
             "header": "Präsentaionen",
             "add": "Hintufügen",
             "name": "Präsentations Name",
-            "count": "Anzahl"
+            "count": "Anzahl",
+            "created-at": "Hochgeladen am"
         },
         "upload": {
             "header": "Präsentation Hochladen",

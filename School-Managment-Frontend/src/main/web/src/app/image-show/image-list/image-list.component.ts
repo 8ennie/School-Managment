@@ -169,12 +169,7 @@ export class ImageListComponent implements OnInit {
           return {
             label: imageShow.name,
             type: 'IMAGE_SHOW',
-            data: {
-              name: imageShow.name,
-              area: imageShow.area,
-              count: imageShow.imageCount,
-              resourceUrl: imageShow.resourceUrl,
-            },
+            data: imageShow,
             leaf: false
           };
         });
@@ -219,12 +214,15 @@ export class ImageListComponent implements OnInit {
   }
 
   public deleteImageShow(node: TreeNode): void {
+    
+    (node.data as ImageShow).resourceUrl = (node.data as ImageShow).resourceUrl;
+    console.log(node.data);
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete the Image Show?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.imageShowService.deleteImageShow(node.data.resourceUrl).then((res: { message: string }) => {
+        this.imageShowService.deleteImageShow(node.data).then((res: { message: string }) => {
           if (res.message == 'SUCCSESS') {
             this.messageService.add({ severity: 'success', summary: 'Deleted Successfully!', detail: 'The Image Show was Deleted' });
             node.parent.children = node.parent.children.filter(n => n != node);

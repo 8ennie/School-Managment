@@ -3,7 +3,6 @@ import { EditShowComponent } from './image-show/edit-show/edit-show.component';
 import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { LoginComponent } from './auth/login/login.component';
-import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-photo-show.component';
 import { RoleComponent } from './auth/role/role.component';
 import { UserComponent } from './auth/user/user.component';
 import { NgModule } from '@angular/core';
@@ -25,10 +24,9 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'photoshow', children: [
+    path: 'imageshow', children: [
       { path: 'documents', component: DocumentListComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_IMAGE_SHOW] } },
       { path: 'messages', component: SendMessageComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_MESSAGES] } },
-      { path: 'list', component: UploadPhotoShowComponent, canActivate: [AuthGuard], data: { roles: [Privileges.WRITE_IMAGE_SHOW] } },
       { path: 'monitors', component: MonitorListComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_MONITORS] } },
       { path: 'monitors/dashboard', component: MonitorDashboardComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_MONITORS] } },
       { path: 'areas/:area', component: AreaOverviewComponent, canActivate: [AuthGuard], data: { roles: [Privileges.READ_IMAGE_SHOW] } },
@@ -36,6 +34,7 @@ const routes: Routes = [
       { path: 'show/:id', component: ShowComponent }
     ]
   },
+  { path: 'photoshow/show/:id', component: ShowComponent }
 ];
 
 @NgModule({

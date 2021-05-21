@@ -20,6 +20,8 @@ export class MonitorDashboardComponent implements OnInit, OnChanges {
   @Input()
   public area: string;
 
+  @Input()
+  public editMonitorImageShow: boolean = false;
   constructor(
     private readonly monitorService: MonitorService,
     private readonly authService: AuthService,

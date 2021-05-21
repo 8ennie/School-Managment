@@ -29,10 +29,14 @@ export class EditShowComponent implements OnInit {
     });
   }
 
-  public onImageShowSaved(imageShow: ImageShow) {
+  public onImageShowSaved(imageShow: ImageShow): void {
     this.imageShowResourceUrl = imageShow.resourceUrl
-    this.router.navigate(['photoshow', 'edit'], { queryParams: { imageShowRessource: imageShow.resourceUrl } });
+    this.router.navigate(['imageshow', 'edit'], { queryParams: { imageShowRessource: imageShow.resourceUrl } });
   }
 
+
+  public onImageShowDeleted(imageShow: ImageShow): void {
+    this.router.navigate(['imageshow', 'edit']);
+  }
 
 }

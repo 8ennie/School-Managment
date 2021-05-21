@@ -39,7 +39,7 @@
       <input class="p-text-center" type="text" pInputText [disabled]="true"
         [ngModel]="monitor.imageShow ? monitor.imageShow.name : null"
         placeholder="{{ 'monitor.card.no-show-loaded-text' | translate }}" />
-      <p-button *ngIf="!offline" type="button" pRipple icon="pi pi-pencil" (click)="changeImageShowDialog = true">
+      <p-button *ngIf="!offline && editMonitorImageShow" type="button" pRipple icon="pi pi-pencil" (click)="changeImageShowDialog = true">
       </p-button>
     </div>
   </ng-template>

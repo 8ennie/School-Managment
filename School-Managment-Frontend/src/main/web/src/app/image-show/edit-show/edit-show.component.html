@@ -3,6 +3,7 @@
         <app-image-list (onImageShowEdited)="editImageShow($event)"></app-image-list>
     </div>
     <div class="p-col-12 p-md-8">
-        <app-edit-show-panel [imageShowResourceUrl]="imageShowResourceUrl" (imageShowSaved)="onImageShowSaved($event)"></app-edit-show-panel>
+        <app-edit-show-panel [imageShowResourceUrl]="imageShowResourceUrl" (imageShowSaved)="onImageShowSaved($event)"
+            (imageShowDeleted)="onImageShowDeleted($event)"></app-edit-show-panel>
     </div>
 </div>

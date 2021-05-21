@@ -19,6 +19,9 @@ export class MonitorCardComponent implements OnInit, OnChanges {
   @Input()
   area: string;
 
+  @Input()
+  editMonitorImageShow: boolean = false;
+
   imageShow: ImageShow;
   imageShows: ImageShow[];
 
@@ -49,8 +52,6 @@ export class MonitorCardComponent implements OnInit, OnChanges {
     this.loading = true;
     this.displayText = null;
     this.monitorService.pingMonitor(this.monitor).then((monitor: Monitor) => {
-      console.log(monitor);
-      
       this.loading = false;
       if (monitor.status == null) {
         this.displayText = "monitor.card.offline";

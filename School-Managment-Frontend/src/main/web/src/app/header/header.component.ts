@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.areas = this.user.areas.map((a: string) => {
         return {
           label: this.translate.instant(a),
-          routerLink: [`photoshow/areas/${a}`],
+          routerLink: [`imageshow/areas/${a}`],
         }
       });
     }
@@ -89,12 +89,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.monitorMenu = [
       {
         label: this.translate.instant('header.list'),
-        routerLink: ['photoshow/monitors'],
+        routerLink: ['imageshow/monitors'],
         routerLinkActiveOptions: { exact: true },
       },
       {
         label: this.translate.instant('header.dashboard'),
-        routerLink: ['photoshow/monitors/dashboard'],
+        routerLink: ['imageshow/monitors/dashboard'],
       },
     ]
   }

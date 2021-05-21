@@ -1,3 +1,4 @@
+
 import { MonitorService } from "./../../monitor/monitor.service";
 import { Monitor } from "src/app/monitor/monitor.model";
 import { ShowPart } from "./../show-part/show-part.model";
@@ -14,7 +15,7 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
-import { SelectItem } from "primeng/api";
+import { MessageService, SelectItem } from "primeng/api";
 import { ImageShowService } from "../image-show.service";
 
 @Component({
@@ -35,12 +36,16 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
   @Output()
   imageShowSaved: EventEmitter<ImageShow> = new EventEmitter<ImageShow>();
 
+  @Output()
+  imageShowDeleted: EventEmitter<ImageShow> = new EventEmitter<ImageShow>();
+
   constructor(
     private readonly areaService: AreaService,
     private readonly imageShowService: ImageShowService,
     private readonly showPartService: ShowPartService,
-    private readonly monitorService: MonitorService
-  ) {}
+    private readonly monitorService: MonitorService,
+    private readonly messageService: MessageService,
+  ) { }
 
   ngOnInit(): void {
     this.imageShow.showParts = [];
@@ -108,7 +113,19 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
     showPart.active = status;
   }
 
-  delete() {}
+  public delete(): void {
+    this.imageShowService.deleteImageShow(this.imageShow).then(m => {
+      console.log(m);
+      if (m.message == "IMAGE_SHOW_IN_USE") {
+        this.messageService.add({ severity: 'error', summary: 'Delete Failed!', detail: 'A Monitor is Currently Using the Image Show' });
+      } if (m.message == "SUCCSESS") {
+        this.imageShowDeleted.emit(this.imageShow);
+        this.imageShow = new ImageShow();
+        this.imageShow.showParts = [];
+      }
+
+    });
+  }
 
   public save(): void {
     if (this.imageShowResourceUrl) {

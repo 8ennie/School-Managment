@@ -1,6 +1,7 @@
 import {
   Embeddeds,
   HateoasCollection,
+  HateosPage
 } from "./../_helper/spring-hateoas/hateoas-collection";
 import { environment } from "src/environments/environment";
 import { Injectable } from "@angular/core";
@@ -62,7 +63,7 @@ export class ImageShowService {
 
   public saveImageShow(imageShow: ImageShow): Promise<ImageShow> {
     return this.http
-      .patch<EmbeddedImageShowHateoas>(API_URL, imageShow)
+      .post<EmbeddedImageShowHateoas>(API_URL, imageShow)
       .pipe(
         map(
           (imageShowHateoas: EmbeddedImageShowHateoas): ImageShow =>
@@ -79,9 +80,6 @@ export class ImageShowService {
     return this.http
       .post<any>(UPLOAD_URL + "/show", file)
       .pipe(
-        tap((im) => {
-          console.log(im);
-        }),
         catchError((err: HttpErrorResponse) => {
           return this.handleError(err);
         })
@@ -104,10 +102,10 @@ export class ImageShowService {
       .toPromise();
   }
 
-  public deleteImageShow(imageShowUrl: string): Promise<{ message: string }> {
+  public deleteImageShow(imageShow: ImageShow): Promise<{ message: string }> {
     return this.http
       .delete<{ message: string }>(
-        API_URL + "/delete/" + imageShowUrl.split("/").slice(-1)[0]
+        API_URL + "/delete/" + imageShow.id
       )
       .toPromise();
   }
@@ -138,9 +136,9 @@ export class ImageShowService {
     return this.http
       .get<HateoasCollection<EmbeddedImageShowHateoas>>(
         API_URL +
-          "/search/findByNameContains?name=" +
-          name +
-          "&&projection=imageShowProjection"
+        "/search/findByNameContains?name=" +
+        name +
+        "&&projection=imageShowProjection"
       )
       .pipe(
         map(
@@ -163,9 +161,9 @@ export class ImageShowService {
     return this.http
       .get<HateoasCollection<EmbeddedImageShowHateoas>>(
         API_URL +
-          "/search/findByAreaAndNameContains?" + "area=" + area +"&name=" +
-          name +
-          "&&projection=imageShowProjection"
+        "/search/findByAreaAndNameContains?" + "area=" + area + "&name=" +
+        name +
+        "&&projection=imageShowProjection"
       )
       .pipe(
         map(
@@ -178,6 +176,31 @@ export class ImageShowService {
               (im: ImageShowHateoas): ImageShow =>
                 Object.assign(new ImageShow(), im)
             );
+          }
+        )
+      )
+      .toPromise();
+  }
+
+
+  public getImageShowPageByArea(area: string, size: number, page: number, sortField: string, sortDirection: string) {
+    const url: string = API_URL + "/search/findByArea?area=" + area + '&size=' + size + '&page=' + page + '&sort=' + sortField + ',' + sortDirection;
+    return this.http
+      .get<HateoasCollection<EmbeddedImageShowHateoas>>(url)
+      .pipe(
+        map(
+          (
+            imageShowHateoasPage: HateosPage<EmbeddedImageShowHateoas>
+          ) => {
+            const imageShowHateoasArray: ImageShowHateoas[] =
+              imageShowHateoasPage._embedded.imageShows;
+            const imageShows: ImageShow[] = imageShowHateoasArray.map(
+              (im: ImageShowHateoas): ImageShow =>
+                Object.assign(new ImageShow(), im)
+            );
+            return {
+              imageShows: imageShows, page: imageShowHateoasPage.page
+            };
           }
         )
       )

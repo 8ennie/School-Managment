@@ -20,8 +20,6 @@ import { HomeComponent } from './home/home.component';
 import { authInterceptorProviders } from './_helper/auth.interceptor';
 import { InsertDirective } from './_directives/insert-point.directive';
 import { httpErrorInterceptorProviders } from './_helper/http-error.interceptor';
-import { PhotoShowComponent } from './photo-show/photo-show.component';
-import { UploadPhotoShowComponent } from './photo-show/upload-photo-show/upload-photo-show.component';
 import { UserListComponent } from './auth/user/user-list/user-list.component';
 import { UserDetailsComponent } from './auth/user/user-details/user-details.component';
 import { UserComponent } from './auth/user/user.component';
@@ -32,9 +30,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { MessageComponent } from './message/message.component';
 import { ScrollingTextComponent } from './message/scrolling-text.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
-import { EditImageShowComponent } from './photo-show/edit-image-show/edit-image-show.component';
 import { ImageListComponent } from './image-show/image-list/image-list.component';
-import { UploadImageShowComponent } from './photo-show/edit-image-show/upload-image-show/upload-image-show.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { MonitorListComponent } from './monitor/monitor-list/monitor-list.component';
@@ -56,8 +52,6 @@ import { UploadShowComponent } from './image-show/upload-show/upload-show.compon
     HeaderComponent,
     HomeComponent,
     InsertDirective,
-    PhotoShowComponent,
-    UploadPhotoShowComponent,
     UserListComponent,
     UserDetailsComponent,
     UserComponent,
@@ -67,10 +61,8 @@ import { UploadShowComponent } from './image-show/upload-show/upload-show.compon
     MessageComponent,
     ScrollingTextComponent,
     SendMessageComponent,
-    EditImageShowComponent,
     ImageListComponent,
     UploadDocumentComponent,
-    UploadImageShowComponent,
     AreaOverviewComponent,
     LoginComponent,
     DocumentListComponent,
