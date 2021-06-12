@@ -1,7 +1,8 @@
+import { ShowPart } from './../../image-show/show-part/show-part.model';
 import { AreaService } from '../../area/area.service';
 import { DocumentService } from './../document.service';
 import { FileUpload } from 'primeng/fileupload';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Document } from '../document.model';
 
 @Component({
@@ -9,7 +10,7 @@ import { Document } from '../document.model';
   templateUrl: './upload-document.component.html',
   styleUrls: ['./upload-document.component.scss']
 })
-export class UploadDocumentComponent implements OnInit {
+export class UploadDocumentComponent implements OnInit, OnChanges {
 
   document: Document = new Document();
   errorMessage: string;
@@ -20,11 +21,17 @@ export class UploadDocumentComponent implements OnInit {
   @Output()
   displayDialogChange = new EventEmitter<boolean>();
 
+  @Output()
+  uploadedDocument = new EventEmitter<ShowPart[]>();
+
   @Input()
   set displayDialog(val) {
     this.displayDialogValue = val;
     this.displayDialogChange.emit(this.displayDialog);
   }
+
+  @Input()
+  area: string;
 
   get displayDialog() {
     return this.displayDialogValue;
@@ -38,13 +45,20 @@ export class UploadDocumentComponent implements OnInit {
     private readonly documentService: DocumentService,
     private areaService: AreaService,
   ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.area) {
+      this.document.area = this.area;
+    }
+  }
 
   ngOnInit(): void {
-    this.areaService.getUserAreas().then((areas: string[]) => {
-      this.areas = areas.map(a => {
-        return { label: a, value: a };
+    if (!this.area) {
+      this.areaService.getUserAreas().then((areas: string[]) => {
+        this.areas = areas.map(a => {
+          return { label: a, value: a };
+        });
       });
-    });
+    }
   }
 
   public close(): void {
@@ -70,7 +84,8 @@ export class UploadDocumentComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', doc);
       formData.append('area', this.document.area);
-      this.documentService.uploadDocument(formData).then(() => {
+      this.documentService.uploadDocument(formData).then((showParts) => {
+        this.uploadedDocument.emit(showParts);
         this.uploading = false;
         this.close();
       });

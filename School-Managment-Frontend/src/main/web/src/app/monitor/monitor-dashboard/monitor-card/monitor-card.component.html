@@ -27,8 +27,8 @@
             {{ displayText | translate }}
           </div>
 
-          <app-show *ngIf="monitor.imageShowUrl && !displayText" [preview]="true"
-            [imageShowResorceUrl]="monitor.imageShowUrl" [height]="150"></app-show>
+          <app-show-preview *ngIf="monitor.imageShowUrl && !displayText"
+            [imageShowResorceUrl]="monitor.imageShowUrl" [height]="150"></app-show-preview>
         </div>
       </div>
     </div>

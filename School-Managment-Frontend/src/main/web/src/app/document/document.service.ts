@@ -1,3 +1,4 @@
+import { ShowPart } from './../image-show/show-part/show-part.model';
 import { ImageShow } from './../image-show/image-show.model';
 import { Embeddeds, HateoasCollection } from './../_helper/spring-hateoas/hateoas-collection';
 import { Document, DocumentHateoas } from './document.model';
@@ -67,11 +68,22 @@ export class DocumentService implements OnDestroy {
       .toPromise();
   }
 
-  public uploadDocument(doc: FormData) {
+  public uploadDocument(doc: FormData): Promise<ShowPart[]> {
     return this.http.post<any>(UPLOAD_URL + '/document', doc)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return this.handleError(err);
+        }),
+        map((docImageShows): ShowPart[] => {
+          let imageShows = [];
+          docImageShows.forEach(imageShow => {
+            let im = new ShowPart();
+            im.showPartImage = imageShow.image;
+            im.showPartId = imageShow.id;
+            im.active = true;
+            imageShows.push(im);
+          });
+          return imageShows;
         })
       )
       .toPromise();

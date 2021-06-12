@@ -23,6 +23,20 @@
             </div>
         </div>
 
+        <div class="p-field p-col-12 p-md-6">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">{{'edit-show-panel.displayTime' | translate }}</span>
+                <p-selectButton [options]="displayTimeOptions" [(ngModel)]="individualDisplayTime">
+                    <ng-template let-item>
+                        <span>{{item.label | translate}}</span>
+                    </ng-template>
+                </p-selectButton>
+                <p-inputNumber [(ngModel)]="displayTime" mode="decimal" [showButtons]="true" [min]="0" [max]="20"
+                    suffix="{{ ' ' + ('edit-show-panel.seconds'|translate)}}" *ngIf="!individualDisplayTime">
+                </p-inputNumber>
+            </div>
+        </div>
+
         <div class="p-field p-col-12">
             <p-card id="imageShowParts" cdkDropList cdkDropListOrientation="horizontal"
                 (cdkDropListDropped)="onDrop($event)" header="{{'edit-show-panel.images' | translate}}"
@@ -33,7 +47,7 @@
                         <div class="example-box" *ngFor="let showPart of imageShow.showParts; index as i;" cdkDrag
                             cdkDropList [cdkDragData]="showPart">
 
-                            <div class="p-fluid">
+                            <div class="p-fluid" pBadge [value]="showPart.displayTime + 's'">
                                 <div class="p-field">
                                     <div class="p-card" [style]="showPart.active? null : {opacity: 0.5}">
                                         <img [src]="getImage(showPart.showPartImage)" height="200px">
@@ -42,19 +56,40 @@
                                 <div class="p-field p-d-flex p-jc-evenly">
                                     <!-- <p-button pRipple type="button" icon="pi pi-search" styleClass="p-button-rounded"
                                         (click)="show(i)" ></p-button> -->
+
                                     <p-button *ngIf="!showPart.active" pRipple type="button" icon="pi pi-eye-slash"
-                                        styleClass="p-button-warning p-button-rounded" (click)="setShowPartActive(showPart, true)">
+                                        styleClass="p-button-warning p-button-rounded"
+                                        (click)="setShowPartActive(showPart, true)">
                                     </p-button>
                                     <p-button *ngIf="showPart.active" pRipple type="button" icon="pi pi-eye"
-                                        styleClass="p-button-success p-button-rounded" (click)="setShowPartActive(showPart, false)">
+                                        styleClass="p-button-success p-button-rounded"
+                                        (click)="setShowPartActive(showPart, false)">
                                     </p-button>
                                     <p-button pRipple type="button" icon="pi pi-times"
                                         styleClass="p-button-danger p-button-rounded" (click)="removeShowPart(i)">
                                     </p-button>
+
+                                    <div class="p-field p-d-flex p-ai-baseline indevidualDisplayTimeCard"
+                                        *ngIf="individualDisplayTime">
+                                        <div>
+                                            <p-inputNumber [(ngModel)]="showPart.displayTime" mode="decimal" [min]="0"
+                                                [max]="100" inputStyleClass="indevidualDisplayTime">
+                                            </p-inputNumber>
+                                        </div>
+                                        <span class="p-ml-1">
+                                            {{ ' ' + ('edit-show-panel.seconds'|translate)}}
+                                        </span>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
+                        <p-button pRipple type="button" icon="pi pi-plus" class="insert-document-button p-ml-2 p-pr-3"
+                            styleClass="p-button-rounded p-button-outlined" (click)="uploadDocument = true">
+                        </p-button>
                     </div>
+
                 </ng-template>
             </p-card>
         </div>
@@ -64,7 +99,7 @@
                     styleClass="p-button-success" (click)="save()"></p-button>
                 <p-button label="{{ 'edit-show-panel.delete' | translate}}" pRipple type="button"
                     styleClass="p-button-danger" (click)="delete()" *ngIf="imageShowResourceUrl"></p-button>
-                <div class="p-inputgroup update-monitor-button" *ngIf="monitorUsingShow">
+                <div class="p-inputgroup update-monitor-button" *ngIf="monitorUsingShow?.length > 0">
                     <span class="p-inputgroup-addon">{{'edit-show-panel.update-monitors' | translate}}</span>
                     <p-toggleButton [(ngModel)]="updateMonitors" onLabel="{{ 'edit-show-panel.yes' | translate}}"
                         onIcon="pi pi-check" offIcon="pi pi-times" offLabel="{{ 'edit-show-panel.no' | translate}}">
@@ -74,3 +109,6 @@
         </div>
     </div>
 </div>
+
+<app-upload-document [(displayDialog)]="uploadDocument" *ngIf="uploadDocument"
+    (uploadedDocument)="insertDocument($event)" [area]="imageShow.area"></app-upload-document>

@@ -3,8 +3,12 @@
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-text-center p-jc-center">
       <h1 class="p-m-0">{{ "monitor.list.header" | translate }}</h1>
-      <p-button icon="pi pi-plus" (click)="newMonitor()" class="p-ml-auto" label="{{ 'add' | translate }}">
-      </p-button>
+      <div class="p-ml-auto">
+        <p-button class="p-ml-auto" label="{{'monitor.list.reboot-all'| translate}}" (click)="restartAll()"
+          styleClass="p-button-warning"></p-button>
+        <p-button icon="pi pi-plus" (click)="newMonitor()" class="p-ml-2" label="{{ 'monitor.list.add' | translate }}">
+        </p-button>
+      </div>
     </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
@@ -133,7 +137,7 @@
         </div>
         <div class="p-field p-grid" *ngIf="monitor.status != null">
           <label for="reboot" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
-            {{ "monitor.details.location" | translate }}
+            {{ "monitor.details.reboot" | translate }}
           </label>
           <div class="p-col-12 p-md-10">
             <p-button type="button" (click)="rebootMonitor()" label="{{ 'monitor.details.reboot' | translate }}"

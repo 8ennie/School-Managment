@@ -6,13 +6,19 @@
             <label for="area" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
                 {{ "document.upload.area" | translate }}
             </label>
-            <div class="p-col-12 p-md-10">
+            <div *ngIf="areas.length > 0 && !area" class="p-col-12 p-md-10">
                 <p-dropdown id="area" [options]="areas" [(ngModel)]="document.area"
                     placeholder="{{'document.upload.choose-area' | translate}}" appendTo="body">
+                    <ng-template pTemplate="selectedItem" let-item>
+                        {{item.value | translate}}
+                    </ng-template>
                     <ng-template pTemplate="item" let-item>
                         {{item.value | translate}}
                     </ng-template>
                 </p-dropdown>
+            </div>
+            <div *ngIf="area" class="p-col-12 p-md-10">
+                <p>{{area| translate}}</p>
             </div>
         </div>
 

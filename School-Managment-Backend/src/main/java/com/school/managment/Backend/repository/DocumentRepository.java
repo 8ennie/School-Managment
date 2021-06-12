@@ -15,4 +15,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long>{
 	public List<Document> findByArea(Area area);
 	
 	public List<Document> findByFileNameContains(String fileName);
+	
+	public List<Document> findByAreaInAndFileNameContains(List<Area> areaList, String fileName);
 }

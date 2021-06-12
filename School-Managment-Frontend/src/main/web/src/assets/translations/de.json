@@ -115,6 +115,8 @@
         },
         "list": {
             "header": "Monitors",
+            "add":"Hintufügen",
+            "reboot-all": "Alle neu startend",
             "name": "Name",
             "location": "Ort",
             "active": "Aktiv",
@@ -151,7 +153,11 @@
         "yes": "Ja",
         "update-monitors": "Update Monitore",
         "save": "Speichern",
-        "delete": "Löschen"
+        "delete": "Löschen",
+        "displayTime": "Anezige dauer",
+        "seconds":"Sekunden",
+        "shared":"Gemeinsam",
+        "individual":"Unabhänig"
     },
     "image-show": {
         "list": {

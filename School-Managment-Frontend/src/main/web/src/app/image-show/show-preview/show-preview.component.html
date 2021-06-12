@@ -1,0 +1,6 @@
+<p-galleria [(value)]="showParts" [showThumbnails]="false"
+    [autoPlay]="this.showParts.length > 1" [circular]="true" [transitionInterval]="displayTime">
+    <ng-template pTemplate="item" let-showPart>
+        <img [src]="getImage(showPart.showPartImage)" [height]="getHeight()" />
+    </ng-template>
+</p-galleria>

@@ -107,6 +107,7 @@ public class ShowPartService {
 					} else {
 						imageShowShowPart.setPosition(i);
 						imageShowShowPart.setActive(imageShowPart.isActive());
+						imageShowShowPart.setDisplayTime(imageShowPart.getDisplayTime());
 						imageShowShowPartRepository.save(imageShowShowPart);
 					}
 				}
@@ -120,6 +121,7 @@ public class ShowPartService {
 		ImageShowShowPart imageShowShowPart = showPart.addImageShow(imageShow);
 		imageShowShowPart.setPosition(i);
 		imageShowShowPart.setActive(imageShowPart.isActive());
+		imageShowShowPart.setDisplayTime(imageShowPart.getDisplayTime());
 		imageShowShowPartRepository.save(imageShowShowPart);
 		showPartRepository.save(showPart);
 	}

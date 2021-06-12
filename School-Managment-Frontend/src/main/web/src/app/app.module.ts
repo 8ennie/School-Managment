@@ -43,6 +43,7 @@ import { MonitorDashboardComponent } from './monitor/monitor-dashboard/monitor-d
 import { MonitorCardComponent } from './monitor/monitor-dashboard/monitor-card/monitor-card.component';
 import { ShowListComponent } from './image-show/show-list/show-list.component';
 import { UploadShowComponent } from './image-show/upload-show/upload-show.component';
+import { ShowPreviewComponent } from './image-show/show-preview/show-preview.component';
 
 
 
@@ -75,6 +76,7 @@ import { UploadShowComponent } from './image-show/upload-show/upload-show.compon
     MonitorCardComponent,
     ShowListComponent,
     UploadShowComponent,
+    ShowPreviewComponent,
   ],
   imports: [
     FormsModule,

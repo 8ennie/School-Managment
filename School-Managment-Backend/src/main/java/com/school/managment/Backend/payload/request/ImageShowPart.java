@@ -11,4 +11,6 @@ public class ImageShowPart{
 	int position;
 	
 	Long imageShowShowPartId;
+	
+	Long displayTime;
 }

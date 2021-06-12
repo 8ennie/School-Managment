@@ -13,6 +13,7 @@ export interface ShowPartHateoas extends IHateoasEntity {
 export class ShowPart extends HateoasEntity implements ShowPartHateoas {
     public id?: number;
     public position: number;
+    public displayTime: number;
     public active: boolean;
     public showPartId?: number;
     public showPartImage: string;

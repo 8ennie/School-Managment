@@ -35,6 +35,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
+import { SliderModule } from 'primeng/slider';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 @NgModule({
@@ -73,6 +76,9 @@ import { MessageModule } from 'primeng/message';
         BadgeModule,
         TagModule,
         MessageModule,
+        SliderModule,
+        InputNumberModule,
+        SelectButtonModule,
     ],
     exports: [
         DataViewModule,
@@ -110,6 +116,9 @@ import { MessageModule } from 'primeng/message';
         BadgeModule,
         TagModule,
         MessageModule,
+        SliderModule,
+        InputNumberModule,
+        SelectButtonModule,
     ],
     providers: [MessageService]
 })

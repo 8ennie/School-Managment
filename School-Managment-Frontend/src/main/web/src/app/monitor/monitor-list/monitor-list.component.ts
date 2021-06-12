@@ -180,4 +180,14 @@ export class MonitorListComponent implements OnInit {
     });
   }
 
+  public restartAll(): void {
+    this.monitors.forEach((m: Monitor) => {
+      if (m.active && m.status) {
+        this.monitorService.reboot(m).then(time => {
+          this.messageService.add({ severity: 'success', summary: (m.name + ' is Rebooting!'), detail: 'Please wait a bit until Raspberry is reconnected!' });
+        });
+      }
+    });
+  }
+
 }

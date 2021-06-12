@@ -30,6 +30,14 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
   monitorUsingShow: Monitor[];
   updateMonitors: boolean = false;
 
+  uploadDocument = false;
+
+  displayTime = 12;
+  individualDisplayTime = true;
+
+  displayTimeOptions = [{label: 'edit-show-panel.individual', value: true}, {label: 'edit-show-panel.shared', value: false}];
+
+
   @Input()
   imageShowResourceUrl: string;
 
@@ -70,7 +78,14 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
                   this.imageShow.showParts = showParts.sort(
                     (n1, n2) => n1.position - n2.position
                   );
+                  this.displayTime = showParts[0].displayTime ?? 13;
                 }
+                this.monitorService.getAllActiveMonitors().then((monitors: Monitor[]) => {
+                  this.monitorUsingShow = monitors.filter(m => m.imageShowUrl == this.imageShowResourceUrl);
+                  if (this.monitorUsingShow.length > 0) {
+                    this.updateMonitors = true;
+                  }
+                });
               });
           });
       } else {
@@ -123,14 +138,19 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
         this.imageShow = new ImageShow();
         this.imageShow.showParts = [];
       }
-
     });
   }
 
   public save(): void {
+
+    this.imageShow.showParts.forEach((showPart) => {
+      showPart.displayTime = this.displayTime;
+    });
+    const showParts = this.imageShow.showParts;
+    this.imageShow.showParts = null;
+
+
     if (this.imageShowResourceUrl) {
-      const showParts = this.imageShow.showParts;
-      this.imageShow.showParts = null;
       this.imageShowService
         .updateImageShow(this.imageShow)
         .then((imageShow: ImageShow) => {
@@ -150,8 +170,6 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
         });
       }
     } else {
-      const showParts = this.imageShow.showParts;
-      this.imageShow.showParts = null;
       this.imageShowService
         .saveImageShow(this.imageShow)
         .then((imageShow: ImageShow) => {
@@ -168,5 +186,18 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
             });
         });
     }
+  }
+
+  public insertDocument(showParts: ShowPart[]): void {
+
+
+    console.log(this.imageShow.showParts);
+
+    showParts.forEach((showPart: ShowPart) => {
+      console.log(showPart);
+
+      (this.imageShow.showParts as ShowPart[]).push(showPart);
+    });
+
   }
 }

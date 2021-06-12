@@ -13,34 +13,33 @@ import { ShowPartService } from "../show-part/show-part.service";
 })
 export class ShowComponent implements OnInit {
   @Input()
-  height: number;
-
-  @Input()
-  preview = false;
-
-  @Input()
   imageShowResorceUrl: string;
+
+  @Input()
+  defaultDisplayTime: number = 6;
 
   imageShow: ImageShow;
 
   showParts: ShowPart[] = [];
 
+  page: number = 0;
+
+  private timer;
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly imageShowService: ImageShowService,
     private readonly showPartService: ShowPartService,
     private readonly headerService: HeaderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    if (!this.preview) {
-      this.headerService.hideHeader();
-      this.activatedRoute.params.subscribe((parms: Params) => {
-        this.imageShowResorceUrl = this.imageShowService.getImageShowResourceUrl(
-          parms["id"]
-        );
-      });
-    }
+
+    this.headerService.hideHeader();
+    this.activatedRoute.params.subscribe((parms: Params) => {
+      this.imageShowResorceUrl = this.imageShowService.getImageShowResourceUrl(
+        parms["id"]
+      );
+    });
     if (this.imageShowResorceUrl) {
       this.imageShowService
         .getImageShow(this.imageShowResorceUrl)
@@ -50,9 +49,12 @@ export class ShowComponent implements OnInit {
             .getShowPartsFromImageShow(imageShow.resourceUrl)
             .then((showParts: ShowPart[]) => {
               this.showParts = showParts.filter(sp => sp.active);
+              this.pageChanged({ page: 0 });
             });
         });
+
     }
+
   }
 
   public getImage(image: string) {
@@ -60,10 +62,20 @@ export class ShowComponent implements OnInit {
   }
 
   public getHeight(): number {
-    if (this.preview) {
-      return this.height;
-    } else {
-      return window.innerHeight - 65;
+    return window.innerHeight - 70;
+  }
+
+  public pageChanged(event: { page: number }): void {
+    const currentPage = event.page;
+    const nextPage: number = this.showParts.length > (currentPage + 1) ? (currentPage + 1) : 0;
+    if (this.timer) {
+      clearTimeout(this.timer);
     }
+    const timeToDisplay = (this.showParts[currentPage].displayTime ?? this.defaultDisplayTime) * 1000;
+
+    this.timer = setTimeout(() => {
+      this.page = nextPage;
+    },
+      timeToDisplay);
   }
 }

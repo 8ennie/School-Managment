@@ -1,6 +1,7 @@
-<p-galleria [(value)]="showParts" [showThumbnails]="false"
-    [autoPlay]="this.showParts.length > 1" [circular]="true" [transitionInterval]="12000">
+<p-carousel [(value)]="showParts" (onPage)="pageChanged($event)" [showNavigators]="false" [page]="page">
     <ng-template pTemplate="item" let-showPart>
-        <img [src]="getImage(showPart.showPartImage)" [height]="getHeight()" />
+        <div class="p-grid p-jc-center">
+            <img [src]="getImage(showPart.showPartImage)" [height]="getHeight()" />
+        </div>
     </ng-template>
-</p-galleria>
+</p-carousel>

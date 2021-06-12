@@ -214,7 +214,7 @@ export class ImageListComponent implements OnInit {
   }
 
   public deleteImageShow(node: TreeNode): void {
-    
+
     (node.data as ImageShow).resourceUrl = (node.data as ImageShow).resourceUrl;
     console.log(node.data);
     this.confirmationService.confirm({
@@ -253,7 +253,9 @@ export class ImageListComponent implements OnInit {
             leaf: false
           };
           const areaNode = this.treeNodes[1].children.filter(n => n.type == 'DOCUMENTS_AREA' && n.data.area == document.area)[0];
-          areaNode.children ? areaNode.children.push(node) : areaNode.children = [node];
+          if (areaNode) {
+            areaNode.children ? areaNode.children.push(node) : areaNode.children = [node];
+          }
         });
         this.treeNodes[0].children = this.treeNodes[0].children.filter(n => n.children || n.type != 'DOCUMENTS_AREA');
         this.treeNodes = [...this.treeNodes];
@@ -276,7 +278,10 @@ export class ImageListComponent implements OnInit {
             leaf: false
           };
           const areaNode = this.treeNodes[1].children.filter(n => n.type == 'IMAGE_SHOWS_AREA' && n.data.area == imageShow.area)[0];
-          areaNode.children ? areaNode.children.push(node) : areaNode.children = [node];
+          if (areaNode) {
+            areaNode.children ? areaNode.children.push(node) : areaNode.children = [node];
+          }
+
         });
         this.treeNodes[1].children = this.treeNodes[1].children.filter((node: TreeNode) => node.children || node.type != 'IMAGE_SHOWS_AREA');
         this.treeNodes = [...this.treeNodes];

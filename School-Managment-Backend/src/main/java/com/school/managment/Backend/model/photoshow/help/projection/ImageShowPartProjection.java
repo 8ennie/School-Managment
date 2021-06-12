@@ -22,4 +22,6 @@ public interface ImageShowPartProjection {
 	Long getShowPartId();
 	
 	boolean getActive();
+	
+	Long getDisplayTime();
 }

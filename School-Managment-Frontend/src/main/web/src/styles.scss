@@ -1,50 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './variables.scss';
+@import "./variables.scss";
 
-body { font-family: Roboto, "Helvetica Neue", sans-serif;}
-
-
+body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 a {
     text-decoration: none;
     cursor: pointer;
-    &, &:visited{
+    &,
+    &:visited {
         color: $secondary-color;
     }
 
-    &:hover{
+    &:hover {
         color: $secondary-color;
     }
 
-    &.active-link, &:active{
+    &.active-link,
+    &:active {
         color: $primary-color;
     }
 }
 
-.p-menuitem-link-active{
-    background-color: rgba($secondary-color, .5);
+.p-menuitem-link-active {
+    background-color: rgba($secondary-color, 0.5);
 }
 
-.p-card.login-card{
-    background-color: rgba($secondary-color, .25);
+.p-card.login-card {
+    background-color: rgba($secondary-color, 0.25);
 }
 
-.p-card.image-card{
-    background-color: rgba($secondary-color, .05);
+.p-card.image-card {
+    background-color: rgba($secondary-color, 0.05);
     min-height: 250px;
     overflow: auto;
 }
 
-.p-button{
+.p-button {
     background-color: $secondary-color;
 }
 
-
-.p-dialog{
+.p-dialog {
     width: 50vw;
 }
 
 .p-datatable tbody td {
     border: 0 none;
- }
+}
+
+.p-inputnumber-input {
+    width: 74% !important;
+    &.indevidualDisplayTime {
+        width: 1.5rem !important;
+        background: transparent;
+        padding: 0.1rem;
+        border:0ch;
+    }
+}

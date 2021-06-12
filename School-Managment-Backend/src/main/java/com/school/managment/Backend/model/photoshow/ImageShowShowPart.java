@@ -40,6 +40,9 @@ public class ImageShowShowPart {
 	@Column
 	private boolean active = true;
 	
+	@Column
+	private Long displayTime;
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
