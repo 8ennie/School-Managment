@@ -35,7 +35,7 @@ import lombok.NoArgsConstructor;
 @SQLDelete(sql = "UPDATE image_show SET deleted=true WHERE id=?")
 @Where(clause = "deleted = false")
 @EntityListeners(AuditingEntityListener.class)
-public class ImageShow extends RepresentationModel<ImageShow>{
+public class ImageShow extends RepresentationModel<ImageShow> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,11 +52,13 @@ public class ImageShow extends RepresentationModel<ImageShow>{
 
 	@Temporal(TemporalType.DATE)
 	private Date date;
-	
+
 	@CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Date createdAt;
 
 	private Boolean deleted = false;
+
+	private Boolean individualDisplayTimes;
 
 }

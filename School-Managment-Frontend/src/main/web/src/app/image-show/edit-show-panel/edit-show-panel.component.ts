@@ -33,9 +33,8 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
   uploadDocument = false;
 
   displayTime = 12;
-  individualDisplayTime = true;
 
-  displayTimeOptions = [{label: 'edit-show-panel.individual', value: true}, {label: 'edit-show-panel.shared', value: false}];
+  displayTimeOptions = [{ label: 'edit-show-panel.individual', value: true }, { label: 'edit-show-panel.shared', value: false }];
 
 
   @Input()
@@ -71,6 +70,7 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
           .getImageShow(this.imageShowResourceUrl)
           .then((imageShow: ImageShow) => {
             this.imageShow = imageShow;
+            this.imageShow.individualDisplayTimes = this.imageShow.individualDisplayTimes ?? false;
             this.showPartService
               .getShowPartsFromImageShow(imageShow.resourceUrl)
               .then((showParts: ShowPart[]) => {
@@ -78,7 +78,9 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
                   this.imageShow.showParts = showParts.sort(
                     (n1, n2) => n1.position - n2.position
                   );
-                  this.displayTime = showParts[0].displayTime ?? 13;
+                  if (!this.imageShow.individualDisplayTimes) {
+                    this.displayTime = showParts[0].displayTime ?? 10;
+                  }
                 }
                 this.monitorService.getAllActiveMonitors().then((monitors: Monitor[]) => {
                   this.monitorUsingShow = monitors.filter(m => m.imageShowUrl == this.imageShowResourceUrl);
@@ -90,6 +92,7 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
           });
       } else {
         this.imageShow = new ImageShow();
+        this.imageShow.individualDisplayTimes = false;
       }
     }
   }
@@ -103,7 +106,7 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
       );
     } else {
       if (this.imageShow.showParts) {
-        this.imageShow.showParts.push({ ...event.item.data, active: true });
+        this.imageShow.showParts.push({ ...event.item.data, active: true, displayTime: this.displayTime });
         moveItemInArray(
           this.imageShow.showParts as string[],
           this.imageShow.showParts.length - 1,
@@ -143,9 +146,12 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
 
   public save(): void {
 
-    this.imageShow.showParts.forEach((showPart) => {
-      showPart.displayTime = this.displayTime;
-    });
+    if (!this.imageShow.individualDisplayTimes) {
+      this.imageShow.showParts.forEach((showPart) => {
+        showPart.displayTime = this.displayTime;
+      });
+    }
+
     const showParts = this.imageShow.showParts;
     this.imageShow.showParts = null;
 
@@ -189,13 +195,8 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
   }
 
   public insertDocument(showParts: ShowPart[]): void {
-
-
-    console.log(this.imageShow.showParts);
-
     showParts.forEach((showPart: ShowPart) => {
-      console.log(showPart);
-
+      showPart.displayTime = this.displayTime;
       (this.imageShow.showParts as ShowPart[]).push(showPart);
     });
 

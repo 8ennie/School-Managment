@@ -24,5 +24,7 @@ public interface ImageShowProjection {
 
 	@Value("#{target.getShowParts().size()}")
 	int getImageCount();
+	
+	Boolean getIndividualDisplayTimes();
 
 }
