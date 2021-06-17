@@ -44,6 +44,7 @@ import { MonitorCardComponent } from './monitor/monitor-dashboard/monitor-card/m
 import { ShowListComponent } from './image-show/show-list/show-list.component';
 import { UploadShowComponent } from './image-show/upload-show/upload-show.component';
 import { ShowPreviewComponent } from './image-show/show-preview/show-preview.component';
+import { ClockComponent } from './addons/clock/clock.component';
 
 
 
@@ -77,6 +78,7 @@ import { ShowPreviewComponent } from './image-show/show-preview/show-preview.com
     ShowListComponent,
     UploadShowComponent,
     ShowPreviewComponent,
+    ClockComponent,
   ],
   imports: [
     FormsModule,

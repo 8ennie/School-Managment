@@ -1,0 +1,8 @@
+<div class="clock-dialog">
+    <p-dialog [(visible)]="display" [closable]="false" [showHeader]="false" [position]="'bottom-left'"
+        [style]="{width: 'auto', height: 'auto', 'border-radius': '15px'}">
+        <div class="p-grid p-jc-center p-p-4 p-nogutter p-ai-center">
+            <span class="p-text-center digits">{{ rxTime | date:"HH:mm" }}</span>
+        </div>
+    </p-dialog>
+</div>
