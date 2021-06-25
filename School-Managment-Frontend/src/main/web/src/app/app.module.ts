@@ -45,6 +45,7 @@ import { ShowListComponent } from './image-show/show-list/show-list.component';
 import { UploadShowComponent } from './image-show/upload-show/upload-show.component';
 import { ShowPreviewComponent } from './image-show/show-preview/show-preview.component';
 import { ClockComponent } from './addons/clock/clock.component';
+import { MessageBannerComponent } from './addons/messages/message-banner/message-banner.component';
 
 
 
@@ -79,6 +80,7 @@ import { ClockComponent } from './addons/clock/clock.component';
     UploadShowComponent,
     ShowPreviewComponent,
     ClockComponent,
+    MessageBannerComponent,
   ],
   imports: [
     FormsModule,

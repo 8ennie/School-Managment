@@ -19,10 +19,15 @@ export class SendMessageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
   }
 
   onRowSelect(event) {
 
+  }
+
+  sendMessage() {
+    this.messageServicce.send({ "message": "Test", "category": "Test" });
   }
 
   onSort() {

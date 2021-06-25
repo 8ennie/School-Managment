@@ -1,5 +1,6 @@
 <div style="text-align: center;">
     <h3>Current Messages</h3>
+    <p-button label="Send Message" (click)="sendMessage()"></p-button>
     <p-table [value]="messages" sortField="brand" sortMode="single" (onSort)="onSort()">
         <ng-template pTemplate="header">
             <tr>
@@ -21,6 +22,4 @@
 
 <div style="text-align: center;">
     <h2>Favorite Messages</h2>
-
-
 </div>
