@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message {
+public class Message implements Serializable {
 
 	private String message;
 	
@@ -15,7 +17,7 @@ public class Message {
 	
 	private Long monitorId;
 	
-	private String area;
+	private Area area;
 	
 	private boolean overwirite;
 	

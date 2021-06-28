@@ -24,7 +24,7 @@ export class ShowListComponent implements OnChanges {
 
   totalImagShows: number;
 
-  loadRows: number = 10;
+  loadRows: number = 5;
 
   constructor(
     private readonly imageShowService: ImageShowService,

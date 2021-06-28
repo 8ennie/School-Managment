@@ -45,6 +45,8 @@ export class ShowComponent implements OnInit {
         .getImageShow(this.imageShowResorceUrl)
         .then((imageShow: ImageShow) => {
           this.imageShow = imageShow;
+          console.log(this.imageShow);
+          
           this.showPartService
             .getShowPartsFromImageShow(imageShow.resourceUrl)
             .then((showParts: ShowPart[]) => {

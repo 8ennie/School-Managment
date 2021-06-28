@@ -61,4 +61,6 @@ public class ImageShow extends RepresentationModel<ImageShow> {
 
 	private Boolean individualDisplayTimes;
 
+	private Boolean showClock;
+
 }

@@ -1,20 +1,22 @@
 import { Message } from './message.model';
 import * as Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
-import { environment } from 'src/environments/environment';
+import * as SockJS from 'sockjs-client';
+import { environment } from "src/environments/environment";
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable()
+@Injectable(
+  // { providedIn: 'root' }
+  )
 export class MessageService implements OnDestroy {
 
-  private _message: BehaviorSubject<string> = new BehaviorSubject('');
+  private _message: BehaviorSubject<Message> = new BehaviorSubject(null);
 
-  public readonly message: Observable<string> = this._message.asObservable();
+  public readonly message: Observable<Message> = this._message.asObservable();
 
-  webSocketEndPoint: string = environment.apiUrl + 'socket';
-  topic: string = "/message/sent";
+  webSocketEndPoint: string = 'http://localhost:8080/api/socket';
+  topic: string = "/message";
   stompClient: any;
 
   constructor(private readonly http: HttpClient,) {
@@ -32,7 +34,7 @@ export class MessageService implements OnDestroy {
     const _this = this;
     this.stompClient.connect({}, (frame) => {
       _this.stompClient.subscribe(_this.topic, (sdkEvent) => {
-        _this.onMessageReceived(sdkEvent);
+        _this.onMessageReceived(JSON.parse(sdkEvent.body));
       });
     }, this.errorCallBack);
   };
@@ -67,6 +69,10 @@ export class MessageService implements OnDestroy {
 
   private onMessageReceived(message: Message): void {
     console.log("Message Recieved from Server :: " + message);
-    this._message.next(message.message);
+    this._message.next(message);
+  }
+
+  public getMessageForArea(area:string): Promise<Message | null>{
+    return this.http.get<Message>(environment.apiUrl + 'areas/' + area + '/messages').toPromise();
   }
 }

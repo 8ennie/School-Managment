@@ -1,5 +1,6 @@
+import { Message } from './../message.model';
 import { MessageService } from './../message.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-send-message',
@@ -7,51 +8,42 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent implements OnChanges {
 
+  @Input()
+  area: string;
 
-  messages = [];
-  selectedMessage;
-  rowGroupMetadata: any;
+  messageForArea: string;
+  initalMessage: string;
 
   constructor(
-    private messageServicce: MessageService,
+    private messageService: MessageService,
   ) { }
 
-  ngOnInit(): void {
 
-  }
-
-  onRowSelect(event) {
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.area) {
+      this.messageService.getMessageForArea(this.area).then(
+        (message: Message) => {
+          if (message) {
+            this.messageForArea = message.message;
+            this.initalMessage = message.message;
+          } else {
+            this.messageForArea = '';
+            this.initalMessage = '';
+          }
+        }
+      );
+    }
   }
 
   sendMessage() {
-    this.messageServicce.send({ "message": "Test", "category": "Test" });
+    const message = this.initalMessage == this.messageForArea ? '' : this.messageForArea;
+
+    this.messageService.send({ "message": message, "area": this.area });
+    this.messageForArea = message;
+    this.initalMessage = message;
+
   }
 
-  onSort() {
-    this.updateRowGroupMetaData();
-  }
-
-  updateRowGroupMetaData() {
-    this.rowGroupMetadata = {};
-    if (this.messages) {
-      for (let i = 0; i < this.messages.length; i++) {
-        const rowData = this.messages[i];
-        const category = rowData.brand;
-        if (i === 0) {
-          this.rowGroupMetadata[category] = { index: 0, size: 1 };
-        } else {
-          const previousRowData = this.messages[i - 1];
-          const previousRowGroup = previousRowData.brand;
-          if (category === previousRowGroup) {
-            this.rowGroupMetadata[category].size++;
-          } else {
-            this.rowGroupMetadata[category] = { index: i, size: 1 };
-          }
-        }
-      }
-    }
-  }
 }

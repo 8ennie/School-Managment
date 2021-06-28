@@ -4,4 +4,5 @@ export class Message {
 
     category?: string;
 
+    area?: string;
 }

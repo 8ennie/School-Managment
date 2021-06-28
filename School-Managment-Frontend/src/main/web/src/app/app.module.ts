@@ -27,7 +27,6 @@ import { RoleComponent } from './auth/role/role.component';
 import { RoleListComponent } from './auth/role/role-list/role-list.component';
 import { RoleDetailsComponent } from './auth/role/role-details/role-details.component';
 import { InputMaskModule } from 'primeng/inputmask';
-import { MessageComponent } from './message/message.component';
 import { ScrollingTextComponent } from './message/scrolling-text.component';
 import { SendMessageComponent } from './message/send-message/send-message.component';
 import { ImageListComponent } from './image-show/image-list/image-list.component';
@@ -45,7 +44,7 @@ import { ShowListComponent } from './image-show/show-list/show-list.component';
 import { UploadShowComponent } from './image-show/upload-show/upload-show.component';
 import { ShowPreviewComponent } from './image-show/show-preview/show-preview.component';
 import { ClockComponent } from './addons/clock/clock.component';
-import { MessageBannerComponent } from './addons/messages/message-banner/message-banner.component';
+import { MessageBannerComponent } from './addons/message-banner/message-banner.component';
 
 
 
@@ -61,7 +60,6 @@ import { MessageBannerComponent } from './addons/messages/message-banner/message
     RoleComponent,
     RoleListComponent,
     RoleDetailsComponent,
-    MessageComponent,
     ScrollingTextComponent,
     SendMessageComponent,
     ImageListComponent,

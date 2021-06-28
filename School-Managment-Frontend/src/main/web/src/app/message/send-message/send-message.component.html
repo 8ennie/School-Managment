@@ -1,25 +1,13 @@
-<div style="text-align: center;">
-    <h3>Current Messages</h3>
-    <p-button label="Send Message" (click)="sendMessage()"></p-button>
-    <p-table [value]="messages" sortField="brand" sortMode="single" (onSort)="onSort()">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Message</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-            <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.category].index === rowIndex">
-                <td colspan="3">
-                    <span style="font-weight:bold">{{rowData.category}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>{{rowData.message}}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>
-
-<div style="text-align: center;">
-    <h2>Favorite Messages</h2>
+<div class="p-m-2 p-card">
+    <h1 class="p-text-center">Messages</h1>
+    <div class="p-grid">
+        <div class="p-inputgroup p-col p-m-2">
+            <span class="p-inputgroup-addon">{{'message.send-message.message-text' | translate }}</span>
+            <input type="text" pInputText [(ngModel)]="messageForArea"
+                placeholder=" {{'message.send-message.choose-text' | translate }}" />
+            <button type="button" pButton pRipple
+                label="{{ (initalMessage == messageForArea ? 'message.send-message.clear' : 'message.send-message.send') | translate }}"
+                styleClass="p-button-warn" (click)="sendMessage()" *ngIf="messageForArea"></button>
+        </div>
+    </div>
 </div>

@@ -64,6 +64,15 @@
             "login": "Fehler beim anmelden. Überprüfen sie den Benutzername oder dsa Password!"
         }
     },
+
+    "message":{
+        "send-message":{
+            "message-text":"Text",
+            "choose-text":"Message Schreiben", 
+            "send":"Veröffentlichen",
+            "clear":"Fertig"
+        }
+    },
     "monitor": {
         "card": {
             "no-show-loaded": "Keine Präsentation Geladen",
@@ -157,7 +166,8 @@
         "displayTime": "Anezige dauer",
         "seconds":"Sekunden",
         "shared":"Gemeinsam",
-        "individual":"Unabhänig"
+        "individual":"Unabhänig",
+        "show-clock":"Uhrzeit anzeigen"
     },
     "image-show": {
         "list": {

@@ -23,19 +23,34 @@
             </div>
         </div>
 
-        <div class="p-field p-col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">{{'edit-show-panel.displayTime' | translate }}</span>
+        <div *ngIf="imageShow?.showParts?.length > 1" class="p-field p-col-12 p-md-6">
+            <div class="p-grid p-p-2 p-jc-between">
+                <span class="p-inputgroup-addon duration-label">{{'edit-show-panel.displayTime' | translate }}</span>
                 <p-selectButton [options]="displayTimeOptions" [(ngModel)]="imageShow.individualDisplayTimes">
                     <ng-template let-item>
                         <span>{{item.label | translate}}</span>
                     </ng-template>
                 </p-selectButton>
                 <p-inputNumber [(ngModel)]="displayTime" mode="decimal" [showButtons]="true" [min]="0" [max]="20"
-                    suffix="{{ ' ' + ('edit-show-panel.seconds'|translate)}}" *ngIf="!imageShow.individualDisplayTimes">
+                    suffix="{{ ' ' + ('edit-show-panel.seconds'|translate)}}"
+                    [disabled]="imageShow.individualDisplayTimes">
                 </p-inputNumber>
             </div>
         </div>
+
+        <div class="p-field p-col-12 p-md-6">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon duration-label">{{'edit-show-panel.show-clock' | translate }}</span>
+                <p-selectButton
+                    [options]="[{ label: 'edit-show-panel.yes', value: true }, { label: 'edit-show-panel.no', value: false }]"
+                    [(ngModel)]="imageShow.showClock" styleClass="p-pl-2">
+                    <ng-template let-item>
+                        <span>{{item.label | translate}}</span>
+                    </ng-template>
+                </p-selectButton>
+            </div>
+        </div>
+
 
         <div class="p-field p-col-12">
             <p-card id="imageShowParts" cdkDropList cdkDropListOrientation="horizontal"
@@ -48,7 +63,7 @@
                             cdkDropList [cdkDragData]="showPart">
 
                             <div class="p-fluid" pBadge
-                                [value]="(imageShow.individualDisplayTimes ? showPart.displayTime : displayTime) + 's'">
+                                [value]="imageShow.showParts.length > 1 ? ((imageShow.individualDisplayTimes ? showPart.displayTime : displayTime) + 's') : null">
                                 <div class="p-field">
                                     <div class="p-card" [style]="showPart.active? null : {opacity: 0.5}">
                                         <img [src]="getImage(showPart.showPartImage)" height="200px">

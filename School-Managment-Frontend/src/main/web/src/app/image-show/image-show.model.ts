@@ -13,6 +13,7 @@ export interface ImageShowHateoas extends IHateoasEntity {
   readonly showParts?: string[] | ShowPart[];
   readonly createdAt?: Date;
   readonly individualDisplayTimes: boolean;
+  readonly showClock: boolean;
 }
 
 export class ImageShow extends HateoasEntity implements ImageShowHateoas {
@@ -24,6 +25,7 @@ export class ImageShow extends HateoasEntity implements ImageShowHateoas {
   showParts?: string[] | ShowPart[];
   createdAt?: Date;
   individualDisplayTimes: boolean;
+  showClock: boolean;
 
   get id(): number {
     if (this._links?.self?.href) {

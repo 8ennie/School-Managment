@@ -59,9 +59,9 @@ a {
         border: 0ch;
     }
 }
-.clock-dialog {
+.disable-footer-clock {
     .p-dialog .p-dialog-content {
-        padding: 1rem;
+        padding: 1vw;
         border-radius: 15px;
         overflow-y: inherit;
         font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
@@ -69,3 +69,16 @@ a {
         color: $secondary-color;
     }
 }
+
+.disable-footer-message {
+    .p-dialog .p-dialog-content {
+        padding: 0;
+        border-radius: 15px;
+        overflow-y: inherit;
+        font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+        //background-color: rgba($secondary-color, 0.25);
+        background-color: rgb(191,222,238);
+        color: $secondary-color;
+    }
+}
+

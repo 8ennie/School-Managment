@@ -27,4 +27,6 @@ public interface ImageShowProjection {
 	
 	Boolean getIndividualDisplayTimes();
 
+	Boolean getShowClock();
+
 }

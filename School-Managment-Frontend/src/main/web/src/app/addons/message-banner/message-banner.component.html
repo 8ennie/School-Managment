@@ -1,0 +1,8 @@
+<div *ngIf="display" class="disable-footer-message">
+    <p-dialog [(visible)]="display" [closable]="false" [showHeader]="false" [position]="'bottom'"
+        [style]="{width: '75vw' ,  'border-radius': '15px'}">
+        <div>
+            <app-scrolling-text [text]="message" [height]=5></app-scrolling-text>
+        </div>
+    </p-dialog>
+</div>
