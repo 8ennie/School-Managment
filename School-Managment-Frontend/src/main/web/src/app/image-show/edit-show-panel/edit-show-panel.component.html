@@ -23,8 +23,8 @@
             </div>
         </div>
 
-        <div *ngIf="imageShow?.showParts?.length > 1" class="p-field p-col-12 p-md-6">
-            <div class="p-grid p-p-2 p-jc-between">
+        <div  class="p-field p-col-12 p-md-6">
+            <div *ngIf="imageShow?.showParts?.length > 1" class="p-grid p-p-2 p-jc-between">
                 <span class="p-inputgroup-addon duration-label">{{'edit-show-panel.displayTime' | translate }}</span>
                 <p-selectButton [options]="displayTimeOptions" [(ngModel)]="imageShow.individualDisplayTimes">
                     <ng-template let-item>

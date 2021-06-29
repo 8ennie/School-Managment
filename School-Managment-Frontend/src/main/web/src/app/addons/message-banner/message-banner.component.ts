@@ -1,35 +1,41 @@
-import { OnChanges, SimpleChanges } from '@angular/core';
+import { OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Message } from './../../message/message.model';
-import { MessageService } from '../../message/message.service';
 import { Component, Input, OnInit } from '@angular/core';
+import { MessageService } from 'src/app/message/message.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-message-banner',
   templateUrl: './message-banner.component.html',
   styleUrls: ['./message-banner.component.scss']
 })
-export class MessageBannerComponent implements OnInit, OnChanges {
+export class MessageBannerComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
-  area: string;
+  public area: string;
 
-  display: boolean = false;
-  width: number = window.innerWidth;
-  message = '';
+  public display: boolean = false;
+  public width: number = window.innerWidth;
+  public message = '';
 
-  showDialog() {
+  private messageSub: Subscription;
+
+  showDialog(): void {
     this.display = true;
   }
 
   constructor(
-    private messageService: MessageService,
+    private readonly messageService: MessageService,
   ) {
 
   }
+  ngOnDestroy(): void {
+    if (this.messageSub) {
+      this.messageSub.unsubscribe();
+    }
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.area) {
-      console.log(changes.area);
-
       if (this.area) {
         this.messageService.getMessageForArea(this.area).then(
           (message: Message) => {
@@ -43,7 +49,7 @@ export class MessageBannerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.messageService.message.subscribe((message: Message) => {
+    this.messageSub = this.messageService.message.subscribe((message: Message) => {
       if (message) {
         if (message?.area == this.area) {
           this.loadMessage(message.message);
@@ -51,6 +57,7 @@ export class MessageBannerComponent implements OnInit, OnChanges {
       }
     });
   }
+
 
   private loadMessage(message: string): void {
     if (message) {

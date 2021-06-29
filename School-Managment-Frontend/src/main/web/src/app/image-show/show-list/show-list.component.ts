@@ -53,8 +53,6 @@ export class ShowListComponent implements OnChanges {
   }
 
   public loadImageShows(event: LazyLoadEvent): void {
-    console.log(event);
-    
     this.loading = true;
     const page = (event.first / event.rows);
     this.imageShowService.getImageShowPageByArea(this.area, event.rows, page, event.sortField, event.sortOrder == 1 ? 'asc':'desc').then((imageShowPage) => {

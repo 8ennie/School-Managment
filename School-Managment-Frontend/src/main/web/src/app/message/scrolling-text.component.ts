@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, OnInit } from '@angular/core';
+import { trigger, state, style, animate, transition, query, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 
 @Component({
   selector: 'app-scrolling-text',
   template: `
-      <div class="container" [style]="{height: height + 'vw'}">
-        <div class="scrolling-text" [@scroll]="state" (@scroll.done)="scrollDone()" [style]="{height: height + 'vw', 'font-size': getFontSize()}">
+      <div #mainContainer class="container" [style]="{height: height + 'vw'}">
+        <div  class="scrolling-text"  [style]="{height: height + 'vw', 'font-size': getFontSize()}">
           <div #textContainer class="p-grid p-ai-center p-nogutter" style="height: 100%;">
                {{text}}
           </div>
@@ -35,7 +35,40 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     ])
   ]
 })
-export class ScrollingTextComponent  {
+export class ScrollingTextComponent implements AfterViewInit {
+
+
+  @ViewChild('textContainer')
+  public textContainer;
+
+  @ViewChild('mainContainer')
+  public mainContainer;
+
+  public player: AnimationPlayer;
+
+  constructor(public builder: AnimationBuilder) {
+
+  }
+  ngAfterViewInit(): void {
+    this.start();
+    this.player.onDone(() => this.player.play());
+  }
+
+  private start(): void {
+    // this makes instructions on how to build the animation
+    const factory = this.builder.build([
+      style({ transform: 'translateX(' + this.mainContainer.nativeElement.clientWidth + 'px)' }),
+      animate('12000ms', style({ transform: 'translateX(-' + this.textContainer.nativeElement.clientWidth + 'px)' }))
+    ]);
+
+    // this creates the animation
+    this.player = factory.create(this.textContainer.nativeElement, {});
+
+    // start it off
+    this.player.play();
+  }
+
+
   state = 0;
   @Input() text = '';
 
@@ -50,5 +83,5 @@ export class ScrollingTextComponent  {
     return fontSize + 'vw';
   }
 
- 
+
 }

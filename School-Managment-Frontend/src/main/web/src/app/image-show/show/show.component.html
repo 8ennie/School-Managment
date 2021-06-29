@@ -1,5 +1,5 @@
 <app-clock *ngIf="imageShow?.showClock"></app-clock>
-<!-- <app-message-banner [area]="imageShow?.area"></app-message-banner> -->
+<app-message-banner [area]="imageShow?.area"></app-message-banner>
 <p-carousel [(value)]="showParts" (onPage)="pageChanged($event)" [showNavigators]="false" [page]="page">
     <ng-template pTemplate="item" let-showPart>
         <div class="p-grid p-jc-center">
