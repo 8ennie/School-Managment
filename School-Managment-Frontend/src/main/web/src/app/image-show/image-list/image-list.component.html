@@ -1,5 +1,6 @@
 <p-tree [value]="treeNodes" (onNodeExpand)="onNodeExpand($event)" class="image-tree" #nodes cdkDropList
-    cdkDropListConnectedTo="imageShowParts" [cdkDropListEnterPredicate]="returnFalse">
+    cdkDropListConnectedTo="imageShowParts" [cdkDropListEnterPredicate]="returnFalse"
+    (onNodeSelect)="onNodeExpand($event)" selectionMode="single">
 
     <ng-template let-node pTemplate="default">
         <span>{{node.label | translate }}</span>
@@ -12,14 +13,16 @@
     </ng-template>
 
     <ng-template let-node pTemplate="DOCUMENTS">
-        <div class="p-grid p-ai-center p-m-auto">
+        <div class="p-grid p-ai-center p-m-auto p-jc-between">
             <span>{{node.label | translate}}</span>
-            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
-                (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (click)="uploadDocument = true"
-                styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
-                icon="pi pi-search" (click)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
+            <div>
+                <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
+                    (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
+                <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (onClick)="uploadDocument = true"
+                    styleClass="p-button-sm p-button-text"></p-button>
+                <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
+                    icon="pi pi-search" (onClick)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
+            </div>
         </div>
     </ng-template>
 
@@ -43,16 +46,16 @@
     </ng-template>
 
     <ng-template let-node pTemplate="IMAGE_SHOWS">
-        <div class="p-grid p-ai-center p-m-auto">
+        <div class="p-grid p-ai-center p-m-auto p-jc-between">
             <span>{{node.label | translate}}</span>
-            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
-                (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (click)="uploadImageShow = true"
-                styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
-                icon="pi pi-search" (click)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="node.expanded" pRipple icon="pi pi-pencil" (click)="editImageShows = !editImageShows"
-                styleClass="p-button-sm p-button-text"></p-button>
+            <div>
+                <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-refresh"
+                    (click)="resetChildrenNodes(node)" styleClass="p-button-sm p-button-text"></p-button>
+                <p-button *ngIf="node.expanded" type="button" pRipple icon="pi pi-plus" (onClick)="uploadImageShow = true"
+                    styleClass="p-button-sm p-button-text"></p-button>
+                <p-button *ngIf="node.expanded && !node.children[0].type.includes('SEARCH_')" type="button" pRipple
+                    icon="pi pi-search" (onClick)="search(node)" styleClass="p-button-sm p-button-text"></p-button>
+            </div>
         </div>
     </ng-template>
 
@@ -72,12 +75,14 @@
     </ng-template>
 
     <ng-template let-node pTemplate="IMAGE_SHOW">
-        <div class="p-grid p-ai-center p-m-auto">
+        <div class="p-grid p-ai-center p-jc-between">
             <span>{{node.label | translate }}</span>
-            <p-button *ngIf="editImageShows" pRipple icon="pi pi-pencil" (click)="editImageShow(node)"
-                styleClass="p-button-sm p-button-text"></p-button>
-            <p-button *ngIf="editImageShows" pRipple icon="pi pi-trash" (click)="deleteImageShow(node)"
-                styleClass="p-button-sm p-button-text"></p-button>
+            <div>
+                <p-button pRipple icon="pi pi-pencil" (onClick)="editImageShow(node)"
+                    styleClass="p-button-sm p-button-text"></p-button>
+                <p-button pRipple icon="pi pi-trash" (onClick)="deleteImageShow(node);"
+                    styleClass="p-button-sm p-button-text"></p-button>
+            </div>
         </div>
     </ng-template>
 

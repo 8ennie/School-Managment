@@ -167,7 +167,8 @@
         "seconds":"Sekunden",
         "shared":"Gemeinsam",
         "individual":"Unabhänig",
-        "show-clock":"Uhrzeit anzeigen"
+        "show-clock":"Uhrzeit anzeigen",
+        "show-in-use":"Präsentation wird momentatn auf einem Monitor angezeit."
     },
     "image-show": {
         "list": {

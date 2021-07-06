@@ -35,7 +35,6 @@ export class ImageListComponent implements OnInit {
   areas: string[];
   _uploadDocument: boolean = false;
   _uploadImageShow: boolean = false;
-  editImageShows: boolean = false;
 
   filteredImageShows: ImageShow[];
   filteredDocuments: Document[];
@@ -141,6 +140,7 @@ export class ImageListComponent implements OnInit {
     if (!node.children) {
       node.leaf = true;
     }
+    node.expanded = !node.expanded;
   }
 
 
@@ -291,7 +291,6 @@ export class ImageListComponent implements OnInit {
   resetChildrenNodes(node: TreeNode) {
     node.children = null;
     this.loadAreas(node);
-    this.editImageShows = false;
   }
 
   public search(node: TreeNode): void {
@@ -306,6 +305,11 @@ export class ImageListComponent implements OnInit {
 
   public returnFalse(): boolean {
     return false;
+  }
+
+  public onNodeSelect(event): void {
+    console.log(event);
+
   }
 
 }

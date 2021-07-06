@@ -1,6 +1,6 @@
 <p-table [value]="imageShows" selectionMode="single" [(selection)]="imageShow" styleClass="p-m-2" [rows]="loadRows"
   [loading]="loading" [totalRecords]="totalImagShows" [paginator]="true" [lazy]="true"
-  (onLazyLoad)="loadImageShows($event)">
+  (onLazyLoad)="loadImageShows($event)" [(first)]="firstRow">
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-text-center p-jc-center">
       <h1 class="p-m-0">{{ "image-show.list.header" | translate }}</h1>
@@ -27,7 +27,8 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-imageShow let-columns="columns">
-    <tr [pSelectableRow]="imageShow" pDraggable="imageShow" (onDragStart)="dragStart(imageShow)">
+    <tr [pSelectableRow]="imageShow" pDraggable="imageShow" (onDragStart)="dragStart(imageShow)" appDragDrop
+      [imageShow]=imageShow (onFileDropped)="openPreview($event, imageShow)" (onFileUploading)="loading = $event">
 
       <td>
         {{ imageShow["name"] }}
@@ -39,7 +40,8 @@
         {{ imageShow["createdAt"] | date}}
       </td>
       <td>
-        <button pButton type="button" icon="pi pi-pencil" class="p-button-secondary buttons" (click)="editImageShow(imageShow)" ></button>
+        <button pButton type="button" icon="pi pi-pencil" class="p-button-secondary buttons"
+          (click)="editImageShow(imageShow)"></button>
       </td>
     </tr>
   </ng-template>
@@ -47,3 +49,5 @@
 
 <app-upload-show [(displayDialog)]="uploadImageShow" *ngIf="uploadImageShow" [area]="area"
   (uploadedImageShow)="onUploadedImageShow($event)"></app-upload-show>
+
+<p-confirmDialog></p-confirmDialog>

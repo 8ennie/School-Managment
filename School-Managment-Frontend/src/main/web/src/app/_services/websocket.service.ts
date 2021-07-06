@@ -1,6 +1,7 @@
+import { environment } from 'src/environments/environment';
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { delay, retryWhen, switchMap, map, filter, first } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap, filter, first } from 'rxjs/operators';
 import { Client, Message, StompSubscription } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -19,7 +20,15 @@ export class WebsocketService implements OnDestroy {
   constructor() {
     this.client = new Client();
 
-    this.client.webSocketFactory = () => { return new SockJS('http://localhost:8080/api/socket') };
+    var baseUrl;
+    if (environment.production) {
+      var getUrl = window.location;
+      baseUrl = getUrl.protocol + "//" + getUrl.host;
+    } else {
+      baseUrl = 'http://localhost:8080';
+    }
+
+    this.client.webSocketFactory = () => { return new SockJS(baseUrl + '/api/socket') };
 
     this.client.onConnect = (frame) => {
 

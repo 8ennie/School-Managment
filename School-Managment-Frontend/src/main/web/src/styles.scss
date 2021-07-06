@@ -77,8 +77,11 @@ a {
         overflow-y: inherit;
         font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
         //background-color: rgba($secondary-color, 0.25);
-        background-color: rgb(191,222,238);
+        background-color: rgb(191, 222, 238);
         color: $secondary-color;
     }
 }
 
+.p-treenode-label {
+    width:90%;
+}

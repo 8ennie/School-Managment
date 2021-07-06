@@ -1,6 +1,8 @@
 <div class="p-card p-fluid p-p-2 p-m-auto">
     <h2 class="p-text-center">{{'edit-show-panel.header' | translate }}</h2>
-    <div class="p-fluid p-formgrid p-grid">
+    <div class="p-fluid p-formgrid p-grid" *ngIf="advanced">
+
+
         <div class="p-field p-col-12 p-md-6">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon">{{'edit-show-panel.name' | translate }}</span>
@@ -23,9 +25,10 @@
             </div>
         </div>
 
-        <div  class="p-field p-col-12 p-md-6">
+        <div class="p-field p-col-12 p-md-6">
             <div *ngIf="imageShow?.showParts?.length > 1" class="p-grid p-p-2 p-jc-between">
-                <span class="p-inputgroup-addon duration-label">{{'edit-show-panel.displayTime' | translate }}</span>
+                <span class="p-inputgroup-addon duration-label">{{'edit-show-panel.displayTime' | translate
+                    }}</span>
                 <p-selectButton [options]="displayTimeOptions" [(ngModel)]="imageShow.individualDisplayTimes">
                     <ng-template let-item>
                         <span>{{item.label | translate}}</span>
@@ -51,6 +54,8 @@
             </div>
         </div>
 
+    </div>
+    <div class="p-fluid p-formgrid p-grid">
 
         <div class="p-field p-col-12">
             <p-card id="imageShowParts" cdkDropList cdkDropListOrientation="horizontal"
@@ -65,7 +70,8 @@
                             <div class="p-fluid" pBadge
                                 [value]="imageShow.showParts.length > 1 ? ((imageShow.individualDisplayTimes ? showPart.displayTime : displayTime) + 's') : null">
                                 <div class="p-field">
-                                    <div class="p-card" [style]="showPart.active? null : {opacity: 0.5}">
+                                    <div class="p-card image-card" [style.opacity]="showPart.active? null : 0.5"
+                                        [style.border-style]="showPart.resourceUrl ? null : 'solid'">
                                         <img [src]="getImage(showPart.showPartImage)" height="200px">
                                     </div>
                                 </div>
@@ -96,13 +102,12 @@
                                             {{ ' ' + ('edit-show-panel.seconds'|translate)}}
                                         </span>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-                        <p-button pRipple type="button" icon="pi pi-plus" class="insert-document-button p-ml-2 p-pr-3"
-                            styleClass="p-button-rounded p-button-outlined" (click)="uploadDocument = true">
+                        <p-button *ngIf="advanced" pRipple type="button" icon="pi pi-plus"
+                            class="insert-document-button p-ml-2 p-pr-3" styleClass="p-button-rounded p-button-outlined"
+                            (click)="uploadDocument = true">
                         </p-button>
                     </div>
 
@@ -113,13 +118,20 @@
             <div class="p-d-flex p-jc-evenly">
                 <p-button label="{{ 'edit-show-panel.save' | translate}}" pRipple type="button"
                     styleClass="p-button-success" (click)="save()"></p-button>
+
                 <p-button label="{{ 'edit-show-panel.delete' | translate}}" pRipple type="button"
-                    styleClass="p-button-danger" (click)="delete()" *ngIf="imageShowResourceUrl"></p-button>
-                <div class="p-inputgroup update-monitor-button" *ngIf="monitorUsingShow?.length > 0">
+                    styleClass="p-button-danger" (click)="delete()" *ngIf="imageShowResourceUrl && advanced"></p-button>
+
+                <div class="p-inputgroup update-monitor-button" *ngIf="monitorUsingShow?.length > 0 && advanced">
                     <span class="p-inputgroup-addon">{{'edit-show-panel.update-monitors' | translate}}</span>
                     <p-toggleButton [(ngModel)]="updateMonitors" onLabel="{{ 'edit-show-panel.yes' | translate}}"
                         onIcon="pi pi-check" offIcon="pi pi-times" offLabel="{{ 'edit-show-panel.no' | translate}}">
                     </p-toggleButton>
+                </div>
+
+                <div *ngIf="monitorUsingShow?.length > 0 && !advanced">
+                    <i title="{{'edit-show-panel.show-in-use' | translate}}"
+                        class="pi pi-desktop p-inputgroup-addon"></i>
                 </div>
             </div>
         </div>

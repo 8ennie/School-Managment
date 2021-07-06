@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger, state, style, animate, transition, query, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 
 @Component({
@@ -35,7 +35,7 @@ import { trigger, state, style, animate, transition, query, AnimationBuilder, An
     ])
   ]
 })
-export class ScrollingTextComponent implements AfterViewInit {
+export class ScrollingTextComponent implements AfterViewInit, OnChanges {
 
 
   @ViewChild('textContainer')
@@ -49,34 +49,43 @@ export class ScrollingTextComponent implements AfterViewInit {
   constructor(public builder: AnimationBuilder) {
 
   }
+
   ngAfterViewInit(): void {
-    this.start();
-    this.player.onDone(() => this.player.play());
+    if (this.textContainer) {
+      this.start();
+    }
+
   }
 
   private start(): void {
+
+    if (this.player) {
+      this.player.destroy();
+    }
+
     // this makes instructions on how to build the animation
     const factory = this.builder.build([
-      style({ transform: 'translateX(' + this.mainContainer.nativeElement.clientWidth + 'px)' }),
-      animate('12000ms', style({ transform: 'translateX(-' + this.textContainer.nativeElement.clientWidth + 'px)' }))
+      style({ transform: 'translateX(' + this.mainContainer?.nativeElement.clientWidth + 'px)' }),
+      animate('12000ms', style({ transform: 'translateX(-' + this.textContainer?.nativeElement.clientWidth + 'px)' }))
     ]);
 
     // this creates the animation
-    this.player = factory.create(this.textContainer.nativeElement, {});
-
+    this.player = factory.create(this.textContainer?.nativeElement, {});
     // start it off
     this.player.play();
+    this.player.onDone(() => this.start());
   }
 
-
-  state = 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.text) {
+      if (this.textContainer) {
+        this.start();
+      }
+    }
+  }
   @Input() text = '';
 
   @Input() height: number;
-
-  scrollDone() {
-    this.state++;
-  }
 
   getFontSize() {
     const fontSize: number = this.height - this.height / 8;

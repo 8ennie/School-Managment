@@ -1,9 +1,10 @@
+import { DocumentService } from './../../document/document.service';
 
 import { MonitorService } from "./../../monitor/monitor.service";
 import { Monitor } from "src/app/monitor/monitor.model";
 import { ShowPart } from "./../show-part/show-part.model";
 import { ShowPartService } from "./../show-part/show-part.service";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, CDK_DRAG_CONFIG, moveItemInArray } from "@angular/cdk/drag-drop";
 import { AreaService } from "src/app/area/area.service";
 import { ImageShow } from "src/app/image-show/image-show.model";
 import {
@@ -17,11 +18,19 @@ import {
 } from "@angular/core";
 import { MessageService, SelectItem } from "primeng/api";
 import { ImageShowService } from "../image-show.service";
+import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
+
+const DragConfig = {
+  dragStartThreshold: 0,
+  pointerDirectionChangeThreshold: 5,
+  zIndex: 2000
+};
 
 @Component({
   selector: "app-edit-show-panel",
   templateUrl: "./edit-show-panel.component.html",
   styleUrls: ["./edit-show-panel.component.scss"],
+  providers: [{ provide: CDK_DRAG_CONFIG, useValue: DragConfig }]
 })
 export class EditShowPanelComponent implements OnInit, OnChanges {
   imageShow: ImageShow = new ImageShow();
@@ -36,6 +45,8 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
 
   displayTimeOptions = [{ label: 'edit-show-panel.individual', value: true }, { label: 'edit-show-panel.shared', value: false }];
 
+  @Input()
+  advanced: boolean = true;
 
   @Input()
   imageShowResourceUrl: string;
@@ -52,7 +63,14 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
     private readonly showPartService: ShowPartService,
     private readonly monitorService: MonitorService,
     private readonly messageService: MessageService,
-  ) { }
+
+
+    private readonly config: DynamicDialogConfig,
+    private readonly ref: DynamicDialogRef,
+  ) {
+    this.imageShowResourceUrl = config?.data?.imageShowResourceUrl;
+    this.advanced = config?.data?.advanced;
+  }
 
   ngOnInit(): void {
     this.imageShow.showParts = [];
@@ -61,35 +79,15 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
         return { label: a, value: a };
       });
     });
+    if (this.imageShowResourceUrl) {
+      this.loadImageShow();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.imageShowResourceUrl) {
       if (this.imageShowResourceUrl) {
-        this.imageShowService
-          .getImageShow(this.imageShowResourceUrl)
-          .then((imageShow: ImageShow) => {
-            this.imageShow = imageShow;
-            this.imageShow.individualDisplayTimes = this.imageShow.individualDisplayTimes ?? false;
-            this.showPartService
-              .getShowPartsFromImageShow(imageShow.resourceUrl)
-              .then((showParts: ShowPart[]) => {
-                if (showParts) {
-                  this.imageShow.showParts = showParts.sort(
-                    (n1, n2) => n1.position - n2.position
-                  );
-                  if (!this.imageShow.individualDisplayTimes) {
-                    this.displayTime = showParts[0].displayTime ?? 10;
-                  }
-                }
-                this.monitorService.getAllActiveMonitors().then((monitors: Monitor[]) => {
-                  this.monitorUsingShow = monitors.filter(m => m.imageShowUrl == this.imageShowResourceUrl);
-                  if (this.monitorUsingShow.length > 0) {
-                    this.updateMonitors = true;
-                  }
-                });
-              });
-          });
+        this.loadImageShow();
       } else {
         this.imageShow = new ImageShow();
         this.imageShow.individualDisplayTimes = false;
@@ -133,7 +131,6 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
 
   public delete(): void {
     this.imageShowService.deleteImageShow(this.imageShow).then(m => {
-      console.log(m);
       if (m.message == "IMAGE_SHOW_IN_USE") {
         this.messageService.add({ severity: 'error', summary: 'Delete Failed!', detail: 'A Monitor is Currently Using the Image Show' });
       } if (m.message == "SUCCSESS") {
@@ -145,7 +142,6 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
   }
 
   public save(): void {
-
     if (!this.imageShow.individualDisplayTimes) {
       this.imageShow.showParts.forEach((showPart) => {
         showPart.displayTime = this.displayTime;
@@ -168,6 +164,9 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
             .then((_) => {
               this.imageShow = imageShow;
               this.imageShow.showParts = showParts;
+              if (this.ref) {
+                this.ref.close(this.imageShow);
+              }
             });
         });
       if (this.monitorUsingShow.length > 0 && this.updateMonitors) {
@@ -200,5 +199,38 @@ export class EditShowPanelComponent implements OnInit, OnChanges {
       (this.imageShow.showParts as ShowPart[]).push(showPart);
     });
 
+  }
+
+  private loadImageShow(): void {
+    this.imageShowService
+      .getImageShow(this.imageShowResourceUrl)
+      .then((imageShow: ImageShow) => {
+        this.imageShow = imageShow;
+        this.imageShow.individualDisplayTimes = this.imageShow.individualDisplayTimes ?? false;
+        this.showPartService
+          .getShowPartsFromImageShow(imageShow.resourceUrl)
+          .then((showParts: ShowPart[]) => {
+            if (showParts) {
+              this.imageShow.showParts = showParts.sort(
+                (n1, n2) => n1.position - n2.position
+              );
+              if (!this.imageShow.individualDisplayTimes) {
+                this.displayTime = showParts[0].displayTime ?? 10;
+              }
+            }
+            if (this.config?.data?.showParts) {
+              this.config.data.showParts.forEach((showPart: ShowPart) => {
+                showPart.displayTime = this.displayTime;
+                (this.imageShow.showParts as ShowPart[]).push(showPart);
+              });
+            }
+            this.monitorService.getAllActiveMonitors().then((monitors: Monitor[]) => {
+              this.monitorUsingShow = monitors.filter(m => m.imageShowUrl == this.imageShowResourceUrl);
+              if (this.monitorUsingShow.length > 0) {
+                this.updateMonitors = true;
+              }
+            });
+          });
+      });
   }
 }

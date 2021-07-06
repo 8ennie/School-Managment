@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { UploadDocumentComponent } from './document/upload-document/upload-document.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -45,11 +46,13 @@ import { UploadShowComponent } from './image-show/upload-show/upload-show.compon
 import { ShowPreviewComponent } from './image-show/show-preview/show-preview.component';
 import { ClockComponent } from './addons/clock/clock.component';
 import { MessageBannerComponent } from './addons/message-banner/message-banner.component';
+import { DragDropDirective } from './_directives/drag-drop.directive';
 
 
 
 @NgModule({
   declarations: [
+    DragDropDirective,
     AppComponent,
     HeaderComponent,
     HomeComponent,

@@ -1,7 +1,8 @@
+import { Observable, Subscription } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { DragAndDropService } from './../../../_services/drag-and-drop.service';
 import { MonitorService } from './../../monitor.service';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
 import { ImageShow } from "src/app/image-show/image-show.model";
 import { Monitor } from "../../monitor.model";
 import { ImageShowService } from 'src/app/image-show/image-show.service';
@@ -12,7 +13,11 @@ import { ImageShowService } from 'src/app/image-show/image-show.service';
   styleUrls: ["./monitor-card.component.scss"],
   providers: [ConfirmationService],
 })
-export class MonitorCardComponent implements OnInit, OnChanges {
+export class MonitorCardComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input()
+  public updateMonitor: Observable<void>;
+
   @Input()
   monitor: Monitor;
 
@@ -32,6 +37,8 @@ export class MonitorCardComponent implements OnInit, OnChanges {
 
   changeImageShowDialog: boolean = false;
   monitorOfflineNotification: boolean = false;
+
+  private eventsSubscription: Subscription;
   constructor(
     private readonly monitorService: MonitorService,
     private readonly imageShowService: ImageShowService,
@@ -46,7 +53,16 @@ export class MonitorCardComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void { }
+  ngOnDestroy() {
+    this.eventsSubscription.unsubscribe();
+  }
+
+
+  ngOnInit(): void {
+    this.eventsSubscription = this.updateMonitor.subscribe(() => {
+      this.updateDisplay();
+    });
+  }
 
   private updateDisplay(): void {
     this.loading = true;
@@ -70,7 +86,7 @@ export class MonitorCardComponent implements OnInit, OnChanges {
   public updateImageShow(): void {
     this.monitor.imageShow = this.imageShow;
     this.loading = true;
-    this.updateMonitor();
+    this.updateMonitorImageShow();
     this.close();
   }
 
@@ -85,7 +101,7 @@ export class MonitorCardComponent implements OnInit, OnChanges {
     });
   }
 
-  public updateMonitor(): void {
+  public updateMonitorImageShow(): void {
     const oldMonitor = new Monitor();
     for (const prop in this.monitor) {
       oldMonitor[prop] = this.monitor[prop];
@@ -107,7 +123,7 @@ export class MonitorCardComponent implements OnInit, OnChanges {
         accept: () => {
           this.monitor.imageShow = imageShow;
           this.loading = true;
-          this.updateMonitor();
+          this.updateMonitorImageShow();
         },
         reject: () => {
           return;

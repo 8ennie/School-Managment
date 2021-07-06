@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class HomeController {
 	
-	@GetMapping({"/", "/photoshow/**", "/auth/**"})
+	@GetMapping({"/", "/photoshow/**", "/auth/**", "/imageshow/**"})
     public String home(Model model) {
            return "forward:/index.html";
     }

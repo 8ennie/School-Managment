@@ -1,7 +1,8 @@
 <p-dataView [value]="monitors" layout="grid">
     <ng-template let-monitor pTemplate="gridItem">
         <div class="p-col-12 p-md-6 monitor-card">
-            <app-monitor-card [monitor]="monitor" [area]="area" [editMonitorImageShow]="editMonitorImageShow"></app-monitor-card>
+            <app-monitor-card [monitor]="monitor" [area]="area" [editMonitorImageShow]="editMonitorImageShow" [updateMonitor]="updateMonitor.asObservable()">
+            </app-monitor-card>
         </div>
     </ng-template>
 </p-dataView>

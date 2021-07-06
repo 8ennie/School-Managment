@@ -2,7 +2,8 @@
     <p-dialog [(visible)]="display" [closable]="false" [showHeader]="false" [position]="'top-right'"
         [style]="{width: '15vw',  'border-radius': '15px'}">
         <div class="p-grid p-jc-center p-nogutter p-ai-center">
-            <span class="p-text-center digits">{{ rxTime | date:"HH:mm" }}</span>
+            <span class="p-col p-text-center digits">{{ rxTime | date:"HH:mm" }}</span>
+            <span *ngIf="message" class="p-col p-text-center clock-message blink_me">{{message}}</span>
         </div>
     </p-dialog>
 </div>
