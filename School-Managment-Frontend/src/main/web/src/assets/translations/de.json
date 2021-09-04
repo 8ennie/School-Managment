@@ -11,7 +11,8 @@
         "roles": "Rollen",
         "login": "Anmelden",
         "logout": "Abmelden",
-        "documents": "Documente"
+        "documents": "Documente",
+        "transport": "RMV"
     },
     "auth": {
         "role-details": {
@@ -32,25 +33,25 @@
         },
         "user-details": {
             "heading": "Users",
-            "add":"Hintufügen",
-            "username":"Benutzername",
-            "choose-username":"Benutzername wählen",
-            "choose-email":"Email wählen",
-            "email":"Email",
-            "password":"Password",
-            "choose-password":"Password wählen",
-            "roles":"Rollen",
-            "choose-roles":"Rollen wählen",
-            "areas":"Bereiche",
-            "choose-areas":"Bereiche wählen",
-            "save":"Speichern",
-            "delete":"Löschen"
+            "add": "Hintufügen",
+            "username": "Benutzername",
+            "choose-username": "Benutzername wählen",
+            "choose-email": "Email wählen",
+            "email": "Email",
+            "password": "Password",
+            "choose-password": "Password wählen",
+            "roles": "Rollen",
+            "choose-roles": "Rollen wählen",
+            "areas": "Bereiche",
+            "choose-areas": "Bereiche wählen",
+            "save": "Speichern",
+            "delete": "Löschen"
         },
         "user-list": {
             "heading": "Users",
-            "user-name":"Benutzername",
-            "user-roles":"Rollen",
-            "show-monitors":"Monitore Accounts Anzeigen"
+            "user-name": "Benutzername",
+            "user-roles": "Rollen",
+            "show-monitors": "Monitore Accounts Anzeigen"
         }
     },
     "login": {
@@ -64,13 +65,12 @@
             "login": "Fehler beim anmelden. Überprüfen sie den Benutzername oder dsa Password!"
         }
     },
-
-    "message":{
-        "send-message":{
-            "message-text":"Text",
-            "choose-text":"Message Schreiben", 
-            "send":"Veröffentlichen",
-            "clear":"Fertig"
+    "message": {
+        "send-message": {
+            "message-text": "Text",
+            "choose-text": "Message Schreiben",
+            "send": "Veröffentlichen",
+            "clear": "Fertig"
         }
     },
     "monitor": {
@@ -124,7 +124,7 @@
         },
         "list": {
             "header": "Monitors",
-            "add":"Hintufügen",
+            "add": "Hintufügen",
             "reboot-all": "Alle neu startend",
             "name": "Name",
             "location": "Ort",
@@ -164,11 +164,11 @@
         "save": "Speichern",
         "delete": "Löschen",
         "displayTime": "Anezige dauer",
-        "seconds":"Sekunden",
-        "shared":"Gemeinsam",
-        "individual":"Unabhänig",
-        "show-clock":"Uhrzeit anzeigen",
-        "show-in-use":"Präsentation wird momentatn auf einem Monitor angezeit."
+        "seconds": "Sekunden",
+        "shared": "Gemeinsam",
+        "individual": "Unabhänig",
+        "show-clock": "Uhrzeit anzeigen",
+        "show-in-use": "Präsentation wird momentatn auf einem Monitor angezeit."
     },
     "image-show": {
         "list": {

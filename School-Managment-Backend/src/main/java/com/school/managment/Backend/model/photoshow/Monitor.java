@@ -83,6 +83,9 @@ public class Monitor {
 	@LastModifiedBy
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String modifiedBy;
+
+	@OneToOne
+	private PublicTransportShowPart publicTransportShowPart;
 	
 	public Monitor(String ipAdresse, String name, String location){
 		this.ipAddress = ipAdresse;

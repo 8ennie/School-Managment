@@ -2,8 +2,11 @@
 <app-message-banner [area]="imageShow?.area"></app-message-banner>
 <p-carousel [(value)]="showParts" (onPage)="pageChanged($event)" [showNavigators]="false" [page]="page">
     <ng-template pTemplate="item" let-showPart>
-        <div class="p-grid p-jc-center">
+        <!-- <div class="p-grid p-jc-center">
             <img [src]="getImage(showPart.showPartImage)" [height]="getHeight()" />
-        </div>
+        </div> -->
+        <app-public-transport [height]="getHeight()"></app-public-transport>
+
+
     </ng-template>
 </p-carousel>

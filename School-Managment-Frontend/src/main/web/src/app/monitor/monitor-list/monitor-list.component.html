@@ -213,6 +213,18 @@
           </div>
         </div>
       </p-tabPanel>
+
+      <p-tabPanel header="{{'monitr.details.public-transport' | translate }}">
+        <div class="p-field p-grid">
+            <label for="screen-status" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                {{'monitor.details.screen-status' | translate }}
+            </label>
+            <div class="p-col-12 p-md-10">
+                <span>{{monitor.status}}</span>
+            </div>
+        </div>
+    </p-tabPanel>
+
     </p-tabView>
   </ng-template>
 
