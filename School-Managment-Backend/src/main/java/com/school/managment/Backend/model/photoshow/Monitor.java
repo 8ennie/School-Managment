@@ -3,17 +3,7 @@ package com.school.managment.Backend.model.photoshow;
 import java.time.Instant;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -84,7 +74,7 @@ public class Monitor {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String modifiedBy;
 
-	@OneToOne
+	@Embedded
 	private PublicTransportShowPart publicTransportShowPart;
 	
 	public Monitor(String ipAdresse, String name, String location){
