@@ -1,3 +1,4 @@
+import { PublicTransport } from "../addons/public-transport/public-transport.model";
 import { HateoasEntity, IHateoasEntity } from "../_helper/spring-hateoas/hateoas-entity";
 
 
@@ -39,6 +40,8 @@ export class Monitor extends HateoasEntity implements MonitorHateoas {
     onStartResumeLastShow?: boolean;
     startUrl: string;
     currentUrl?:string;
+
+    publicTransportShowPart: PublicTransport = new PublicTransport();
 
     get imageShowUrl(): string | undefined {
         if (this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href) {
