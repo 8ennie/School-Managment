@@ -1,0 +1,24 @@
+<div class="p-grid p-jc-center">
+
+    <div [style.height]="height + 'px'" style="width: 75%;" class="p-col-12 p-grid p-ai-center">
+        <div class="p-col-12 p-text-center">
+            <span class="heading">Frankfurt (Main) Cassellastraße</span>
+            <embed
+                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3001544_1089016653&start=1"
+                height="270px" width="100%" />
+        </div>
+        <div class="p-col-12 p-text-center" *ngIf="height > 700">
+            <span class="heading">Frankfurt (Main) Mainkur Bahnhof</span>
+            <embed
+                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3002599_823575499&start=1"
+                height="270px" width="100%" />
+        </div>
+        <div class="p-col-12 p-text-center" *ngIf="height > 1050">
+            <span class="heading">Frankfurt (Main) Mainkur Bahnhof</span>
+            <embed
+                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3001466_156133536&start=1"
+                height="270px" width="100%" />
+        </div>
+    </div>
+
+</div>

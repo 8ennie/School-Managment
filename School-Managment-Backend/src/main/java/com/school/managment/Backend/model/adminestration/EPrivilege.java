@@ -14,6 +14,8 @@ public enum EPrivilege {
 	
 	WRITE_MESSAGES,
 	READ_MESSAGES,
+
+	TRANSPORT,
 	
 	CHANGE_SHOW,
 	

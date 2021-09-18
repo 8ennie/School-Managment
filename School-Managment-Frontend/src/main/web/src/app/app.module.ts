@@ -47,6 +47,7 @@ import { ShowPreviewComponent } from './image-show/show-preview/show-preview.com
 import { ClockComponent } from './addons/clock/clock.component';
 import { MessageBannerComponent } from './addons/message-banner/message-banner.component';
 import { DragDropDirective } from './_directives/drag-drop.directive';
+import { PublicTransportComponent } from './addons/public-transport/public-transport.component';
 
 
 
@@ -82,6 +83,7 @@ import { DragDropDirective } from './_directives/drag-drop.directive';
     ShowPreviewComponent,
     ClockComponent,
     MessageBannerComponent,
+    PublicTransportComponent,
   ],
   imports: [
     FormsModule,
