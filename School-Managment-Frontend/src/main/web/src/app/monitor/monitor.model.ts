@@ -1,13 +1,15 @@
+import { ImageShow } from './../image-show/image-show.model';
 import { PublicTransport } from "../addons/public-transport/public-transport.model";
 import { HateoasEntity, IHateoasEntity } from "../_helper/spring-hateoas/hateoas-entity";
 
 
-export interface MonitorHateoas extends IHateoasEntity {
+
+interface IMonitor {
     readonly _id?: number;
     readonly name?: string;
     readonly location: string;
     readonly ipAddress?: string;
-    readonly imageShow?;
+    readonly imageShow?: ImageShow | string;
     readonly areas?: string[];
     readonly active: boolean;
 
@@ -20,28 +22,53 @@ export interface MonitorHateoas extends IHateoasEntity {
     readonly onStartResumeLastShow?: boolean;
     readonly startUrl: string;
     readonly currentUrl?: string;
+
+    readonly publicTransportShowPart?: PublicTransport<string> | PublicTransport;
 }
 
 
-export class Monitor extends HateoasEntity implements MonitorHateoas {
-    _id?: number;
-    name?: string;
-    location: string;
-    ipAddress?: string;
-    imageShow;
-    areas?: string[];
-    imageShowLocked?: boolean;
-    status?: boolean;
-    serverIp?: string;
-    active: boolean;
+export interface MonitorHateoas extends IHateoasEntity, IMonitor {
+    readonly _id?: number;
+    readonly name?: string;
+    readonly location: string;
+    readonly ipAddress?: string;
+    readonly imageShow?: string;
+    readonly areas?: string[];
+    readonly active: boolean;
 
-    sleepTime?: Date;
-    wakeTime?: Date;
-    onStartResumeLastShow?: boolean;
-    startUrl: string;
-    currentUrl?:string;
+    readonly imageShowLocked?: boolean;
+    readonly status?: boolean;
+    readonly serverIp?: string;
 
-    publicTransportShowPart: PublicTransport = new PublicTransport();
+    readonly sleepTime?: Date;
+    readonly wakeTime?: Date;
+    readonly onStartResumeLastShow?: boolean;
+    readonly startUrl: string;
+    readonly currentUrl?: string;
+
+    readonly publicTransportShowPart?: PublicTransport<string>;
+}
+
+
+export class Monitor extends HateoasEntity implements IMonitor {
+    public _id?: number;
+    public name?: string;
+    public location: string;
+    public ipAddress?: string;
+    public imageShow;
+    public areas?: string[];
+    public imageShowLocked?: boolean;
+    public status?: boolean;
+    public serverIp?: string;
+    public active: boolean;
+
+    public sleepTime?: Date;
+    public wakeTime?: Date;
+    public onStartResumeLastShow?: boolean;
+    public startUrl: string;
+    public currentUrl?: string;
+
+    public publicTransportShowPart?: PublicTransport = new PublicTransport();
 
     get imageShowUrl(): string | undefined {
         if (this.imageShow && this.imageShow._links && this.imageShow._links.self && this.imageShow._links.self.href) {

@@ -1,24 +1,12 @@
-<div class="p-grid p-jc-center">
+<div class="p-grid p-jc-center" *ngIf="visible">
 
     <div [style.height]="height + 'px'" style="width: 75%;" class="p-col-12 p-grid p-ai-center">
-        <div class="p-col-12 p-text-center">
-            <span class="heading">Frankfurt (Main) Cassellastraße</span>
-            <embed
-                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3001544_1089016653&start=1"
-                height="270px" width="100%" />
-        </div>
-        <div class="p-col-12 p-text-center" *ngIf="height > 700">
-            <span class="heading">Frankfurt (Main) Mainkur Bahnhof</span>
-            <embed
-                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3002599_823575499&start=1"
-                height="270px" width="100%" />
-        </div>
-        <div class="p-col-12 p-text-center" *ngIf="height > 1050">
-            <span class="heading">Frankfurt (Main) Mainkur Bahnhof</span>
-            <embed
-                src="https://www.rmv.de/auskunft/bin/jp/stboard.exe/dn?L=vs_anzeigetafel&cfgfile=FrankfurtM_3001466_156133536&start=1"
-                height="270px" width="100%" />
-        </div>
+        <ng-container *ngFor="let station of stations; index as i;" >
+            <div *ngIf="show(i)" class="p-col-12 p-text-center">
+                <span class="heading">{{station.name}}</span>
+                <iframe width="100%" height="270px" frameBorder="0" [src]="station.sanitizedUrl"></iframe>
+            </div>
+        </ng-container>
     </div>
 
 </div>

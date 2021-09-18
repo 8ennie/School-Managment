@@ -2,11 +2,11 @@
 <app-message-banner [area]="imageShow?.area"></app-message-banner>
 <p-carousel [(value)]="showParts" (onPage)="pageChanged($event)" [showNavigators]="false" [page]="page">
     <ng-template pTemplate="item" let-showPart>
-        <!-- <div class="p-grid p-jc-center">
+        <div class="p-grid p-jc-center" *ngIf="showPart.showPartType === 'IMAGE'">
             <img [src]="getImage(showPart.showPartImage)" [height]="getHeight()" />
-        </div> -->
-        <app-public-transport [height]="getHeight()"></app-public-transport>
-
-
+        </div>
+        <app-public-transport [height]="getHeight()" [visible]="showPart.showPartType === 'PUBLIC_TARNSPORT'" [page]="showPart.page"
+            (onConfigChange)="transportCpmponentConfiguration = $event">
+        </app-public-transport>
     </ng-template>
 </p-carousel>

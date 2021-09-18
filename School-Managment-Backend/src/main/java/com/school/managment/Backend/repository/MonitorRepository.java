@@ -3,6 +3,7 @@ package com.school.managment.Backend.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.school.managment.Backend.model.adminestration.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -24,5 +25,7 @@ public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 	public List<Monitor> findByActiveFalse();
 	
 	public List<Monitor> findByActiveTrue();
+
+	public List<Monitor> findByUser(User user);
 	
 }

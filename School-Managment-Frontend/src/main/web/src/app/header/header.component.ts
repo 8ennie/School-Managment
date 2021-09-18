@@ -6,6 +6,7 @@ import { AuthUser } from '../auth/auth-user.model';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from './header.service';
 import { MenuItem } from 'primeng/api';
+import { MonitorService } from '../monitor/monitor.service';
 
 
 @Component({

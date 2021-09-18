@@ -1,3 +1,5 @@
+import { AuthUser } from './../auth/auth-user.model';
+import { PublicTransport } from './../addons/public-transport/public-transport.model';
 import { Monitor } from 'src/app/monitor/monitor.model';
 import { MonitorHateoas } from './monitor.model';
 import { Embeddeds, HateoasCollection } from './../_helper/spring-hateoas/hateoas-collection';
@@ -6,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/auth/auth.service';
 import { map } from 'rxjs/operators';
-
+import { DateTime } from 'luxon';
 
 const API_URL = environment.apiUrl + 'monitors';
 
@@ -16,6 +18,19 @@ interface EmbeddedMonitorHateoas extends Embeddeds<MonitorHateoas> {
 
 @Injectable({ providedIn: 'root' })
 export class MonitorService {
+
+
+    private createMonitorObject(monitorHateoas: MonitorHateoas): Monitor {
+        const monitor: Monitor = Object.assign(new Monitor(), monitorHateoas);
+        const publicTransportShowPart = new PublicTransport();
+        if (monitorHateoas.publicTransportShowPart) {
+            publicTransportShowPart.startTime = monitorHateoas.publicTransportShowPart.startTime ? DateTime.fromFormat(monitorHateoas.publicTransportShowPart.startTime, 'HH:mm:ss').toJSDate() : undefined;
+            publicTransportShowPart.endTime = monitorHateoas.publicTransportShowPart.endTime ? DateTime.fromFormat(monitorHateoas.publicTransportShowPart.endTime, 'HH:mm:ss').toJSDate() : undefined;
+            publicTransportShowPart.showPublicTransport = monitorHateoas.publicTransportShowPart.showPublicTransport;
+        }
+        monitor.publicTransportShowPart = publicTransportShowPart;
+        return monitor;
+    }
 
     constructor(
         private http: HttpClient,
@@ -28,7 +43,7 @@ export class MonitorService {
                 map(
                     (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
                         const monitorHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
-                        return monitorHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                        return monitorHateoasArray.map(this.createMonitorObject);
                     }
                 )
             )
@@ -41,7 +56,7 @@ export class MonitorService {
                 map(
                     (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
                         const monitortHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
-                        return monitortHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                        return monitortHateoasArray.map(this.createMonitorObject);
                     }
                 )
             )
@@ -54,7 +69,7 @@ export class MonitorService {
                 map(
                     (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
                         const monitortHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
-                        return monitortHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                        return monitortHateoasArray.map(this.createMonitorObject);
                     }
                 )
             )
@@ -67,7 +82,7 @@ export class MonitorService {
                 map(
                     (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
                         const monitortHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
-                        return monitortHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                        return monitortHateoasArray.map(this.createMonitorObject);
                     }
                 )
             )
@@ -80,7 +95,7 @@ export class MonitorService {
                 map(
                     (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
                         const monitortHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
-                        return monitortHateoasArray.map((m: MonitorHateoas): Monitor => Object.assign(new Monitor(), m));
+                        return monitortHateoasArray.map(this.createMonitorObject);
                     }
                 )
             )
@@ -89,9 +104,17 @@ export class MonitorService {
 
 
     public saveMonitor(monitor: Monitor): Promise<Monitor> {
-        return this.http.post<EmbeddedMonitorHateoas>(API_URL, monitor)
+        const monitorToSend = {
+            ...monitor,
+            publicTransportShowPart: {
+                ...monitor.publicTransportShowPart,
+                startTime: monitor.publicTransportShowPart.startTime ? DateTime.fromJSDate(monitor.publicTransportShowPart.startTime).toFormat('HH:mm') : undefined,
+                endTime: monitor.publicTransportShowPart.endTime ? DateTime.fromJSDate(monitor.publicTransportShowPart.endTime).toFormat('HH:mm') : undefined
+            }
+        }
+        return this.http.post<MonitorHateoas>(API_URL + '?projection=monitorProjection', monitorToSend)
             .pipe(
-                map((monitorHateoas: EmbeddedMonitorHateoas): Monitor => Object.assign(new Monitor(), monitorHateoas))
+                map(this.createMonitorObject)
             )
             .toPromise()
             .then((m: Monitor) => {
@@ -102,11 +125,18 @@ export class MonitorService {
 
     public updateMonitor(monitor: Monitor): Promise<Monitor> {
         monitor.imageShowUrl = monitor.imageShowUrl;
-        return this.http.patch<EmbeddedMonitorHateoas>(monitor.resourceUrl, monitor)
+        const monitorToSend = {
+            ...monitor,
+            publicTransportShowPart: {
+                ...monitor.publicTransportShowPart,
+                startTime: monitor.publicTransportShowPart.startTime ? DateTime.fromJSDate(monitor.publicTransportShowPart.startTime).toFormat('HH:mm') : undefined,
+                endTime: monitor.publicTransportShowPart.endTime ? DateTime.fromJSDate(monitor.publicTransportShowPart.endTime).toFormat('HH:mm') : undefined
+
+            }
+        }
+        return this.http.patch<MonitorHateoas>(monitor.resourceUrl + '?projection=monitorProjection', monitorToSend)
             .pipe(
-                map((monitorHateoas: EmbeddedMonitorHateoas): Monitor => {
-                    return Object.assign(new Monitor(), monitorHateoas);
-                })
+                map(this.createMonitorObject)
             )
             .toPromise();
     }
@@ -138,6 +168,19 @@ export class MonitorService {
             formData.append('showId', imageShowId);
         }
         return this.http.post<void>('http://' + monitor.ipAddress + '/show/loginAndShow', formData).toPromise();
+    }
+
+    public getMonitorForUser(userId: string): Promise<Monitor[]> {
+        return this.http.get<HateoasCollection<EmbeddedMonitorHateoas>>(API_URL + '/search/findByUser?user=/api/users/' + userId + '&projection=monitorProjection')
+            .pipe(
+                map(
+                    (monitorHateoasCollection: HateoasCollection<EmbeddedMonitorHateoas>): Monitor[] => {
+                        const monitorHateoasArray: MonitorHateoas[] = monitorHateoasCollection._embedded.monitors;
+                        return monitorHateoasArray.map(this.createMonitorObject);
+                    }
+                )
+            )
+            .toPromise();
     }
 
     loginForShow(monitor: Monitor) {

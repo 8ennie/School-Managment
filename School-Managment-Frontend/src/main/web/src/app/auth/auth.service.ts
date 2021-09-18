@@ -1,7 +1,7 @@
 import { Privileges } from './privilege.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { LocalStorageService } from '../_services/local-storage.service';
 import { AuthUser } from './auth-user.model';
 import { environment } from 'src/environments/environment';
@@ -16,7 +16,7 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  userChanges: Subject<AuthUser> = new Subject<AuthUser>();
+  public userChanges: ReplaySubject<AuthUser> = new ReplaySubject<AuthUser>();
 
   constructor(
     private readonly http: HttpClient,
@@ -83,7 +83,7 @@ export class AuthService {
     return false;
   }
 
-  signUpMonitor(monitorId:number): Promise<any> {
+  signUpMonitor(monitorId: number): Promise<any> {
     return this.http.post(AUTH_API + 'signup/monitor', monitorId).toPromise();
   }
 }

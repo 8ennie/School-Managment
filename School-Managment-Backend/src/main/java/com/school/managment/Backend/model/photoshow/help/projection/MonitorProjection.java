@@ -3,6 +3,7 @@ package com.school.managment.Backend.model.photoshow.help.projection;
 
 import java.util.Set;
 
+import com.school.managment.Backend.model.photoshow.PublicTransportShowPart;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -28,5 +29,7 @@ public interface MonitorProjection {
 	Set<Area> getAreas();
 	
 	boolean getActive();
+
+	PublicTransportShowPart getPublicTransportShowPart();
 	
 }

@@ -19,7 +19,7 @@ import com.school.managment.Backend.model.photoshow.Monitor;
 import com.school.managment.Backend.repository.MonitorRepository;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class WebSocketController {
 
     @Autowired

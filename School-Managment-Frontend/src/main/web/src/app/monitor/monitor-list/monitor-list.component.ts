@@ -86,6 +86,8 @@ export class MonitorListComponent implements OnInit {
   }
 
   public editMonitor(monitor: Monitor): void {
+    console.log(monitor);
+    
     if (monitor.active) {
       this.monitorService.pingMonitor(monitor);
     }

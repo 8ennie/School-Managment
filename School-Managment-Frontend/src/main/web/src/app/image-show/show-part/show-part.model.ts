@@ -19,4 +19,13 @@ export class ShowPart extends HateoasEntity implements ShowPartHateoas {
     public showPartImage: string;
 
     public changed?: boolean;
+
+
+    public showPartType: ShowPartType = ShowPartType.IMAGE;
+}
+
+
+export enum ShowPartType {
+    IMAGE = 'IMAGE',
+    PUBLIC_TARNSPORT = 'PUBLIC_TARNSPORT',
 }
